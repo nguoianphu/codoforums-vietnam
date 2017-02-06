@@ -345,7 +345,9 @@
                     {else}
                         <div class="codo_zero_topics">
                             {_t("No topics created yet!")}<br/><br/>
-                            {_t("Be the first to")} <a href="#" id="codo_zero_topics">{_t("create")}</a> {_t("a topic")}
+                            {if $logged_in}                            
+                            {_t("Be the first to")} <a href="#" id="codo_zero_topics">{_t("create")}</a> {_t("a topic")}                            
+                            {/if}
                         </div>
                     {/if}
                 </div>

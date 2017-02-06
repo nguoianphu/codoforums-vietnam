@@ -6,65 +6,65 @@
 
 
         {{#if is_topic}}
-        {{#if can_manage_topic}}
-        <div class="dropdown codo_manage_topic">
-            <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
-                <i class="icon-more-vert"></i>
+            {{#if can_manage_topic}}
+            <div class="dropdown codo_manage_topic">
+                <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
+                    <i class="icon-more-vert"></i>
+                </div>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
+                    {{#if can_edit_topic}}
+                    <li id="codo_posts_edit_{{{topic_id}}}" class="codo_posts_edit_post codo_post_this_is_topic"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="icon-edit"></i> {{{i18n "Edit"}}}
+                        </a></li>
+                    {{/if}}
+                    {{#if can_delete_topic}}
+                    <li id="codo_posts_trash_{{{topic_id}}}" class="codo_posts_trash_post codo_post_this_is_topic"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="icon-trash"></i> {{{i18n "Delete"}}}
+                        </a></li>
+                    {{/if}}
+                    {{#if can_see_history}}
+                    <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
+                        </a></li>
+                    {{/if}}
+
+                </ul>
             </div>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
-                {{#if can_edit_topic}}
-                <li id="codo_posts_edit_{{{topic_id}}}" class="codo_posts_edit_post codo_post_this_is_topic"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="icon-edit"></i> {{{i18n "Edit"}}}
-                    </a></li>
-                {{/if}}
-                {{#if can_delete_topic}}
-                <li id="codo_posts_trash_{{{topic_id}}}" class="codo_posts_trash_post codo_post_this_is_topic"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="icon-trash"></i> {{{i18n "Delete"}}}
-                    </a></li>
-                {{/if}}
-                {{#if can_see_history}}
-                <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
-                    </a></li>
-                {{/if}}
-                
-            </ul>
-        </div>
-        {{/if}}
+            {{/if}}
 
         {{else}}
 
-        {{#if can_manage_post}}
-        <div class="dropdown codo_manage_topic">
-            <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
-                <i class="icon-more-vert"></i>
-            </div>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
-                {{#if can_edit_post}}
-                <li id="codo_posts_edit_{{{post_id}}}" class="codo_posts_edit_post codo_post_this_is_post"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="icon-edit"></i> {{{i18n "Edit"}}}
-                    </a></li>
-                {{/if}}
-                {{#if can_delete_post}}
-                <li id="codo_posts_trash_{{{post_id}}}" class="codo_posts_trash_post codo_post_this_is_post"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="icon-trash"></i> {{{i18n "Delete"}}}
-                    </a></li>
-                {{/if}}
-                {{#if can_see_history}}
-                <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
-                    role="presentation"><a role="menuitem" tabindex="-1">
-                        <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
-                    </a></li>
-                {{/if}}
+            {{#if can_manage_post}}
+            <div class="dropdown codo_manage_topic">
+                <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
+                    <i class="icon-more-vert"></i>
+                </div>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
+                    {{#if can_edit_post}}
+                    <li id="codo_posts_edit_{{{post_id}}}" class="codo_posts_edit_post codo_post_this_is_post"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="icon-edit"></i> {{{i18n "Edit"}}}
+                        </a></li>
+                    {{/if}}
+                    {{#if can_delete_post}}
+                    <li id="codo_posts_trash_{{{post_id}}}" class="codo_posts_trash_post codo_post_this_is_post"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="icon-trash"></i> {{{i18n "Delete"}}}
+                        </a></li>
+                    {{/if}}
+                    {{#if can_see_history}}
+                    <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
+                        role="presentation"><a role="menuitem" tabindex="-1">
+                            <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
+                        </a></li>
+                    {{/if}}
 
-            </ul>
-        </div>
-        {{/if}}
+                </ul>
+            </div>
+            {{/if}}
         {{/if}}
     </div>
 
@@ -80,7 +80,7 @@
         </div>-->
 
         <div class="codo_posts_post_name">
-            <a href="{{{const "RURI"}}}user/profile/{{id}}">{{name}}</a>
+            <a href="{{{const "RURI"}}}user/profile/{{id}}"><span class="role_{{{role}}}">{{{name}}}</span></a>
         </div>
 
         <div class="codo_posts_post_desc">
@@ -101,13 +101,21 @@
         <div class="codo_posts_post_imessage">{{imessage}}</div>
 
         {{#if signature}}
-        <div class="codo_posts_signature">{{{signature}}}</div>
+            <div class="codo_posts_signature">{{{signature}}}</div>
         {{/if}}
 
         {{#if post_modified}}
-        <div class="codo_last_edit">{{{i18n "edited"}}} {{post_modified}}</div>
+            <div class="codo_last_edit">{{{i18n "edited"}}} {{post_modified}}</div>
         {{/if}}
-    </div>
+        
+        {{#if can_move_topic}}
+            <input type="checkbox" id="codo_posts_select_{{{post_id}}}" class="codo_posts_select_post"/>
+        {{/if}}
+        {{#if can_move_post}}
+            <input type="checkbox" id="codo_posts_select_{{{post_id}}}" class="codo_posts_select_post"/>
+        {{/if}}
+        
+    </div>  
 
     <div class="codo_posts_post_foot clearfix">
 

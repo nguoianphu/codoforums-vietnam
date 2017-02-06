@@ -26,6 +26,19 @@
 
 } 
 
+
+#codo_move_posts_confirm {
+
+    .codo_load_more_bar_blue_gif {
+
+        float: left;
+        width: 20px;
+        padding-left: 24px;
+        padding-top: 4px;
+        color: @descDarkColor;
+        display: none;
+    }
+}
 .codo_modal_mini {
 
     top: 30%;
@@ -457,6 +470,11 @@ body {
                             padding-top: 5px;
                             color: @articleSignatureColor;
                         }
+
+                        > .codo_posts_select_post {
+
+                            position: absolute;
+                        }
                     }
 
 
@@ -526,9 +544,8 @@ body {
 
                                 position: absolute;
                                 bottom: 35px;
-                                left: 8px;
+                                left: -41px;
                                 padding: 7px 12px 15px 13px;
-
                                 color: #fff;
                                 border-radius: 45% 45% 0 0;
                             }
@@ -536,13 +553,11 @@ body {
                             .codo_rep_down_btn {
 
                                 position: absolute;
-                                bottom: -18px;
-                                left: 8px;
-                                padding: 14px 12px 7px 12px;
-
+                                bottom: 2px;
+                                left: -41px;
+                                padding: 15px 13px 7px 12px;
                                 color: #fff;
                                 border-radius: 0% 0% 45% 45%;
-
                             }
                         }
 
@@ -744,17 +759,17 @@ body {
                 }
             }
         }
-        
+
         .codo_topic_side_div {
-            
+
             border-top: 1px solid @borderColor;
             padding: 10px;
             background: @bg;
-            
+
         }
-        
+
         .codo_topic_closed {
-            
+
             background: @linkColor;
             color: #fff;
             text-shadow: none;

@@ -39,18 +39,15 @@
             {/foreach}
 
         </select>
-		-->         
+		-->   <!-- nguoianphu -->      
     </div>
-    <!-- nguoianphu -->
-    {if $topic_is_spam}
-        <div class="codo_spam_alert alert alert-warning"><b>{_t('NOTE: ')}</b>{_t('This topic is marked as spam and is hidden from public view.')}</div>
-            {/if}
+
     <div class="container">
+        {if $topic_is_spam}
+            <div class="codo_spam_alert alert alert-warning"><b>{_t('NOTE: ')}</b>{_t('This topic is marked as spam and is hidden from public view.')}</div>
+                {/if}
 
         <div class="row">
-
-
-
 
             <div class="codo_posts col-md-9">
 
@@ -210,9 +207,156 @@
 			</div>
 			
 		</div>
-		
+		<!-- nguoianphu -->
 		
 	</div>
+    
+    <div id="codo_topics_multiselect" class="codo_topics_multiselect">
+
+        {{_t("With")}} <span id="codo_number_selected"></span> {{_t("selected")}} 
+
+        <span class="codo_multiselect_deselect codo_btn codo_btn_sm codo_btn_def" id="codo_multiselect_deselect">{{_t("deselect posts")}}</span>
+        <span style="margin-right: 4px;" class="codo_multiselect_deselect codo_btn codo_btn_sm codo_btn_def" id="codo_multiselect_show_selected">{{_t("show selected posts")}}</span>
+        <select class="form-control" id="codo_topics_multiselect_select">
+            <option value="nothing">{{_t("Select action")}}</option>
+            <optgroup label="{{_t("Actions")}}">
+                <option id="move_post_option" value="move">{{_t("Move posts")}}</option>    
+            </optgroup>
+
+        </select>
+    </div>
+
+
+    {* Show selected posts modal *}
+    <div class="modal fade" id='codo_check_show_selected_posts_modal'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header-info">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{_t("Selected posts")}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <b>{_t("Topic: ")}</b> <span id="codo_check_selected_posts_modal_title"></span>
+                    <br/><br/>
+                    <b>{_t("Selected posts: ")}</b><br/>
+                    <ul id="codo_check_new_posts_modal_list"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{_t("Close")}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    {* Confirm move posts modal *}
+    <div class="modal fade" id='codo_move_posts_confirm'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header-primary">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{_t("Confirm move posts")}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div style="display: none" id="codo_move_posts_confirm_moving_main_post">
+                        {_t("One of the posts you selected ")}
+                        {_t("is the main post of the topic, moving this post ")}<br/>
+                        {_t("will make the oldest non-moved post of ")}                        
+                        <span class="codo_move_posts_confirm_old_topic"></span> <br/>                
+                        {_t(" as the main topic post")}<br/>
+                        <hr/>
+                    </div>
+
+                    <div style="display: none" id="codo_move_posts_confirm_deleting_old_topic">
+                        {_t("You have selected all the posts from the topic, hence after moving")}<br/>
+                        <span class="codo_move_posts_confirm_old_topic"></span> <br/>                
+                        {_t("will be deleted")}<br/>
+                        <hr/>
+                    </div>
+                    
+                    
+                    
+                    {_t("Are you sure you want to move ")}
+                    <span id="codo_move_posts_confirm_number"></span>                   
+                    {_t(" post(s) from the topic ")}<br/>
+                    <span class="codo_move_posts_confirm_old_topic"></span> <br/>                
+                    {_t("to the topic ")}<br/>
+                    <span id="codo_move_posts_confirm_new_topic"></span>                   
+                    {_t(" ?")}
+                </div>
+                <div class="modal-footer">
+                    <div class="codo_load_more_bar_blue_gif">{_t("Moving...")}</div>
+                    <button id="codo_move_posts_confirm_yes" type="button" class="btn btn-primary">{_t("Yes")}</button>                    
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{_t("No")}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {* Cannot move posts to this topic modal *}
+    <div class="modal fade" id='codo_cannot_move_posts_this_topic'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header-warning">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{_t("Insufficient permissions")}</h4>
+                </div>
+                <div class="modal-body">
+                    {_t("You do not have permission to move posts to this category.")}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{_t("Close")}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    {* Cannot move posts to same topic modal *}
+    <div class="modal fade" id='codo_cannot_move_posts_same_topic'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header-warning">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{_t("Select a different topic")}</h4>
+                </div>
+                <div class="modal-body">
+                    {_t("You cannot move posts to the same topic.")}
+                    <br/>
+                    {_t("Please go to a different topic.")}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{_t("Close")}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {* Confirm check new posts modal *}
+    <div class="modal fade" id='codo_check_new_posts_modal'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header-warning">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{_t("Confirm selection")}</h4>
+                </div>
+                <div class="modal-body">
+
+                    {_t("Are you sure you want to check this post ?")}
+                    <br/>
+                    {_t("If you click 'Yes', your selection for the topic ")} 
+                    <b><span id="codo_check_new_posts_modal_title"></span></b>
+                        {_t(" will be cleared")}
+                </div>
+                <div class="modal-footer">
+                    <button id="codo_check_new_posts_modal_btn_yes" type="button" class="btn btn-primary" data-dismiss="modal">{_t("Yes")}</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{_t("No")}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->    
 	
 	{* History modal *}
     <div class="modal fade" id='codo_history_modal'>
@@ -263,6 +407,7 @@
             full_title: '{$title}',
             curr_page: {$curr_page},
             num_pages: {$num_pages},
+            num_posts: {$topic_info['no_posts']},
             url: '{$url}',
             new_page: '{$new_page}',
             smileys: JSON.parse('{$forum_smileys}'),

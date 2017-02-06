@@ -373,6 +373,8 @@ class Html {
                 }
 
                 $node->setAttribute('class', $filtered_cls);
+                $node->setAttribute('target', '_blank');
+
             }
 
             if (isset($parsed['host'])) {

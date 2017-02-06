@@ -52,6 +52,8 @@ class Layout {
         $smarty->assign('CSRF_token', \CODOF\Access\CSRF::get_token());
         $smarty->assign('php_time_now', time());
 
+        $smarty->assign('forum_tags_num', \CODOF\Util::get_opt('forum_tags_num'));
+        $smarty->assign('forum_tags_len', \CODOF\Util::get_opt('forum_tags_len'));
 
         $category = new \CODOF\Forum\Category();
         $canCreateTopicInAtleastOneCategory = $category->canCreateTopicInAtleastOne();
@@ -122,6 +124,9 @@ class Layout {
         if (\CODOF\User\CurrentUser\CurrentUser::loggedIn()) {
             $notifier = new \CODOF\Forum\Notification\Notifier();
             $smarty->assign('unread_notifications', $notifier->getNoOfUnread());
+        }else {
+
+            $smarty->assign('unread_notifications', 0);
         }
 
         $html = $smarty->fetch("$tpl.tpl");
