@@ -28,7 +28,7 @@ class user {
             header('Location: ' . \CODOF\User\User::getProfileUrl());
             exit;
         }
-        
+
         $user = \CODOF\User\User::get();
         $this->smarty->assign('can_view_forum', $user->can('view forum'));
 
@@ -71,7 +71,6 @@ class user {
         $profile = new \CODOF\User\Profile();
 
         $uid = $profile->get_uid($id);
-
         $currUser = \CODOF\User\User::get();
         if (!$currUser->can('view user profiles') && $uid != $currUser->id) {
 
@@ -82,6 +81,14 @@ class user {
 
 
         $user = \CODOF\User\User::getByIdOrUsername($uid, $uid);
+        
+        $tab = 'recent_posts';
+        if(isset($_GET['tab']) && $_GET['tab'] == 'codopm') {
+            
+            $tab = 'pms';
+        }
+        
+        $this->smarty->assign('tab', $tab);
 
         if ($user) {
 
@@ -203,50 +210,49 @@ class user {
         //get editable fields, because not all fields are editable...
         $cf = new \CODOF\User\CustomField();
         $fields = $cf->getEditFields($id);
-        
+
         $input_names = array_keys($_POST);
         $fids = array();
-        foreach($input_names as $name) {
-            
+        foreach ($input_names as $name) {
+
             //even if there is a conflict with some other name, it won't matter
             //as the result will only be used for processing custom fields
             $fids[] = str_replace("input_", "", $name);
         }
-        
+
         //TODO: improve by adding default value for every custom field
         //then just remove the row if the new value is same as default
         //value and only add row if the new value is different than the
         //default value
-        
-        foreach($fields as $field) {
-            
-            if(in_array($field['id'], $fids)) {
-                
+
+        foreach ($fields as $field) {
+
+            if (in_array($field['id'], $fids)) {
+
                 //a custom field
                 //lets first check if a row has already been made for it.
                 $count = \DB::table(PREFIX . 'codo_fields_values')
-                        ->where('uid', '=', $id) //id of the profile being edited
-                        ->where('fid', '=', $field['id'])->count();
-                
-                if($count > 0) {
-                    
+                                ->where('uid', '=', $id) //id of the profile being edited
+                                ->where('fid', '=', $field['id'])->count();
+
+                if ($count > 0) {
+
                     //there is already a field with that name.
-                    
+
                     \DB::table(PREFIX . 'codo_fields_values')
                             ->where('uid', '=', $id)
                             ->where('fid', '=', $field['id'])
                             ->update(array(
                                 'value' => $_POST['input_' . $field['id']]
-                            ));
-                }else {
-                    
+                    ));
+                } else {
+
                     \DB::table(PREFIX . 'codo_fields_values')
                             ->insert(array(
                                 'uid' => $id,
                                 'fid' => $field['id'],
                                 'value' => $_POST['input_' . $field['id']]
-                            ));
-                    
+                    ));
                 }
             }
         }
@@ -345,9 +351,11 @@ class user {
             //check if the key is in the database
             $qry = "SELECT username FROM  " . PREFIX . "codo_signups WHERE username=:username AND token=:token LIMIT 1 OFFSET 0";
             $stmt = $this->db->prepare($qry);
-            $result = $stmt->execute(array("username" => $username, "token" => $token));
+            $stmt->execute(array("username" => $username, "token" => $token));
 
-            if ($result) {
+            $res = $stmt->fetch();
+
+            if ($res) {
 
                 //get the confirm info
                 $res = $stmt->fetch();

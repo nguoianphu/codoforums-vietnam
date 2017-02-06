@@ -1,8 +1,4 @@
-{*
-/*
-* @CODOLICENSE
-*/
-*}
+{* @CODOLICENSE *}
 {* Smarty *}
 <!doctype html>
 <html>
@@ -38,6 +34,9 @@
                 uid: "{$I->id}",
                 login_url: "{$login_url}",
                 time: "{$php_time_now}",
+                forum_tags_num: {$forum_tags_num},
+                forum_tags_len: {$forum_tags_len},  
+                unread_notifications: '{$unread_notifications}',
                 trans: {
                     embed_no_preview: "{_t('preview not available inside editor')}",
                     notify: {
@@ -58,6 +57,12 @@
                 }
 
             };
+
+            if(codo_defs.unread_notifications != '') {
+                codo_defs.unread_notifications = parseInt(codo_defs.unread_notifications);
+            }else {
+                codo_defs.unread_notifications = 0;
+            }
 
             var CODOF = {
                 hook: {
@@ -197,7 +202,7 @@
             }
 
             .container{
-               // margin-top: 60px;
+               /* margin-top: 60px;*/
             }
 
             .CODOFORUM{
@@ -372,7 +377,7 @@
                                 {if $can_moderate_posts}
                                     <li class="" role="presentation">
                                         <a class="codo_nav_icon codo_tooltip" data-toggle="tooltip" data-placement="bottom" title="{_t('Moderation')}" 
-                                           href="{$smarty.const.RURI}moderation"><i class="icon-spam"></i></a>
+                                           href="{$smarty.const.RURI}moderation"><i class="glyphicon-warning-sign glyphicon"></i></a>
                                     </li>
                                 {/if}
 
@@ -471,7 +476,7 @@
         <script style="display: none" id="codo_inline_notifications_template" type="text/html">
 
             {{#each objects}}
-            <a target="_blank" href="{{../url}}topic/{{tid}}/post-{{pid}}&page=from_notify&nid={{id}}/#post-{{pid}}" class="codo_inline_notification_el codo_notification_is_read_{{is_read}}">
+            <a target="_blank" href="{{../url}}{{link}}" class="codo_inline_notification_el codo_notification_is_read_{{is_read}}">
 
                 <div class="codo_inline_notification_el_img">
 

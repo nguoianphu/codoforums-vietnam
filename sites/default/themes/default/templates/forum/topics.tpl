@@ -1,12 +1,9 @@
-{*
-/*
-* @CODOLICENSE
-*/
-*}
+{* @CODOLICENSE *}
 {* Smarty *}
 {extends file='layout.tpl'}
 
 {block name=body}
+
     <div class="container" id="codo_topics_row">
 
         <div class="row">
@@ -44,7 +41,7 @@
                                         <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" alt="{$cat->cat_name}"/>
                                     </div>
 
-                                    <div class="codo_categories_category col-md-10 col-xs-10">
+                                    <div class="codo_categories_category col-md-9 col-xs-9">
                                         <a href="{$smarty.const.RURI}category/{$cat->cat_alias|escape:url}">
                                             <div class="codo_category_title">{$cat->cat_name}</div>
                                         </a>
@@ -59,6 +56,11 @@
                                             <a title="{_t('new topics')}"><span class="codo_new_topics_count">{$new_topics[$cat->cat_id]|abbrev_no}</span></a>
                                             {/if}
                                     </div>
+
+                                    {if $cat->show_children eq 0}
+                                        <div class="codo_category_toggle col-md-1 col-xs-1"><i class="icon-arrow-down"></i></div>
+                                        {/if}
+
                                 </div>
                                 {get_children cat=$cat new_topics=$new_topics}
                             </li>
@@ -303,7 +305,7 @@
                                 {/foreach}    
                             </select>
                         </p>
-                        
+
                         <p style="display: none" id="report_reason">                            
                             <input id="report_details" class="form-control" type="text" placeholder="{_t("provide your reason")}" />
                         </p>

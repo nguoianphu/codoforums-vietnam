@@ -29,7 +29,7 @@
                             <i class="icon-trash"></i> {{{i18n "Delete"}}}
                         </a></li>
                     {{/if}}
-                    {{#if can_delete_topic}}
+                    {{#if can_report_topic}}
                     <li id="codo_posts_report_{{{topic_id}}}" class="codo_posts_report_post codo_post_this_is_topic"
                         role="presentation"><a role="menuitem" tabindex="-1">
                             <i class="icon-exclamation" style="padding: 5px"></i> {{{i18n "Report"}}}
@@ -82,7 +82,7 @@
                 </a>
             </div>
             <div class="codo_topics_topic_name">
-                <a href="{{{const "RURI"}}}user/profile/{{{id}}}">{{name}}</a>
+                <a href="{{{const "RURI"}}}user/profile/{{{id}}}"><span class="role_{{{role}}}">{{{name}}}</span></a>
                 <span><span id="posted_txt">{{{i18n "posted"}}} </span>{{post_created}}</span>
             </div>
             {{#if in_search}}

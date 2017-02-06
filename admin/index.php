@@ -53,6 +53,7 @@ codoForumAdmin::$action["reputation/settings"]="reputation/settings";
 codoForumAdmin::$action["reputation/promotions"]="reputation/promotions";
 codoForumAdmin::$action["spam/mldetect"]="spam/mldetect";
 codoForumAdmin::$action["spam/recaptcha"]="spam/recaptcha";
+codoForumAdmin::$action["manual_upgrade"]="manual_upgrade";
 
 
 

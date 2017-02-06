@@ -352,16 +352,20 @@ class forum {
             $topic_info = $topic->get_topic_info($tid);
         }
 
-        if ($topic_info['topic_status'] == \CODOF\Forum\Forum::MODERATION_BY_FILTER) {
 
-            $topic_is_spam = true;
-        } else {
 
-            $topic_is_spam = false;
+        if (!$topic_info) {
+
+            $this->view = 'not_found';
+            return;
         }
 
-        $this->smarty->assign('topic_is_spam', $topic_is_spam);
+        $tracker = new \CODOF\Forum\Tracker($this->db);
+        $tracker->mark_topic_as_read($topic_info['cat_id'], $tid);
+        $topic_is_spam = $topic_info['topic_status'] == \CODOF\Forum\Forum::MODERATION_BY_FILTER;
 
+        $this->smarty->assign('topic_is_spam', $topic_is_spam);
+        
         if ($topic_is_spam) {
             if (!($user->can('moderate topics') || $user->id == $topic_info['uid'])) {
 
@@ -378,119 +382,111 @@ class forum {
             return;
         }
 
-        $tracker = new \CODOF\Forum\Tracker($this->db);
-        $tracker->mark_topic_as_read($topic_info['cat_id'], $tid);
+        $posts_per_page = \CODOF\Util::get_opt("num_posts_per_topic");
 
-        if (!$topic_info) {
+        if (strpos($page, "post-") !== FALSE) {
 
-            $this->view = 'not_found';
+            $pid = (int) str_replace("post-", "", $page);
+
+            $prev_posts = $post->get_num_prev_posts($tid, $pid);
+            $from = floor(($prev_posts) / $posts_per_page);
         } else {
 
-            $posts_per_page = \CODOF\Util::get_opt("num_posts_per_topic");
+            $from = ((int) $page) - 1;
+        }
 
-            if (strpos($page, "post-") !== FALSE) {
+        $topic_info['no_replies'] = $topic_info['no_posts'] - 1;
+        $name = \CODOF\Filter::URL_safe($topic_info['title']);
 
-                $pid = (int) str_replace("post-", "", $page);
+        $subscriber = new \CODOF\Forum\Notification\Subscriber();
 
-                $prev_posts = $post->get_num_prev_posts($tid, $pid);
-                $from = floor(($prev_posts) / $posts_per_page);
-            } else {
+        $this->smarty->assign('no_followers', $subscriber->followersOfTopic($topic_info['topic_id']));
 
-                $from = ((int) $page) - 1;
-            }
+        if (\CODOF\User\CurrentUser\CurrentUser::loggedIn()) {
 
-            $topic_info['no_replies'] = $topic_info['no_posts'] - 1;
-            $name = \CODOF\Filter::URL_safe($topic_info['title']);
+            $this->smarty->assign('my_subscription_type', $subscriber->levelForTopic($topic_info['topic_id']));
+        }
 
-            $subscriber = new \CODOF\Forum\Notification\Subscriber();
+        $this->smarty->assign('tags', $topic->getTags($topic_info['topic_id']));
 
-            $this->smarty->assign('no_followers', $subscriber->followersOfTopic($topic_info['topic_id']));
+        $topic_status = $topic_info['topic_status'];
 
-            if (\CODOF\User\CurrentUser\CurrentUser::loggedIn()) {
+        $api = new Ajax\forum\topic();
+        $posts_data = $api->get_posts($tid, $from, $topic_info);
+        $num_pages = $posts_data['num_pages'];
+        $posts = $posts_data['posts'];
+        $is_closed = $topic_status == \CODOF\Forum\Forum::APPROVED_CLOSED ||
+                $topic_status == \CODOF\Forum\Forum::STICKY_CLOSED || $topic_status == \CODOF\Forum\Forum::STICKY_ONLY_CATEGORY_CLOSED;
 
-                $this->smarty->assign('my_subscription_type', $subscriber->levelForTopic($topic_info['topic_id']));
-            }
+        $posts_data['is_closed'] = $is_closed;
+        $posts_tpl = \CODOF\HB\Render::tpl('forum/topic', $posts_data);
+        $this->smarty->assign('posts', $posts_tpl);
+        $this->smarty->assign('topic_info', $topic_info);
 
-            $this->smarty->assign('tags', $topic->getTags($topic_info['topic_id']));
-
-            $topic_status = $topic_info['topic_status'];
-
-            $api = new Ajax\forum\topic();
-            $posts_data = $api->get_posts($tid, $from, $topic_info);
-            $num_pages = $posts_data['num_pages'];
-            $posts = $posts_data['posts'];
-            $is_closed = $topic_status == \CODOF\Forum\Forum::APPROVED_CLOSED ||
-                    $topic_status == \CODOF\Forum\Forum::STICKY_CLOSED || $topic_status == \CODOF\Forum\Forum::STICKY_ONLY_CATEGORY_CLOSED;
-
-            $posts_data['is_closed'] = $is_closed;
-            $posts_tpl = \CODOF\HB\Render::tpl('forum/topic', $posts_data);
-            $this->smarty->assign('posts', $posts_tpl);
-            $this->smarty->assign('topic_info', $topic_info);
-
-            $this->smarty->assign('is_closed', $is_closed);
+        $this->smarty->assign('is_closed', $is_closed);
             // $this->smarty->assign('title', htmlentities($topic_info['title'], ENT_QUOTES, "UTF-8"));
-            $this->smarty->assign('title', $topic_info['title']);
+            $this->smarty->assign('title', $topic_info['title']); // nguoianphu
 
-            $search_data = array();
-            if (isset($_GET['str'])) {
-                $search_data = array('str' => strip_tags($_GET['str']));
-            }
-            $this->smarty->assign('search_data', json_encode($search_data));
-
-
-            $url = 'topic/' . $topic_info['topic_id'] . '/' . $name . '/';
-            $this->smarty->assign('pagination', $post->paginate($num_pages, $from + 1, $url, false, $search_data));
+        $search_data = array();
+        if (isset($_GET['str'])) {
+            $search_data = array('str' => strip_tags($_GET['str']));
+        }
+        $this->smarty->assign('search_data', json_encode($search_data));
 
 
-            if (ceil(($topic_info['no_posts'] + 1 ) / $posts_per_page) > $num_pages) {
+        $url = 'topic/' . $topic_info['topic_id'] . '/' . $name . '/';
+        $this->smarty->assign('pagination', $post->paginate($num_pages, $from + 1, $url, false, $search_data));
 
-                //next reply will go to next page
-                $this->smarty->assign('new_page', 'yes');
-            } else {
 
-                $this->smarty->assign('new_page', 'nope');
-            }
+        if (ceil(($topic_info['no_posts'] + 1 ) / $posts_per_page) > $num_pages) {
 
-            $cat = new \CODOF\Forum\Category($this->db);
-            $cats = $cat->get_categories();
-            $cid = $topic_info['cat_id'];
-            $parents = $cat->find_parents($cats, $cid);
+            //next reply will go to next page
+            $this->smarty->assign('new_page', 'yes');
+        } else {
 
-            array_push($parents, array(
-                "name" => $topic_info['cat_name'],
-                "alias" => $topic_info['cat_alias']
-            ));
+            $this->smarty->assign('new_page', 'nope');
+        }
 
-            $this->smarty->assign('can_search', $user->can('use search'));
+        $cat = new \CODOF\Forum\Category($this->db);
+        $cats = $cat->get_categories();
+        $cid = $topic_info['cat_id'];
+        $parents = $cat->find_parents($cats, $cid);
 
-            $this->smarty->assign('parents', $parents);
-            $this->smarty->assign('num_pages', $num_pages);
-            $this->smarty->assign('curr_page', $from + 1); //starts from 1
-            $this->smarty->assign('url', RURI . $url);
-            $this->assign_editor_vars();
+        array_push($parents, array(
+            "name" => $topic_info['cat_name'],
+            "alias" => $topic_info['cat_alias']
+        ));
 
-            $tuid = $topic_info['uid'];
-            $this->assign_admin_vars($tuid);
+        $this->smarty->assign('can_search', $user->can('use search'));
 
-            $this->css_files = array('topic', 'editor', 'jquery.textcomplete');
-            $arr = array(
-                array('topic/topic.js', array('type' => 'defer')),
-                array('modal.js', array('type' => 'defer')),
-                array('bootstrap-slider.js', array('type' => 'defer'))
-            );
+        $this->smarty->assign('parents', $parents);
+        $this->smarty->assign('num_pages', $num_pages);
+        $this->smarty->assign('curr_page', $from + 1); //starts from 1
+        $this->smarty->assign('url', RURI . $url);
+        $this->assign_editor_vars();
 
-            $this->js_files = array_merge($arr, $post->get_js_editor_files());
+        $tuid = $topic_info['uid'];
+        $this->assign_admin_vars($tuid);
 
-            \CODOF\Hook::call('on_topic_view', array($topic_info));
+        $this->css_files = array('topic', 'editor', 'jquery.textcomplete');
+        $arr = array(
+            array('topic/topic.js', array('type' => 'defer')),
+            array('modal.js', array('type' => 'defer')),
+            array('bootstrap-slider.js', array('type' => 'defer'))
+        );
 
-            $this->view = 'forum/topic';
-            \CODOF\Store::set('sub_title', $topic_info['title']);
-            \CODOF\Store::set('og:type', 'article');
-            \CODOF\Store::set('og:title', $topic_info['title']);
-            \CODOF\Store::set('og:url', RURI . $url);
+        $this->js_files = array_merge($arr, $post->get_js_editor_files());
 
-            $mesg = $posts[0]['imessage'];
-            \CODOF\Store::set('og:desc', (strlen($mesg) > 200) ? substr($mesg, 0, 197) . "..." : $mesg);
+        \CODOF\Hook::call('on_topic_view', array($topic_info));
+
+        $this->view = 'forum/topic';
+        \CODOF\Store::set('sub_title', $topic_info['title']);
+        \CODOF\Store::set('og:type', 'article');
+        \CODOF\Store::set('og:title', $topic_info['title']);
+        \CODOF\Store::set('og:url', RURI . $url);
+
+        $mesg = $posts[0]['imessage'];
+        \CODOF\Store::set('og:desc', (strlen($mesg) > 200) ? substr($mesg, 0, 197) . "..." : $mesg);
 
 			// nguoianphu
 			// get image link for Facebook sharing
@@ -508,24 +504,23 @@ class forum {
 			\CODOF\Store::set('og:image', $img_src);
 			// nguoianphu
 			
-            if ($from > 0) {
+        if ($from > 0) {
 
-                //previous page exists
-                \CODOF\Store::set('rel:prev', RURI . $url . $from);
-            }
-            $curr_page = $from + 1;
+            //previous page exists
+            \CODOF\Store::set('rel:prev', RURI . $url . $from);
+        }
+        $curr_page = $from + 1;
 
-            if ($curr_page < $num_pages) {
-                //next page exists
-                \CODOF\Store::set('rel:next', RURI . $url . ($curr_page + 1));
-            }
+        if ($curr_page < $num_pages) {
+            //next page exists
+            \CODOF\Store::set('rel:next', RURI . $url . ($curr_page + 1));
+        }
 
-            \CODOF\Store::set('article:published', date('c', $topic_info['topic_created']));
+        \CODOF\Store::set('article:published', date('c', $topic_info['topic_created']));
 
-            if ($topic_info['topic_updated'] > 0) {
+        if ($topic_info['topic_updated'] > 0) {
 
-                \CODOF\Store::set('article:modified', date('c', $topic_info['topic_updated']));
-            }
+            \CODOF\Store::set('article:modified', date('c', $topic_info['topic_updated']));
         }
     }
 
