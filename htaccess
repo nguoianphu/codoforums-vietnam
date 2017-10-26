@@ -1,0 +1,55 @@
+<IfModule mod_rewrite.c>
+  DirectoryIndex index.php
+  Options +FollowSymlinks
+  # Options +Indexes
+  Options -Indexes
+  RewriteEngine on
+
+  # if your app is in a subfolder
+  #RewriteBase /my_app/ 
+
+  # test string is a valid files
+  RewriteCond %{SCRIPT_FILENAME} !-f
+  # test string is a valid directory
+  RewriteCond %{SCRIPT_FILENAME} !-d
+
+  # remove trailing slash
+  # RewriteCond %{REQUEST_FILENAME} !-d
+  # RewriteRule ^(.*)/$ /$1 [L,R=301]
+  # Cannot access admin page with this
+
+  # add trailing slash
+  # RewriteCond %{REQUEST_FILENAME} !-f
+  # RewriteRule ^.*[^/]$ /$0/ [L,R=301]
+
+  RewriteRule ^(.*)$   index.php?uri=$1	[NC,L,QSA]
+  # with QSA flag (query string append),
+  # forces the rewrite engine to append a query string part of the
+  # substitution string to the existing string, instead of replacing it.
+
+# HTTPS
+# Redirect www to non-www
+RewriteEngine on
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+RewriteCond %{HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+ 
+</IfModule>
+
+AddType text/css .less
+AddType image/svg+xml svg svgz
+AddEncoding gzip svgz
+
+# Image and Flash and JS and CSS content Caching for One Month
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|woff)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+<IfModule mod_deflate.c>
+  <FilesMatch ".(js|css|html|php|txt)$">
+    SetOutputFilter DEFLATE
+  </FilesMatch>
+</IfModule> 
