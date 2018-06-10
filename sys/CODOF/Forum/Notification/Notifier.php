@@ -288,7 +288,7 @@ class Notifier {
 
         $sql = \DB::table(PREFIX . 'codo_notify AS n')
                 ->join(PREFIX . 'codo_notify_text AS t', 't.id', '=', 'n.nid')
-                ->select('n.id', 'n.type', 't.data', 'n.created', 'n.is_read')
+                ->select('n.id', 'n.type', 't.data', 'n.created', 'n.is_read', 't.status_link')
                 ->where('n.uid', '=', \CODOF\User\CurrentUser\CurrentUser::id())
                 ->where('n.is_read', '=', '0')
                 ->where('n.created', '>', $afterLatest)

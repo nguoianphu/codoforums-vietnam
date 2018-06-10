@@ -315,7 +315,6 @@ class User {
 
     /**
      * Must be called after the user is logged in
-     * @return boolean
      */
     public function rememberMe() {
 

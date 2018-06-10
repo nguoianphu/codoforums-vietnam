@@ -82,7 +82,10 @@
                    data-on="yes" data-off="no"
                    data-onstyle="success" data-offstyle="danger">
             <br/><hr/>
-
+            <label>Upload Logo</label>
+            <br>
+            {"forum_logo"|get_opt}
+            <input type="file" class="form-control" name="forum_logo" /><br/>
             <!--
             Captcha:
             <input type="text" class="form-control" name="captcha" value="{"captcha"|get_opt}" /><br/>

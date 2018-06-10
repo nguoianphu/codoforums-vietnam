@@ -15,7 +15,7 @@ $col->addJS('jquery-1.10.2.min.js', array('type' => 'defer'))
         ->addJS('hammer.min.js', array('type' => 'defer'));
 
 
-$global_less = array('mixins', 'bootstrap', 'general', 'search', 'jquery.mmenu','jquery.mmenu.dragopen');
+$global_less = array('mixins', 'bootstrap', 'general', 'search', 'jquery.mmenu','jquery.mmenu.dragopen','material-design',);
 
 if ($css_files == null) {
 
@@ -23,7 +23,7 @@ if ($css_files == null) {
 }
 
 $files = array_merge($global_less, $css_files);
-$path = DEF_THEME_DIR . 'less';
+$path = CURR_THEME . 'less';
 
 
 //Add global & page-dependent less files defined by controllers

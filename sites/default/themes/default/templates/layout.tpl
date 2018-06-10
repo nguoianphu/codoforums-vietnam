@@ -17,10 +17,10 @@
 
         {"block_head"|load_block}
 
-<!--
-        <script type="text/javascript" language="javascipt" src="http://localhost/codoforum/freichat/client/main.php"></script> 
-        <link rel="stylesheet" href="http://localhost/codoforum/freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
--->
+        <!--
+                <script type="text/javascript" language="javascipt" src="http://localhost/codoforum/freichat/client/main.php"></script> 
+                <link rel="stylesheet" href="http://localhost/codoforum/freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
+        -->
         <script type="text/javascript">
 
             var on_codo_loaded = function () {
@@ -28,7 +28,7 @@
             var codo_defs = {
                 url: "{$smarty.const.RURI}",
                 duri: "{$smarty.const.DURI}",
-                def_theme: "{$smarty.const.DEF_THEME_PATH}",
+                def_theme: "{$smarty.const.CURR_THEME}",
                 reluri: "{$smarty.const.DATA_REL_PATH}",
                 token: "{$CSRF_token}",
                 smiley_path: "{$smarty.const.SMILEY_PATH}",
@@ -37,7 +37,7 @@
                 login_url: "{$login_url}",
                 time: "{$php_time_now}",
                 forum_tags_num: {$forum_tags_num},
-                forum_tags_len: {$forum_tags_len},  
+                forum_tags_len: {$forum_tags_len},
                 unread_notifications: '{$unread_notifications}',
                 trans: {
                     embed_no_preview: "{_t('preview not available inside editor')}",
@@ -60,9 +60,9 @@
 
             };
 
-            if(codo_defs.unread_notifications != '') {
+            if (codo_defs.unread_notifications != '') {
                 codo_defs.unread_notifications = parseInt(codo_defs.unread_notifications);
-            }else {
+            } else {
                 codo_defs.unread_notifications = 0;
             }
 
@@ -102,7 +102,7 @@
 
         </script>
 
-
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="{$smarty.const.DURI}assets/img/general/img/favicon.ico?v=1">
         <link rel="apple-touch-icon" sizes="57x57" href="http://codoforum.com/img/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114" href="http://codoforum.com/img/apple-touch-icon-114x114.png">
@@ -208,7 +208,7 @@
             }
 
             .container{
-               /* margin-top: 60px;*/
+                /* margin-top: 60px;*/
             }
 
             .CODOFORUM{
@@ -294,7 +294,7 @@
                 </ul>
             </nav>
             <nav id="nav" class="navbar navbar-clean navbar-fixed-top" role="navigation">
-                <div class="container-fluid">
+                <div class="container-fluid" style="width:85%;">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
 
@@ -308,15 +308,20 @@
                         {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
 
 
-                        <img src="{$smarty.const.DURI}assets/img/general/brand.png" alt="codoforum logo" class="navbar-header-img">
-                        <a href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                       {* <img src="{$smarty.const.DURI}assets/img/general/brand.png" alt="codoforum logo" class="navbar-header-img">*}
+                        {if $tpl eq "forum/topics"}
+                         <a style="width: 200px;padding-left: 15px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                        {else}
+                         <a style="width: 200px;padding-left: 28px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                        {/if}
+                       
 
                         {*if $canCreateTopicInAtleastOneCategory}
-                            <li class="codo_topics_new_topic visible-xs-block col-xs-2 pull-right">
-                                <a class="codo_nav_icon" href="#" onclick="codo_create_topic()">
-                                    <i class="icon-new-topic"></i>
-                                </a>
-                            </li>
+                        <li class="codo_topics_new_topic visible-xs-block col-xs-2 pull-right">
+                        <a class="codo_nav_icon" href="#" onclick="codo_create_topic()">
+                        <i class="icon-new-topic"></i>
+                        </a>
+                        </li>
                         {/if*}
 
                     </div>
@@ -329,23 +334,26 @@
 
 
                         <ul class="nav navbar-nav navbar-right">
+                            {if isset($can_search) and $can_search}    
+                                <li class="dropdown hidden-xs global_search">
+                                   <input class="codo_global_search_input" type="text" placeholder="{_t('Search')}" />
+                                </li>
+                                <li class="dropdown hidden-xs global_search">
+                                    <a href="#" id="codo_global_search">                                        
+                                        <i class="glyphicon glyphicon-search" title="Advanced search" ></i>
+                                    </a>
+                                </li>
+                            {/if}
 
 
                             {"block_main_menu"|load_block}
 
                             {if $I->loggedIn()}
 
-                                {if $canCreateTopicInAtleastOneCategory}
-                                    <li class="codo_topics_new_topic hidden-xs codo_tooltip" data-placement="bottom" data-toggle="tooltip" title="{_t('Add new Topic')}">
-                                        <a class="codo_nav_icon" href="#" onclick="codo_create_topic()">
-                                            <i class="icon-new-topic"></i>
-                                        </a>
-                                    </li>
-                                {/if}
-
                                 <li class="dropdown hidden-xs codo_tooltip" data-toggle="tooltip" data-placement="bottom" title="{_t('Notifications')}">
                                     <a data-toggle="dropdown" class="codo_nav_icon codo_inline_notifications" id="codo_inline_notifications">
-                                        <i class="icon-bell"></i>
+                                        <!--<i class="icon-bell"></i>-->
+                                        <i class="material-icons">notifications</i>
                                         {if $unread_notifications}
                                             <span class="codo_inline_notifications_unread_no">{$unread_notifications}</span>
                                         {/if}
@@ -380,17 +388,10 @@
                                     </a>
                                 </li>
 
-                                {if $can_moderate_posts}
-                                    <li class="" role="presentation">
-                                        <a class="codo_nav_icon codo_tooltip" data-toggle="tooltip" data-placement="bottom" title="{_t('Moderation')}" 
-                                           href="{$smarty.const.RURI}moderation"><i class="glyphicon-warning-sign glyphicon"></i></a>
-                                    </li>
-                                {/if}
-
                                 <li class="codo_menu_user dropdown">
 
                                     <a class="codo_menu_user_img" data-toggle="dropdown"><img  src="{$I->avatar}" />
-                                        <span class="visible-xs-inline">{$I->name}</span>
+                                        <span class="codo_user_name_span">{$I->name}</span>
                                     </a>
                                     <ul class="dropdown-menu codo_menu_user_container" role="menu" aria-labelledby="dLabel">
 
@@ -432,7 +433,7 @@
             <footer class="footer">
                 <div class="container" style="padding:0px;">
                     <div class="row" style="padding: 5px !important">
-                        <div class="col-sm-4">&copy; 2015 {$site_title}<br>
+                        <div class="col-sm-4">&copy; 2017 {$site_title}<br>
 
 
                             <small>{_t("Powered by")} <a href="http://codoforum.com" target="_blank">Codoforum</a></small>

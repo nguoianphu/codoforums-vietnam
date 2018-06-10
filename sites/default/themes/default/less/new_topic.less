@@ -183,3 +183,68 @@ label {
     
     display: none;
 }
+
+
+#add_poll_toggle_yes {
+
+    padding: 20px;
+    //display: none;
+
+    .codo_poll_input {
+
+        position: relative;
+        padding: 10px;
+
+        input {
+
+            height: 32px;
+        }
+
+        .codo_poll_options {
+
+            position: absolute;
+            right: 16px;
+            top: 12px;
+
+            .codo_poll_option {
+
+                display: inline-block;
+                padding: 4px 2px;  
+                cursor: pointer;
+                width: 26px;
+                text-align: center;   
+                
+                &:hover {
+
+                    background: #eee;
+                }
+
+                .glyphicon-plus {
+
+                    color: #1471af;
+                }
+
+                .glyphicon-remove {
+
+                    color: #9a1616;
+                }
+            }
+
+        }
+    }
+    
+    .advanced_poll_options {
+        
+        margin-top: 15px;
+        
+        label {
+            
+            display: block;
+        }
+    }
+}
+
+hr {
+    
+    width: 100%;
+}

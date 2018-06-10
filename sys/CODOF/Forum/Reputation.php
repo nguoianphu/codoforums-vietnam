@@ -23,8 +23,9 @@ class Reputation {
     public $rule5;
     private $max_rep_count_reached = false;
 
-    public function up($post_id) {
+    public function up($topic_id, $post_id) {
 
+        $tid = (int) $topic_id;
         $pid = (int) $post_id;
 
 
@@ -136,8 +137,9 @@ class Reputation {
         \CODOF\Util::set_promoted_or_demoted_rid();
     }
 
-    public function down($post_id) {
+    public function down($topic_id, $post_id) {
 
+        $tid = (int) $topic_id;
         $pid = (int) $post_id;
 
 

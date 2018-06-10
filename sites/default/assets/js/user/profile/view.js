@@ -11,6 +11,14 @@ jQuery(document).ready(function ($) {
 
     });
 
+    $('#overview').on('click', function() {
+        
+            $('.nav-box-profile-active').removeClass('nav-box-profile-active');
+            $('#recent_posts').show();
+            $('#pms').hide('slow');
+            $(this).addClass('nav-box-profile-active');        
+    });
+
 
     $('#codo_mail_resent').hide();
     $('#codo_email_sending_img').hide();

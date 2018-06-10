@@ -7,12 +7,44 @@
 
 jQuery('document').ready(function ($) {
 
+    $('#codo_posts_container > article .codo_lightbox_container').simpleLightbox();
+    console.log( $('#codo_posts_container > article .codo_lightbox_container'))    
     CODOF.editor_form = $('#codo_new_reply_post');
     CODOF.editor_preview_btn = $('#codo_post_preview_btn');
     CODOF.editor_reply_post_btn = $('#codo_post_new_reply');
-    CODOF.container = $('.container');
+    CODOF.container = $('#codo_posts_container');
+
+    $.ajaxSetup({cache: true});
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
+        FB.init({
+            appId: '633890129979455',
+            version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+        });
+    });
+    
+    /*if ($('.codo_posts_select_post').length === 0) {
+
+        $('.codo_posts_post_reputation div').each(function () {
+            var el = $(this);
+            el.animate({left: el.position().left - 30 + "px"});
+        });
+    }*/
 
     CODOF.search_data = JSON.parse(CODOFVAR.search_data);
+
+    /**
+     * The icon above the topics trigger this method
+     * It will  toggle the visibility of topics and
+     * categories
+     */
+    CODOF.toggleTopicsAndCategories = function () {
+
+
+        $('.codo_posts').toggle();
+        $('.top-custom-container-profile').toggle();
+        $('#codo_topic_sidebar').toggle();
+        CODOF.util.simpleNotify($('#icon-books-click-trans').text());
+    }
 
     CODOF.topic_creator = {
         body: $('#codo_posts_container'),
@@ -168,42 +200,47 @@ jQuery('document').ready(function ($) {
 
     };
 
-    //event delegation with event maps
-    $('#codo_posts_container').on({
-        'click': function () {
+    CODOF.replyTopic = function (canReply) {
 
-            if (!$(this).hasClass('codo_can_reply')) {
+        if (!canReply) {
 
-                window.location.href = codo_defs.login_url + "&page=post";
+            window.location.href = codo_defs.login_url + "&page=post";
+            return false;
+        }
+
+        var textbox = $('#codo_new_reply_textarea');
+
+        var obj = JSON.parse(localStorage.getItem('reply_' + codo_defs.uid));
+        if (localStorage.getItem('reply_' + codo_defs.uid) !== null) {
+
+            if (!CODOF.autoDraft.test(obj, textbox)) {
+
                 return false;
             }
 
-            var textbox = $('#codo_new_reply_textarea');
+            if (obj.pid) {
 
-            var obj = JSON.parse(localStorage.getItem('reply_' + codo_defs.uid));
-            if (localStorage.getItem('reply_' + codo_defs.uid) !== null) {
-
-                if (!CODOF.autoDraft.test(obj, textbox)) {
-
-                    return false;
-                }
-
-                if (obj.pid) {
-
-                    $('#codo_draft_topic_title').html(obj.title);
-                    $('#codo_draft_pending').modal();
-                    return false;
-                }
-
-            } else {
-
-                textbox.val('');
+                $('#codo_draft_topic_title').html(obj.title);
+                $('#codo_draft_pending').modal();
+                return false;
             }
 
-            CODOF.showEditor();
-            CODOF.post_being_edited = false;
+        } else {
 
-            return false;
+            textbox.val('');
+        }
+
+        CODOF.showEditor();
+        CODOF.post_being_edited = false;
+        $("#mmenu").trigger("close.mm");
+
+        return false;
+    };
+
+    $('.container').on({
+        'click': function () {
+
+            CODOF.replyTopic($(this).hasClass('codo_can_reply'));
         }
     }, '.codo_reply_btn');
 
@@ -281,7 +318,24 @@ jQuery('document').ready(function ($) {
         }
     }, '.codo_quote_btn');
 
-    $('#codo_posts_container').on({
+    $('#codo_posts_container').on('click', '.codo_fb_share', function () {
+
+
+        var tid = $(this).data('tid');
+        var pid = $(this).data('pid');
+
+        var url = codo_defs.url + "topic/" + tid + "/#post-" + pid;
+
+        console.log(url);
+        FB.ui({
+            method: 'share',
+            href: url,
+        }, function (response) {});
+
+    });
+
+
+    $('body').on({
         click: function () {
 
             var me = $(this);
@@ -296,7 +350,7 @@ jQuery('document').ready(function ($) {
 
             CODOF.request.get({
                 hook: 'post_rep_up',
-                url: codo_defs.url + 'Ajax/reputation/' + pid + '/up',
+                url: codo_defs.url + 'Ajax/reputation/' + CODOFVAR.tid + '/' + pid + '/up',
                 done: function (result) {
 
                     if (result.done) {
@@ -312,7 +366,7 @@ jQuery('document').ready(function ($) {
         }
     }, '.codo_rep_up_btn');
 
-    $('#codo_posts_container').on({
+    $('body').on({
         click: function () {
 
             var me = $(this);
@@ -327,7 +381,7 @@ jQuery('document').ready(function ($) {
 
             CODOF.request.get({
                 hook: 'post_rep_up',
-                url: codo_defs.url + 'Ajax/reputation/' + pid + '/down',
+                url: codo_defs.url + 'Ajax/reputation/' + CODOFVAR.tid + '/' + pid + '/down',
                 done: function (result) {
 
                     if (result.done) {
@@ -345,33 +399,7 @@ jQuery('document').ready(function ($) {
     }, '.codo_rep_down_btn');
 
 
-    $('#codo_posts_container').on({
-        mouseover: function () {
 
-            $(this).parent().find('.codo_rep_up_btn').fadeIn();
-            $(this).parent().find('.codo_rep_down_btn').fadeIn();
-            $(this).addClass('codo_reputation_points_active');
-        }
-    }, '.codo_reputation_points');
-
-    $('.codo_posts_post_reputation').mouseout(function () {
-
-        stillInside = false;
-        setTimeout(function () {
-
-            if (!stillInside) {
-
-                $('.codo_rep_up_btn,.codo_rep_down_btn').hide();
-                $('.codo_reputation_points').removeClass('codo_reputation_points_active');
-            }
-        }, 1000)
-
-    });
-
-    $('.codo_posts_post_reputation').mouseover(function () {
-
-        stillInside = true;
-    })
 
     CODOF.topic_creator.active = false;
 
@@ -758,6 +786,11 @@ jQuery('document').ready(function ($) {
     };
     $('.codo_sidebar_fixed').append($('.codo_topic_statistics')[0].outerHTML);
 
+    if ($('.codo_reply_div').length > 0) {
+
+        $('.codo_sidebar_fixed').append($('.codo_reply_div')[0].outerHTML);
+    }
+
     (CODOF.applySideBarPosition = function () {
 
         if (CODOF.cache.sideBarMenu.top && CODOF.cache.sideBarMenu.top < $(window).scrollTop()) {
@@ -849,43 +882,25 @@ jQuery('document').ready(function ($) {
         return $.extend(settings, CODOF.search_data);
     });
 
-    function codo_create_filter(val) {
 
-        CODOF.search_data = {
-            str: val,
-            cats: CODOFVAR.catid,
-            match_titles: 'Yes',
-            sort: 'post_created',
-            order: 'Desc',
-            search_within: 'anytime',
-            get_page_count: 'yes'
-        };
-
-        $('.codo_topics_pagination').remove();
-        $('#codo_no_topics_display').hide();
-
-        CODOF.topic_creator.search_switch = true;
-        CODOF.topic_creator.refresh();
-    }
-
-    $('.codo_topics_search_icon').click(function () {
-
-        search_triggered($(this).prev().val());
-    });
-
-    function search_triggered(val) {
-
-        $('.codo_topics_search_input').val(val);
-        codo_create_filter(val);
-    }
-
-    $('.codo_topics_search_input').keypress(function (e) {
-
-        if (e.which == 13) {
-
-            search_triggered(this.value);
-        }
-    });
+    /*$('.codo_topics_search_icon').click(function () {
+     
+     search_triggered($(this).prev().val());
+     });
+     
+     function search_triggered(val) {
+     
+     $('.codo_topics_search_input').val(val);
+     codo_create_filter(val);
+     }
+     
+     $('.codo_topics_search_input').keypress(function (e) {
+     
+     if (e.which == 13) {
+     
+     search_triggered(this.value);
+     }
+     });*/
 
     (CODOF.notify.selector = function () {
 
@@ -945,7 +960,21 @@ jQuery('document').ready(function ($) {
 
         $('.slider-selection').addClass('white-slider-selection');
 
-        $('.codo_notification_block').hide().css('visibility', 'visible').slideDown();
+        if ($('.codo_notification_block').length === 0 && $('#codo_topic_sidebar').height() < 120) {
+
+            $('.codo_topic_closed').addClass('codo_topic_closed_darkbg')
+        }
+
+        $('.codo_notification_block').hide().css('visibility', 'visible').slideDown(function () {
+
+
+            if ($('#codo_topic_sidebar').height() < 120) {
+
+                $('.codo_topic_closed').addClass('codo_topic_closed_darkbg')
+            }
+
+        });
+
 
     })();
     //setTimeout(function(){$('#codo_search_keywords').focus()},10);
@@ -1084,7 +1113,7 @@ jQuery('document').ready(function ($) {
         });
     });
 
-    multiselect = {
+    window.multiselect = {
         checkedPostId: null,
         select: function (el) {
 
@@ -1112,11 +1141,11 @@ jQuery('document').ready(function ($) {
             } else {
 
                 var index = movedPost.postIds.indexOf(pid);
-                if(pid === CODOFVAR.post_id) {
-                    
+                if (pid === CODOFVAR.post_id) {
+
                     movedPost.postIdOldTid = 0;
                 }
-                
+
                 if (index > -1) {
 
                     movedPost.postIds.splice(index, 1);
@@ -1200,11 +1229,62 @@ jQuery('document').ready(function ($) {
 
     //initially check any posts from localstorage
     multiselect.selectAnyUnchecked();
+
+    $('.poll_option').on('click', function () {
+
+        $('.poll_option_selected').removeClass('poll_option_selected').addClass('poll_option');
+        $(this).removeClass('poll_option').addClass('poll_option_selected');
+        $('#codo_poll_vote_btn').addClass('codo_btn_blue');
+    });
+
+    $('#codo_poll_vote_btn').on('click', function () {
+
+        var selected = $('.poll_option_selected');
+
+        if (selected.length === 0) {
+
+            CODOF.util.alert("Select an option first!", "Cannot vote");
+            return false;
+        }
+
+        var poll_id = $('.poll_container').attr('id').replace("poll_", "");
+        var option_id = selected.attr('id').replace("poll_option_", "");
+
+        $('#codo_vote_loading').show();
+
+        $.post(codo_defs.url + "Ajax/poll/vote/" + poll_id + "/" + option_id, {
+            token: codo_defs.token
+        }, function () {
+
+            $('#codo_vote_loading').hide();
+            window.location.reload();
+        });
+    });
+
+    $('#codo_poll_revote_btn').on('click', function () {
+
+        $('.poll_result').slideToggle();
+        $('.poll_vote').slideToggle();
+    });
+
+
+    $('#codo_poll_view_result_btn').on('click', function () {
+
+        $('.poll_result').slideToggle();
+        $('.poll_vote').slideToggle();
+    });
+
 });
+
 
 function codo_smooth_scroll() {
 
-    var div = jQuery(window.location.hash);
+    var id = window.location.hash;
+
+    //is hashbang?
+    if(id.indexOf("!") > -1) return false;
+
+    var div = jQuery(id);
     if (div.length > 0) {
 
         var origBg = div.css('background');
@@ -1221,6 +1301,25 @@ function codo_smooth_scroll() {
     }
 
     return false;
+}
+
+CODOF.globalSearch = function (val) {
+
+    CODOF.search_data = {
+        str: val,
+        cats: CODOFVAR.catid,
+        match_titles: 'Yes',
+        sort: 'post_created',
+        order: 'Desc',
+        search_within: 'anytime',
+        get_page_count: 'yes'
+    };
+
+    $('.codo_topics_pagination').remove();
+    $('#codo_no_topics_display').hide();
+
+    CODOF.topic_creator.search_switch = true;
+    CODOF.topic_creator.refresh();
 }
 
 codo_smooth_scroll(); //call once after html is loaded

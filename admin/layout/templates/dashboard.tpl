@@ -13,6 +13,72 @@
         <small>It all starts here.</small>
     </h1>
 
+    <div class="new-update" style="padding: 10px 0; display: none">
+        
+        <div>Current version:  V.<span id="current_version"</span></div>
+        <b>New version available:</b> V.<span id="latest_version"></span> <a style="cursor: pointer;" href="index.php?page=system/upgrade">Upgrade now!</a>
+    </div>
+    
+    <script type="text/javascript">
+        
+        function compare(a, b) {
+        
+            if (a === b) {
+                return 0;
+             }
+
+             var a_components = a.split(".");
+             var b_components = b.split(".");
+
+             var len = Math.min(a_components.length, b_components.length);
+
+             // loop while the components are equal
+             for (var i = 0; i < len; i++) {
+                 // A bigger than B
+                 if (parseInt(a_components[i]) > parseInt(b_components[i])) {
+                     return 1;
+                 }
+
+                 // B bigger than A
+                 if (parseInt(a_components[i]) < parseInt(b_components[i])) {
+                     return -1;
+                 }
+             }
+
+             // If one's a prefix of the other, the longer one is greater.
+             if (a_components.length > b_components.length) {
+                 return 1;
+             }
+
+             if (a_components.length < b_components.length) {
+                 return -1;
+             }
+
+             // Otherwise they are the same.
+             return 0;
+        }
+        
+        $.ajax({
+            url: "https://codoforum.com/latest_version",
+            dataType: "jsonp",
+            jsonp: 'showVersion',
+            success: function(data) {
+
+                var currentVersion = '{$version}';
+                var latestVersion = data.version;
+
+                if(compare(latestVersion, currentVersion) === 1) {
+
+                    $('#latest_version').html(latestVersion);
+                    $('#current_version').html(currentVersion);
+                    $('.new-update').show();
+        
+                }
+
+            }
+        });   
+    </script>    
+    
 </section>
 
 
@@ -107,7 +173,7 @@
             </div>
             <div class="panel-body">
 
-                <iframe style="width:100%;height:400px" src="http://codologic.com/todo/php/todo.php">
+                <iframe style="width:100%;height:400px" src="https://codologic.com/todo/php/todo.php">
                 </iframe>
 
             </div>

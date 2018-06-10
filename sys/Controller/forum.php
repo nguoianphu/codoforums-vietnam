@@ -31,6 +31,7 @@ namespace Controller;
  */
 
 use CODOF\Access\Access;
+use CODOF\Forum\Topic;
 
 class forum {
 
@@ -49,7 +50,7 @@ class forum {
         $topic_info = '';
         $topic = new \CODOF\Forum\Topic($this->db);
 
-        if ($id) {
+      if ($id) {
 
             $tid = (int) $id;
             $qry = 'SELECT t.topic_id,t.title, t.cat_id, t.uid,t.topic_close,t.topic_status, c.cat_name, p.imessage '
@@ -67,6 +68,8 @@ class forum {
 
             $has_permission = $topic->canViewTopic($tuid, $cid, $tid) &&
                     $topic->canEditTopic($tuid, $cid, $tid);
+
+            $poll_data = json_encode(\CODOF\Forum\Poll::get($tid));
         } else {
 
             $topic_info = array(
@@ -81,6 +84,7 @@ class forum {
             //i have come to create a new topic
 
             $has_permission = $topic->canCreateTopicInAtleastOne();
+            $poll_data = null;
         }
 
         if ($has_permission) {
@@ -106,8 +110,24 @@ class forum {
             $cat = new \CODOF\Forum\Category($this->db);
 
             $cats = $cat->generate_tree($cat->getCategoriesWhereUserCanCreateTopic());
-
             $this->smarty->assign('cats', $cats);
+
+            $selected_cat = false;
+
+            if(isset($_GET['selected_cat'])) {
+
+                foreach ($cats as $category) {
+
+                   if($category->cat_id == $_GET['selected_cat'])   {
+
+                        $selected_cat = $category;
+                   }  
+                }    
+            }
+
+            $this->smarty->assign('selected_cat', $selected_cat);
+  
+
             $this->assign_editor_vars();
 
             $this->smarty->assign('topic', $topic_info);
@@ -140,6 +160,9 @@ class forum {
             $this->smarty->assign('can_make_sticky', $user->can('make sticky'));
             $this->smarty->assign('can_close_topics', $user->can('close topics'));
             $this->smarty->assign('can_add_tags', $user->can('add tags'));
+            $this->smarty->assign('can_add_poll', $user->can('add poll'));
+            $this->smarty->assign('max_poll_options', 5);
+            $this->smarty->assign('poll_data', $poll_data);
 
             $this->css_files = array('new_topic', 'editor', 'jquery.textcomplete', 'datetimepicker');
 
@@ -205,8 +228,7 @@ class forum {
         $data = $api->get_topics($cid, $page);
 
         $this->smarty->assign('load_more_hidden', false);
-        if (($page) * $num_topics_page >= $cat_info['no_topics']) {
-
+        if ( $cat_info['no_topics'] <= $num_topics_page) {
             $this->smarty->assign('load_more_hidden', true);
         }
 
@@ -242,7 +264,7 @@ class forum {
         $this->smarty->assign('no_posts', $no_posts . " ");
 
 
-        $this->css_files = array('category', 'editor', 'jquery.textcomplete', 'datetimepicker');
+        $this->css_files = array('category', 'jquery.textcomplete', 'datetimepicker');
         $this->js_files = array(
             array('category/category.js', array('type' => 'defer')),
             array('category/jquery.easing.1.3.js', array('type' => 'defer')),
@@ -250,7 +272,7 @@ class forum {
             array('bootstrap-slider.js', array('type' => 'defer')),
             array(DATA_PATH . "assets/js/jquery.datetimepicker.js", array('type' => 'defer'))
         );
-        $this->js_files = array_merge($this->js_files, $cat->get_js_editor_files());
+        $this->js_files = array_merge($this->js_files);
 
         $this->smarty->assign('can_make_sticky', $user->can('make sticky'));
 
@@ -272,6 +294,12 @@ class forum {
         \CODOF\Store::set('og:url', RURI . 'category/' . $catid);
         \CODOF\Store::set('og:desc', $cat_info['cat_description']);
         \CODOF\Store::set('og:image', DURI . CAT_IMGS . $cat_info['cat_img']);
+        
+        $url = 'category/' . $catid . '/';
+        $total_pages = $cat->get_num_pages($no_topics, $num_topics_page);    
+        $this->smarty->assign('total_pages', $total_pages);
+        $this->smarty->assign('pagination', $cat->paginate($total_pages, $page, $url, false, array()));
+        
     }
 
     public function topics($page) {
@@ -279,6 +307,14 @@ class forum {
         $cat = new \CODOF\Forum\Category($this->db);
         $topic = new \CODOF\Forum\Topic($this->db);
 
+        
+        $search_data = array();
+        
+        if(isset($_GET['str'])) {
+            
+            $search_data['str'] = $_GET['str'];
+        }
+        
         //gets category name and no of topics each hold
         $raw_cats = $cat->get_categories();
         $cats = $cat->generate_tree($raw_cats);
@@ -296,15 +332,18 @@ class forum {
 
         $api = new Ajax\forum\topics();
         $num_topics_page = \CODOF\Util::get_opt('num_posts_all_topics');
-        $data = $api->get_topics($num_topics_page * ($page - 1));
+        $data = $api->get_topics($num_topics_page * ($page - 1), Topic::$FETCH_TYPE_LATEST, !empty($search_data));
         $total_topics = $topic->get_total_num_topics();
 
         $this->smarty->assign('load_more_hidden', false);
-        if (($page) * $num_topics_page >= $total_topics) {
+
+        if ($total_topics < $num_topics_page) {
 
             $this->smarty->assign('load_more_hidden', true);
         }
 
+        $total_pages = $topic->get_num_pages($total_topics, $num_topics_page);
+        
         $user = \CODOF\User\User::get();
         $this->smarty->assign('can_search', $user->can('use search'));
         $this->smarty->assign('topics', \CODOF\HB\Render::tpl('forum/topics', $data));
@@ -313,6 +352,7 @@ class forum {
         $this->smarty->assign('subcategory_dropdown', \CODOF\Util::get_opt('subcategory_dropdown'));
         $this->smarty->assign('num_posts_per_page', $num_topics_page);
         $this->smarty->assign('curr_page', $page);
+        $this->smarty->assign('total_pages', $total_pages);
 
         $this->css_files = array('topics');
         $this->js_files = array(array('topics/topics.js', array('type' => 'defer')));
@@ -324,8 +364,11 @@ class forum {
         $this->smarty->assign('can_delete', $user->can(array('delete my topics', 'delete all topics')));
         $this->smarty->assign('can_merge', $user->can('merge topics'));
         $this->smarty->assign('can_move', $user->can('move topics'));
+        $this->smarty->assign('can_create_topic', $user->can('create new topic'));
 
-        //var_dump($user->can('move topics'));
+        $url = 'topics/';
+        
+        $this->smarty->assign('pagination', $topic->paginate($total_pages, $page, $url, false, $search_data));
     }
 
     public function topic($tid, $page) {
@@ -365,7 +408,7 @@ class forum {
         $topic_is_spam = $topic_info['topic_status'] == \CODOF\Forum\Forum::MODERATION_BY_FILTER;
 
         $this->smarty->assign('topic_is_spam', $topic_is_spam);
-        
+
         if ($topic_is_spam) {
             if (!($user->can('moderate topics') || $user->id == $topic_info['uid'])) {
 
@@ -456,7 +499,9 @@ class forum {
             "alias" => $topic_info['cat_alias']
         ));
 
-        $this->smarty->assign('can_search', $user->can('use search'));
+        $this->smarty->assign('can_search', $user->can('use search'));        
+        $this->smarty->assign('can_reply', $topic->canReplyTopic($topic_info['uid'], $topic_info['cat_id'], $topic_info['topic_id']));
+        $this->smarty->assign('poll', \CODOF\Forum\Poll::get($topic_info['topic_id']));
 
         $this->smarty->assign('parents', $parents);
         $this->smarty->assign('num_pages', $num_pages);
@@ -471,7 +516,8 @@ class forum {
         $arr = array(
             array('topic/topic.js', array('type' => 'defer')),
             array('modal.js', array('type' => 'defer')),
-            array('bootstrap-slider.js', array('type' => 'defer'))
+            array('bootstrap-slider.js', array('type' => 'defer')),
+            array('topic/simple-lightbox.min.js', array('type' => 'defer'))
         );
 
         $this->js_files = array_merge($arr, $post->get_js_editor_files());
@@ -505,6 +551,8 @@ class forum {
 
             \CODOF\Store::set('article:modified', date('c', $topic_info['topic_updated']));
         }
+
+        $this->smarty->assign('meta_author', \CODOF\User\User::get($tuid)->name);
     }
 
     public function listTaggedTopics($tag, $page = 1) {

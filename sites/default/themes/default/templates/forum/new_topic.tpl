@@ -128,7 +128,7 @@
                                 <button class="codo_btn codo_new_reply_action_post" id="codo_new_reply_action_post"><i class="icon-check"></i><span class="codo_action_button_txt">{_t("Post")}</span></button>
                                 <button onclick="window.history.back()" class="codo_btn codo_btn_def" id="codo_new_reply_action_cancel"><i class="icon-times"></i><span class="codo_action_button_txt">{_t("Cancel")}</span></button>
 
-                                <img id="codo_new_reply_loading" src="{$smarty.const.DEF_THEME_PATH}img/ajax-loader.gif" />
+                                <img id="codo_new_reply_loading" src="{$smarty.const.CURR_THEME}img/ajax-loader.gif" />
                                 <button class="codo_btn codo_btn_def codo_post_preview_bg" id="codo_post_preview_btn">&nbsp;</button>
                                 <button class="codo_btn codo_btn_def codo_post_preview_bg" id="codo_post_preview_btn_resp">&nbsp;</button>
                                 <div class="codo_draft_status_saving">{_t("Saving...")}</div>
@@ -192,6 +192,89 @@
                             </div>
                         </div>
 
+                        <div class="form-group" id="add_poll_switch_container" >
+
+                            <label for="title">{_t('Add a poll to this topic ?')}</label>
+                            <div>
+                                <div id="add_poll_switch" class="codo_switch codo_switch_off">
+                                    <div class="codo_switch_toggle"></div>
+                                    <span class="codo_switch_on">{_t('Yes')}</span>
+                                    <span class="codo_switch_off">{_t('No')}</span>
+                                </div>
+                            </div>
+                        </div>                            
+
+                        <div class="form-group add_poll_container" id="add_poll_toggle_yes" style="display: none">
+                            <div>     
+                                <div class="form-group">
+                                    <label for="title">{_t("Poll question")}</label>
+                                    <div>
+                                        <input id="poll_question" type="text" class="codo_input" placeholder="{_t('Give a title for your poll')}">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="codo_poll_inputs">
+                                    <label for="title">{_t("Poll options")}</label>
+                                    <div class="codo_poll_input">
+                                        <input id="poll_question" type="text" class="codo_input" placeholder="{_t('Poll option')}">
+                                        <div class="codo_poll_options">
+                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="glyphicon glyphicon-plus"></i></div>                                        
+                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="glyphicon glyphicon-remove"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="codo_poll_input">
+                                        <input id="poll_question" type="text" class="codo_input" placeholder="{_t('Poll option')}">
+                                        <div class="codo_poll_options">
+                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="glyphicon glyphicon-plus"></i></div>                                        
+                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="glyphicon glyphicon-remove"></i></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="advanced_poll_options">
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label for="title">{_t('Can user recast his vote ?')}</label>
+
+                                        <div id="can_recast_vote" class="codo_switch codo_switch_on">
+                                            <div class="codo_switch_toggle"></div>
+                                            <span class="codo_switch_on">{_t('Yes')}</span>
+                                            <span class="codo_switch_off">{_t('No')}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label for="title">{_t('Show poll result without voting ?')}</label>
+                                        <div id="show_result_without_vote" class="codo_switch codo_switch_on">
+                                            <div class="codo_switch_toggle"></div>
+                                            <span class="codo_switch_on">{_t('Yes')}</span>
+                                            <span class="codo_switch_off">{_t('No')}</span>
+                                        </div>                                
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="title">{_t('Should the poll be auto-closed ?')}</label>
+
+                                    <div>
+                                        <div id="poll_auto_close" class="codo_switch codo_switch_off">
+                                            <div class="codo_switch_toggle"></div>
+                                            <span class="codo_switch_on">{_t('Yes')}</span>
+                                            <span class="codo_switch_off">{_t('No')}</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="content_toggle_poll_auto_close" style="display: none">     
+                                        <b>{_t('On')}</b>
+                                        <div class="form-group">
+                                            <div class="col-sm-6" style="padding-left: 0">
+                                                <input placeholder="{_t("Select a date")}" class="form-control col-md-3" type="text" id="polldatepicker"/>
+                                            </div>
+                                        </div>
+                                        <div class="muted">{_t('poll will be automatically closed on mentioned date')}.</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                         <hr class="perm_sticky_auto_close"/>
 
                         <div class="codo_new_reply_action perm_sticky_auto_close">
@@ -209,7 +292,7 @@
 
             </div>
             {"block_create_topic_after"|load_block}
-
+            <div id = "alert_placeholder"></div>
         </div>
 
         {include file='forum/editor.tpl'}
@@ -233,8 +316,34 @@
             }
 
         };
+        function add_poll_option(event, value) {
 
+            value = value || "";
 
+            if ($('.codo_poll_input').length === {$max_poll_options}) {
+
+                CODOF.util.alert("{_t("Cannot add more than %s poll options", null, $max_poll_options)}", "{_t("Cannot add")}");
+                return false;
+            }
+
+            var poll_option = $(event.target).parents('.codo_poll_input');
+            var clone = poll_option.clone();
+            clone.insertAfter(poll_option).find("input").val(value);
+
+            return clone;
+        }
+
+        function remove_poll_option(event) {
+
+            if ($('.codo_poll_input').length === 2) {
+
+                CODOF.util.alert("{_t("Poll must have atleast 2 options")}", "{_t("Cannot delete")}");
+                return false;
+            }
+
+            var poll_option = $(event.target).parents('.codo_poll_input');
+            poll_option.slideUp().remove();
+        }
 
         function on_codo_loaded() {
 
@@ -251,19 +360,71 @@
             $('.perm_sticky_auto_close').hide();
         {/if}
 
+        {if $can_add_poll}
+            $("#add_poll_switch_container").show();
+        {/if}
+
+            CODOFVAR.pollData = '{$poll_data}';
+
+            if (CODOFVAR.pollData !== "") {
+
+                var pollData = JSON.parse(CODOFVAR.pollData);
 
 
+                if (pollData.isActive === 1) {
 
+                    CODOF.switch.set('add_poll_switch', true);
+                    $('#add_poll_toggle_yes').show();
+
+                    if(pollData.canRecast === 0) {
+                    
+                        CODOF.switch.set('can_recast_vote', false);                        
+                    }    
+
+                    if(pollData.viewWithoutVote === 0) {
+                    
+                        CODOF.switch.set('show_result_without_vote', false);                        
+                    }    
+
+                    $('#poll_question').val(pollData.title);
+
+                    $('.codo_poll_input:first').remove();
+
+                    var afterDiv = $('.codo_poll_input:first #poll_question')[0];
+
+                    for (var i = 0; i < pollData.options.length; i++) {
+
+                        var option = pollData.options[i];
+                        var clone = add_poll_option({
+                            target: afterDiv
+                        }, option.option_name);
+
+                        afterDiv = clone.find('#poll_question');
+                    }
+
+                    $('.codo_poll_input:first').remove();
+                }
+            }
+
+
+            $('#codo_poll_inputs').on('click', '.codo_poll_add_option', add_poll_option);
+            $('#codo_poll_inputs').on('click', '.codo_poll_remove_option', remove_poll_option);
+            $datepicker = $('#polldatepicker').pickadate();
+            CODOF.poll_datepicker = $datepicker.pickadate('picker');
+            $('#poll_auto_close').on('switch_on', function () {
+
+                $('#content_toggle_poll_auto_close').show();
+            }).on('switch_off', function () {
+
+                $('#content_toggle_poll_auto_close').hide();
+            });
             $('#trigger_codo_new_reply_action_post').click(function () {
 
                 $('#codo_new_reply_action_post').trigger('click');
             });
-
             CODOF.inTopic = true;
-
             $datepicker = $('#datetimepicker').pickadate();
             CODOF.datepicker = $datepicker.pickadate('picker');
-
             $('#topic_auto_close').on('switch_on', function () {
 
                 $('#content_toggle_topic_auto_close').show();
@@ -271,18 +432,22 @@
 
                 $('#content_toggle_topic_auto_close').hide();
             });
+            $('#add_poll_switch').on('switch_on', function () {
 
+                $('#add_poll_toggle_yes').show();
+            }).on('switch_off', function () {
+
+                $('#add_poll_toggle_yes').hide();
+            });
             setTimeout(function () {
                 $('#codo_topic_title').focus();
             }, 500);
-
             $('html, body').animate({
                 scrollTop: $(".codo_widget-header").offset().top
             }, 500);
             CODOF.editor_form = $('#codo_new_reply_post');
             CODOF.editor_preview_btn = $('#codo_post_preview_btn');
             CODOF.editor_reply_post_btn = $('.codo_new_reply_action_post');
-
             $('#codo_new_reply_textarea').putCursorAtEnd();
             $('#codo_category_select li  a').on('click', function () {
                 var cid = $(this).attr('id');
@@ -290,19 +455,16 @@
                 $('#codo_topic_cat').val(cid);
                 $('#dropdownMenu1').val(cid);
                 $('#codo_topic_cat_alias').val($(this).data('alias'));
-
                 //return false;
                 CODOFVAR.cid = cid;
                 CODOF.mentions.updateSpec(cid);
                 CODOF.mentions.checkForNonMentions();
-
                 CODOF.newCatName = $('#codo_category_select > button > span:first-child').text();
                 if (CODOF.oldCatName) {
 
                     if (CODOF.oldCatName == CODOF.newCatName) {
 
                         $('.codo_move, .codo_move_sep').slideUp();
-
                     } else {
 
                         $('#codo_move_from_category_name').text(CODOF.oldCatName);
@@ -312,16 +474,13 @@
                 }
 
             });
-
             $('#codo_tags').tagsinput({
                 maxTags: codo_defs.forum_tags_num,
                 maxChars: codo_defs.forum_tags_len,
                 trimValue: true
             });
-
             var str = $('#codo_non_mentionable').html();
             $('#codo_non_mentionable').html(str.replace('%MENTIONS%', '<span id="codo_nonmentionable_users"></span>'));
-
             CODOF.selectCat = function (cat_id) {
 
                 $('#codo_category_select li  a').each(function () {
@@ -339,18 +498,13 @@
                         CODOFVAR.cid = cat_id;
                     }
                 });
-
             }
             ;
-
-
             CODOF.mentions.extractAndAddToManned($("#codo_new_reply_textarea").val());
-
             //should be called ONLY after tagsinput() init
             CODOF.restoreFromDraft = function () {
 
                 var obj = JSON.parse(localStorage.getItem('reply_' + codo_defs.uid));
-
                 if (obj === null)
                     return;
                 if (obj.title !== "") {
@@ -361,7 +515,6 @@
                 if (obj.tags && obj.tags.length > 0) {
                     //add tags
                     var i, len = obj.tags.length;
-
                     for (i = 0; i < len; i++) {
 
                         $('#codo_tags').tagsinput('add', obj.tags[i]);
@@ -371,15 +524,34 @@
 
                 //add message
                 $("#codo_new_reply_textarea").val(obj.text);
-
                 CODOF.mentions.extractAndAddToManned(obj.text);
                 if (obj.cat) {
                     //add cat
                     CODOF.selectCat(parseInt(obj.cat));
                     CODOF.mentions.checkForNonMentions();
                 }
-            };
 
+                /*if (obj.poll_title) {
+                 
+                 $('#poll_question').val(obj.poll_title);
+                 }
+                 
+                 if (obj.poll_options) {
+                 
+                 //2 options already exists
+                 for (var i = 2; i <= obj.poll_options.length; i++)
+                 {
+                 add_poll_option({
+                 target: $('.codo_poll_input:first').find('.glyphicon-plus')
+                 });
+                 }
+                 
+                 for(var i=0; i<obj.poll_options.length; i++) {
+                 
+                 $('.codo_poll_input input').get(i).value = obj.poll_options[i];
+                 }
+                 }*/
+            };
             if (window.location.hash === '#draft') {
 
                 CODOF.restoreFromDraft();
@@ -401,15 +573,12 @@
 
 
                 var cat_id = parseInt('{$topic.cat_id}');
-
                 CODOF.edit_topic_id = false;
-
                 if (cat_id !== 0) {
 
                     CODOF.edit_topic_id = parseInt('{$topic.topic_id}');
                     CODOF.selectCat(cat_id);
                     CODOF.oldCatName = $('#codo_category_select > button > span:first-child').text();
-
                     $('#codo_move_text').html(
                             $('#codo_move_text').text()
                             .replace('%fromCategoryName%', '<span id="codo_move_from_category_name"></span>')
@@ -419,7 +588,6 @@
 
             }
             ;
-
             select_curr_cat();
         {if $is_topic_open}
             CODOF.switch.set('is_topic_open', true);
@@ -452,7 +620,6 @@
                     }
                     CODOF.editor_reply_post_btn.removeClass('codo_btn_primary');
                     $('#codo_new_reply_loading').show();
-
                     var action = 'create';
                     if (CODOF.edit_topic_id) {
 
@@ -460,20 +627,22 @@
                     }
 
                     $('#codo_reply_box').append('<div id="codo_reply_html_playground"></div>');
-
                     $('#codo_reply_html_playground').html($('#codo_new_reply_preview').html());
-
                     $('#codo_reply_html_playground .codo_embed_container').remove();
                     $('#codo_reply_html_playground .codo_embed_placeholder').remove();
-
-
                     $('#codo_reply_html_playground .codo_oembed').each(function () {
 
                         var href = $(this).attr('href');
                         $(this).html(href);
                     });
-
-
+                    var poll_data = {
+                        "viewResultWithoutVote": CODOF.switch.get('show_result_without_vote') ? 'yes' : 'no',
+                        "canRecast": CODOF.switch.get('can_recast_vote') ? 'yes' : 'no',
+                        "endTime": CODOF.poll_datepicker.get(),
+                        "options": $('#codo_poll_inputs input').map(function () {
+                            return this.value;
+                        }).get()
+                    };
                     var title = $.trim($('#codo_topic_title').val());
                     CODOF.req.data = {
                         title: title,
@@ -489,11 +658,12 @@
                         sticky: $('input[name=topic_status]:checked').val(),
                         is_open: CODOF.switch.get('is_topic_open') ? 'yes' : 'no',
                         is_auto_close: CODOF.switch.get('topic_auto_close') ? 'yes' : 'no',
-                        auto_close_date: CODOF.datepicker.get()
+                        auto_close_date: CODOF.datepicker.get(),
+                        has_poll: CODOF.switch.get('add_poll_switch') ? 'yes' : 'no',
+                        poll_title: $('#poll_question').val(),
+                        poll_data: poll_data
                     };
-
                     CODOF.hook.call('before_req_send');
-
                     $.post(
                             codo_defs.url + 'Ajax/topic/' + action,
                             CODOF.req.data,
@@ -517,19 +687,14 @@
                                 $('#codo_new_topic_loader').hide();
                             }
                     );
-
-
                 }
 
                 return false;
             };
-
             CODOF.is_error = function () {
 
                 var error = false;
-
                 var val = $.trim($('#dropdownMenu1').val());
-
                 if (val === "") {
 
                     $('#dropdownMenu1').addClass('boundary-error').focus();
@@ -539,10 +704,26 @@
                     $('#dropdownMenu1').removeClass('boundary-error');
                 }
 
+                if ($('#add_poll_switch').hasClass('codo_switch_on') && $('#poll_question').val() === "") {
+
+                    CODOF.util.alert("{_t("Poll must have a question/title")}");
+                    error = true;
+                } else if ($('#add_poll_switch').hasClass('codo_switch_on')) {
+
+                    var poll_option_filled = 0;
+                    $('#codo_poll_inputs input').each(function () {
+                        if (this.value !== "")
+                            poll_option_filled++;
+                    });
+                    if (poll_option_filled < 2) {
+                        CODOF.util.alert("{_t("Poll must have at least two options")}");
+                        error = true;
+                    }
+                }
+
                 $('#codo_new_reply_post :input[required=""],#codo_new_reply_post :input[required]').each(function () {
 
                     var val = $(this).val();
-
                     if ($.trim(val) === "") {
 
                         $(this).addClass('boundary-error').focus();
@@ -552,7 +733,6 @@
                         $(this).removeClass('boundary-error')
                     }
                 });
-
                 return error;
             };
         }
@@ -565,3 +745,4 @@
 
 
 {/block}
+

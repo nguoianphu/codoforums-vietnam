@@ -5,14 +5,37 @@
 jQuery('document').ready(function ($) {
 
     CODOF.templateLoaded = false;
-    
+
     //hide all sub categories of parent categories with show_children 0
     $('.codo_category_toggle').parent().parent().find('ul:first').hide();
 
-    $('.codo_category_toggle').on('click', function() {
-                
+    $('.codo_category_toggle').on('click', function () {
+
         $(this).parent().parent().find('ul:first').slideToggle();
     });
+
+    $.ajaxSetup({cache: true});
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
+        FB.init({
+            appId: '633890129979455',
+            version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+        });
+    });
+
+    /**
+     * The icon above the topics trigger this method
+     * It will  toggle the visibility of topics and
+     * categories
+     */
+    CODOF.toggleTopicsAndCategories = function () {
+
+        $('.codo_topics').toggle();
+        $('.codo_categories').toggle();
+        $('#codo_topics_load_more').toggle();
+        $('#codo_mobile_top_search').toggle();
+        CODOF.util.simpleNotify($('#icon-books-click-trans').text());
+    };
+
 
     CODOF.topics = {
         body: $('.codo_topics_body'),
@@ -51,11 +74,11 @@ jQuery('document').ready(function ($) {
                     }
 
                     pageInfo.find('#codo_page_info_time_spent')
-                            .html(CODOF.topics.reading_time[page - 1] + ' s');
+                        .html(CODOF.topics.reading_time[page - 1] + ' s');
                     pageInfo.find('#codo_page_info_page_no')
-                            .html(page);
+                        .html(page);
                     pageInfo.find('#codo_page_info_pages_to_go')
-                            .html((pagesToGo > 0) ? pagesToGo : CODOFVAR.last_page);
+                        .html((pagesToGo > 0) ? pagesToGo : CODOFVAR.last_page);
 
                     pageInfo.appendTo(CODOF.topics.body);
 
@@ -132,8 +155,11 @@ jQuery('document').ready(function ($) {
 
                 CODOF.req_started = true;
 
+                var type = "newest";
+
                 CODOF.req.data = {
                     from: CODOF.topics.from,
+                    type: $('#page_sort_option').val(),
                     token: codo_defs.token
                 };
 
@@ -142,55 +168,51 @@ jQuery('document').ready(function ($) {
                 CODOF.hook.call('before_req_fetch_topics', {}, function () {
 
                     $.getJSON(
-                            codo_defs.url + CODOF.req.url,
-                            CODOF.req.data,
-                            function (response) {
+                        codo_defs.url + CODOF.req.url,
+                        CODOF.req.data,
+                        function (response) {
 
-                                if (response.num_posts) {
+                            if (response.num_posts) {
 
-                                    //if (!CODOF.topics.from) {
-                                    //CODOF.topics.from += 2 * response.num_posts;
-                                    //} else {
-                                    CODOF.topics.from += response.num_posts;
-                                    if (response.num_pages > 0) {
+                                CODOF.topics.from += response.num_posts;
+                                if (response.num_pages > 0) {
 
-                                        CODOFVAR.total = response.num_pages;
-                                    }
-                                    //}
-
-                                    //build the next N results but don't show them yet
-                                    //because we don't know if user will scroll to
-                                    //bottom or not
-                                    CODOF.context = response;
-                                    CODOF.topics.build_topics(CODOF.context);
-                                    CODOF.topics.has_built_topics = true;
-
-                                    if (CODOF.img_shown) {
-
-                                        //this means user has reached end of page
-                                        //so you can now show the next N results
-                                        CODOF.topics.insert();
-                                    }
-
+                                    CODOFVAR.total = response.num_pages;
                                 }
 
-                                if (response.topics.length === 0 && !CODOF.topics.ended) {
+                                //build the next N results but don't show them yet
+                                //because we don't know if user will scroll to
+                                //bottom or not
+                                CODOF.context = response;
+                                CODOF.topics.build_topics(CODOF.context);
+                                CODOF.topics.has_built_topics = true;
 
-                                    if (CODOFVAR.total > 0) {
+                                if (CODOF.img_shown) {
 
-                                        if ($('#codo_topics_body .codo_topics_topic_message').length > 0) {
-                                            CODOF.topics.body.append('<article class="codo_topics_end">' + CODOFVAR.no_more_posts + '</article>');
-                                        } else {
-                                            CODOF.topics.body.append('<article class="codo_topics_end">' + CODOFVAR.no_posts + '</article>');
-                                        }
-                                        $('#codo_topics_load_more').hide();
-                                    }
-                                    CODOF.topics.end = $('.codo_topics_end');
-                                    CODOF.topics.end.fadeIn('slow');
-                                    CODOF.topics.ended = true;
+                                    //this means user has reached end of page
+                                    //so you can now show the next N results
+                                    CODOF.topics.insert();
                                 }
 
                             }
+
+                            if (response.topics.length === 0 && !CODOF.topics.ended) {
+
+                                if (CODOFVAR.total > 0) {
+
+                                    if ($('#codo_topics_body .codo_topics_topic_message').length > 0) {
+                                        CODOF.topics.body.append('<article class="codo_topics_end">' + CODOFVAR.no_more_posts + '</article>');
+                                    } else {
+                                        CODOF.topics.body.append('<article class="codo_topics_end">' + CODOFVAR.no_posts + '</article>');
+                                    }
+                                    $('#codo_topics_load_more').hide();
+                                }
+                                CODOF.topics.end = $('.codo_topics_end');
+                                CODOF.topics.end.fadeIn('slow');
+                                CODOF.topics.ended = true;
+                            }
+
+                        }
                     );
 
                 });
@@ -268,6 +290,20 @@ jQuery('document').ready(function ($) {
         return false;
     });
 
+    $('#codo_topics_body').on('click', '.codo_fb_share', function () {
+
+
+        var tid = $(this).data('tid');
+        var url = codo_defs.url + "topic/" + tid;
+
+        FB.ui({
+            method: 'share',
+            href: url,
+        }, function (response) {
+        });
+
+    });
+
     $('#codo_report_select').on('change', function () {
 
         if (this.value == '3') {
@@ -343,7 +379,6 @@ jQuery('document').ready(function ($) {
     });
 
 
-
     $('#codo_topics_multiselect_select').on('change', function () {
 
 
@@ -401,24 +436,23 @@ jQuery('document').ready(function ($) {
             var text = "<form>", link, first = true, checked = 'checked';
 
             var links = $('#codo_topics_body .codo_posts_select_post:checked').parents('article').find('.codo_topics_topic_title')
-                    .each(function () {
+                .each(function () {
 
-                        var el = $(this);
-                        link = el.html().replace("href=", "target='_blank' href=");
+                    var el = $(this);
+                    link = el.html().replace("href=", "target='_blank' href=");
 
-                        var id = el.children('a').prop('id').replace('codo_topic_link_', '');
+                    var id = el.children('a').prop('id').replace('codo_topic_link_', '');
 
 
-                        text += "<div style='padding: 4px;'> <input " + checked + "  name='multiselect' id='multiselect_merge_" + id + "' style='margin:0;margin-right:5px;position:relative;top:2px' type='radio'/>" + link + "</div>";
+                    text += "<div style='padding: 4px;'> <input " + checked + "  name='multiselect' id='multiselect_merge_" + id + "' style='margin:0;margin-right:5px;position:relative;top:2px' type='radio'/>" + link + "</div>";
 
-                        if (first) {
+                    if (first) {
 
-                            first = false;
-                            checked = '';
-                        }
+                        first = false;
+                        checked = '';
+                    }
 
-                    });
-
+                });
 
 
             text += "</form>";
@@ -563,11 +597,11 @@ jQuery('document').ready(function ($) {
                     // position: 'fixed',
                     top: '60px'
                 })
-                        .addClass('codo_sidebar_fixed_width').removeClass('codo_sidebar_static_width')
-                        .find('.codo_sidebar_fixed_els').show();
+                    .addClass('codo_sidebar_fixed_width').removeClass('codo_sidebar_static_width')
+                    .find('.codo_sidebar_fixed_els').show();
 
                 if (CODOF.cache.sideBarMenu.el.is(':visible'))
-                    CODOF.cache.sideBarMenu.el.css('width', (CODOF.cache.sideBarMenu.el.parent().innerWidth()) + 'px');
+                    CODOF.cache.sideBarMenu.el.css('width', (CODOF.cache.sideBarMenu.el.parent().innerWidth() - 60) + 'px');
                 CODOF.cache.sideBarMenu.pos = 'fixed';
             }
         } else {
@@ -575,8 +609,8 @@ jQuery('document').ready(function ($) {
             if (CODOF.cache.sideBarMenu.pos === 'fixed' || !CODOF.cache.sideBarMenu.top) {
 
                 CODOF.cache.sideBarMenu.el.css('position', 'static')
-                        .addClass('codo_sidebar_static_width').removeClass('codo_sidebar_fixed_width')
-                        .find('.codo_sidebar_fixed_els').hide();
+                    .addClass('codo_sidebar_static_width').removeClass('codo_sidebar_fixed_width')
+                    .find('.codo_sidebar_fixed_els').hide();
 
                 CODOF.cache.sideBarMenu.pos = 'static';
                 CODOF.cache.sideBarMenu.top = CODOF.cache.sideBarMenu.el.offset().top;
@@ -611,8 +645,7 @@ jQuery('document').ready(function ($) {
     });
 
 
-
-    $('#codo_topics_load_more').on('click', function () {
+    $('#codo_topics_load_more_btn').on('click', function () {
 
         CODOF.topics.cInsert(true);
         return false; //prevent link 
@@ -643,19 +676,24 @@ jQuery('document').ready(function ($) {
      
      */
 
-    function codo_create_filter(val) {
+    CODOF.globalSearch = function (val, sort_on) {
 
         if ($.trim(val) == "")
             return;
+
+        if (typeof sort_on === "undefined")
+            sort_on = "post_created"
+
         $('#codo_topics_load_more').hide();
         var data = {
             str: val,
             cats: '',
             search_subcats: 'Yes',
             match_titles: 'Yes',
-            sort: 'post_created',
+            sort: sort_on,
             order: 'Desc',
             search_within: 'anytime'
+
         };
 
         CODOF.topics.from = 0; //reset page no.
@@ -668,6 +706,8 @@ jQuery('document').ready(function ($) {
         CODOF.search_data = data;
         CODOF.topics.fetch();
     }
+
+
     CODOF.search_data = {};
 
     CODOF.hook.add('before_req_fetch_topics', function () {
@@ -675,22 +715,6 @@ jQuery('document').ready(function ($) {
         $.extend(CODOF.req.data, CODOF.search_data);
     });
 
-    $('.codo_topics_search_icon').click(function () {
-
-        search_triggered($(this).prev().val());
-    });
-
-    function search_triggered(val) {
-
-        $('.codo_topics_search_input').val(val);
-        codo_create_filter(val);
-    }
-
-    $('.codo_topics_search_input').keypress(function (e) {
-        if (e.which == 13) {
-            search_triggered(this.value);
-        }
-    });
 
     $('#codo_category_select li').on('click', function () {
 
@@ -710,5 +734,129 @@ jQuery('document').ready(function ($) {
 
         return false;
     });
+
+
+    $('#page_sort_option').on('change', function () {
+
+        var $el = $(this);
+
+        if ($el.val() === "popular") {
+
+            $('.codo_topics_title_header_left').html($('#most-popular-txt-trans').html());
+        } else if ($el.val() === "newest") {
+
+            $('.codo_topics_title_header_left').html($('#newest-txt-trans').html());
+        }
+        if ($el.val() === "commented") {
+
+            $('.codo_topics_title_header_left').html($('#most-commented-txt-trans').html());
+        }
+
+
+        CODOF.topics.from = 0; //reset page no.
+        $('#codo_topics_body').html('');
+        CODOF.topics.body.append("<div class='codo_load_more_gif'></div>");
+        CODOF.img_shown = true;
+        CODOF.topics.ended = false;
+        CODOF.req_started = false;
+        CODOF.topics.fetch();
+    });
+
+
+    $('body').on({
+        click: function () {
+
+            var $me = $(this);
+            var $repContainer = $me.parent();
+
+            var rep_counter = $repContainer.find('.codo_reputation_points');
+            var prev_count = rep_counter.html();
+            rep_counter.html('-');
+
+            var pid = $repContainer.attr('id').replace('codo_posts_rep_', '');
+            var tid = $repContainer.data('tid');
+
+            CODOF.request.get({
+                hook: 'post_rep_up',
+                url: codo_defs.url + 'Ajax/reputation/' + tid + '/' + pid + '/up',
+                done: function (result) {
+
+                    if (result.done) {
+
+                        rep_counter.html(result.rep);
+                    } else {
+
+                        rep_counter.html(prev_count);
+                        alert(result.errors);
+                    }
+                }
+            });
+        }
+    }, '.codo_rep_up_btn');
+
+    $('body').on({
+        click: function () {
+
+            var $me = $(this);
+            var $repContainer = $me.parent();
+
+            var rep_counter = $repContainer.find('.codo_reputation_points');
+            var prev_count = rep_counter.html();
+            rep_counter.html('-');
+
+            var pid = $repContainer.attr('id').replace('codo_posts_rep_', '');
+            var tid = $repContainer.data('tid');
+
+
+            CODOF.request.get({
+                hook: 'post_rep_up',
+                url: codo_defs.url + 'Ajax/reputation/' + tid + '/' + pid + '/down',
+                done: function (result) {
+
+                    if (result.done) {
+
+                        rep_counter.html(result.rep);
+                    } else {
+
+                        rep_counter.html(prev_count);
+                        alert(result.errors);
+                    }
+                }
+            });
+
+        }
+    }, '.codo_rep_down_btn');
+
+
+    /**
+     * Changes the page to previous or next based on current page
+     * @param {type} el
+     * @param {type} currPage
+     * @param {type} action
+     * @returns {Boolean}
+     */
+    CODOF.changePage = function (el, currPage, action) {
+
+        var $el = $(el);
+
+        if (!$el.hasClass("active_page_controls"))
+            return false;
+
+        var nextPage = currPage + 1;
+
+        if (action === 'prev')
+            nextPage = currPage - 1;
+
+        var searchStr = '';
+        var searchVal = $('.codo_global_search_input').val();
+        if (searchVal !== '') {
+
+            searchStr = '&str=' + searchVal;
+        }
+
+        var url = codo_defs.url + 'topics/' + nextPage + searchStr;
+
+        window.location.href = url;
+    };
 
 });

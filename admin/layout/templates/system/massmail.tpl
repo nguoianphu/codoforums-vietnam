@@ -22,6 +22,12 @@
 </style>
 <div class="row col-md-6">
 
+    {if $sent}
+        <div class="alert alert-success">
+          Mass mail triggered sucessfully!
+        </div>
+    {/if}
+
     <p>Send mass emails to users of your forum</p>
     <div  class="box box-info">
         <form class="box-body form" action="?page=system/massmail" role="form" method="post" enctype="multipart/form-data">

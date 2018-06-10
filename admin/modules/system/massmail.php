@@ -34,6 +34,8 @@ if (isset($_POST['subject']) && CODOF\Access\CSRF::valid($_POST['CSRF_token'])) 
 
     $users = $users->get();
 
+    $mails = array();
+
     foreach ($users as $user) {
 
         $_body = str_replace('[username]', $user['name'], $body);
@@ -46,7 +48,10 @@ if (isset($_POST['subject']) && CODOF\Access\CSRF::valid($_POST['CSRF_token'])) 
         );
     }
 
-    \DB::table(PREFIX . 'codo_mail_queue')->insert($mails);
+    if(count($mails) > 0) {
+
+      \DB::table(PREFIX . 'codo_mail_queue')->insert($mails);
+    }
     /* } else {
 
       if (isset($_POST['roles'])) {
@@ -62,6 +67,12 @@ if (isset($_POST['subject']) && CODOF\Access\CSRF::valid($_POST['CSRF_token'])) 
       $db->prepare($qry);
 
       } */
+
+  $smarty->assign('sent', 'success');
+}
+else {
+
+  $smarty->assign('sent', false);
 }
 
 $smarty->assign('roles', $roles);

@@ -20,7 +20,10 @@ define('A_DURI',str_replace(ADMIN ,"",DURI)); // http://~sites/
 
 //DATAPATH:  "/opt/lampp/htdocs/codoforum/sites/2013/12/20/xyz/"
 //ABSPATH:  "/opt/lampp/htdocs/codoforum/"
+\CODOF\Util::get_config(\DB::getPDO());
 Constants::post_boot('');
+//loads translation system
+require DATA_PATH . 'locale/lang.php';
 
 codoForumAdmin::$action["index"]="index";
 codoForumAdmin::$action["categories"]="categories";
@@ -40,10 +43,6 @@ codoForumAdmin::$action["ploader"]="ploader";
 codoForumAdmin::$action["moderation/ban_user"]="moderation/ban_user";
 codoForumAdmin::$action["moderation/approve_users"]="moderation/approve_users";
 codoForumAdmin::$action["moderation/reports"]="moderation/reports";
-codoForumAdmin::$action["system/importer"]="system/importer";
-codoForumAdmin::$action["system/cron"]="system/cron";
-codoForumAdmin::$action["system/upgrade"]="system/upgrade";
-codoForumAdmin::$action["system/massmail"]="system/massmail";
 codoForumAdmin::$action["permission/roles"]="permission/roles";
 codoForumAdmin::$action["permission/role_edit"]="permission/role_edit";
 codoForumAdmin::$action["permission/categories"]="permission/categories";
@@ -52,6 +51,16 @@ codoForumAdmin::$action["reputation/promotions"]="reputation/promotions";
 codoForumAdmin::$action["spam/mldetect"]="spam/mldetect";
 codoForumAdmin::$action["spam/recaptcha"]="spam/recaptcha";
 codoForumAdmin::$action["manual_upgrade"]="manual_upgrade";
+codoForumAdmin::$action["system/importer"]="system/importer";
+codoForumAdmin::$action["system/cron"]="system/cron";
+codoForumAdmin::$action["system/upgrade"]="system/upgrade";
+codoForumAdmin::$action["system/massmail"]="system/massmail";
+codoForumAdmin::$action["system/clear_cache"]="system/clear_cache";
+codoForumAdmin::$action["system/language_settings"]="system/language_settings/language_settings";
+codoForumAdmin::$action["system/edit_language"]="system/language_settings/edit_language";
+codoForumAdmin::$action["system/add_language"]="system/language_settings/add_language";
+codoForumAdmin::$action["system/delete_language"]="system/language_settings/delete_language";
+codoForumAdmin::$action["system/default_language"]="system/language_settings/default_language";
 
 
 

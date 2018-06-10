@@ -4,129 +4,28 @@
 
 {block name=body}
 
+    <input type="hidden" id="page_sort_option" value="newest"/>
     <div class="container" id="codo_topics_row">
 
         <div class="row">
 
             <div>
                 {"block_catgory_list_before"|load_block}
-                <div class="codo_categories col-md-4" id="codo_categories_sidebar">
 
-                    <div class="row active" id="codo_category_all_topics">
-
-                        <div class="codo_categories_category col-md-12">
-                            <i class="icon-arrow-up"></i>
-                            <div class="codo_category_title">{_t("All topics")}</div>
-                            {if isset($new_topics) && count($new_topics)}
-                                <div id="codo_mark_all_read" class="codo_btn codo_mark_all_read">{_t('Mark all as read')}</div>
-                            {/if}
-                            <span class="codo_category_num_topics">{$total_num_topics}</span>
-                        </div>
-                    </div>
-                    {if $can_search}    
-                        <div class="codo_sidebar_search">
-                            <input type="text" placeholder="{_t('Search')}" class="form-control codo_topics_search_input" />
-                            <i class="glyphicon glyphicon-search codo_topics_search_icon" title="Advanced search" ></i>
-                        </div>
-                    {/if}
-
-                    <ul id="codo_categories_ul">
-
-                        {foreach from=$cats item=cat}
-                            <li>
-                                <div class="row">
-
-                                    <div class="codo_category_img col-md-2 col-xs-2">
-                                        <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" />
-                                    </div>
-
-                                    <div class="codo_categories_category col-md-9 col-xs-9">
-                                        <a href="{$smarty.const.RURI}category/{$cat->cat_alias|escape:url}">
-                                            <div class="codo_category_title">{$cat->cat_name}</div>
-                                        </a>
-                                        <span data-toggle="tooltip" data-placement="bottom" title="{_t('No. of topics')}" class="codo_category_num_topics codo_bs_tooltip">
-                                            {if $cat->granted eq 1}
-                                                {$cat->no_topics|abbrev_no}
-                                            {else} - 
-                                            {/if}
-                                        </span>
-
-                                        {if isset($new_topics) && isset($new_topics[$cat->cat_id])}                                     
-                                            <a title="{_t('new topics')}"><span class="codo_new_topics_count">{$new_topics[$cat->cat_id]|abbrev_no}</span></a>
-                                            {/if}
-                                    </div>
-
-                                    {if $cat->show_children eq 0}
-                                        <div class="codo_category_toggle col-md-1 col-xs-1"><i class="icon-arrow-down"></i></div>
-                                        {/if}
-
-                                </div>
-                                {get_children cat=$cat new_topics=$new_topics}
-                            </li>
-                        {/foreach}
-                    </ul>
-                    {"block_catgory_list_after"|load_block} 
-
-                    <div class="codo_sidebar_fixed">
-
-                        {if $can_search}
-                            <div id="codo_sidebar_fixed_search" class="codo_sidebar_search codo_sidebar_fixed_els">
-                                <input type="text" placeholder="{_t('Search')}" class="form-control codo_topics_search_input" />
-                                <i class="glyphicon glyphicon-search codo_topics_search_icon" title="Advanced search" ></i>
-                            </div>
-                        {/if}
-
-                        <div class="dropdown codo_sidebar_navigation codo_sidebar_fixed_els" id="codo_category_select">
-                            <button value="" class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                                <span>{_t("All topics")}</span>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-
-                                {foreach from=$cats item=cat}
-
-                                    <li role="presentation"><a data-alias="{$cat->cat_alias}">{$cat->cat_name}</a></li>
-
-                                    {print_children cat=$cat}
-                                {/foreach}
-                            </ul>
-                        </div>
-
-                        <div class="codo_sidebar_settings">
-
-                            <div>
-                                <div id="codo_sidebar_hide_msg_switch" class="codo_switch codo_switch_off">
-                                    <div class="codo_switch_toggle"></div>
-                                    <span class="codo_switch_on">{_t('Yes')}</span>
-                                    <span class="codo_switch_off">{_t('No')}</span>
-                                </div>
-                                <span>{_t("Hide topic messages")}</span>                                
-                            </div>
-
-                            <div>
-                                <div id="codo_sidebar_inf_scroll_switch" class="codo_switch codo_switch_off">
-                                    <div class="codo_switch_toggle"></div>
-                                    <span class="codo_switch_on">{_t('Yes')}</span>
-                                    <span class="codo_switch_off">{_t('No')}</span>
-                                </div>
-                                <span>{_t("Enable infinite scrolling")}</span>                                                            
-                            </div>
-
-                        </div>    
-
-                    </div>
-
-                </div>
-
+                <!--all topics -->
                 <div class="codo_topics col-md-8 clearfix">
 
                     {"block_all_topics_before"|load_block}
 
-                    <div class="codo_topics_head">
+                    {if $I->loggedIn() and $canCreateTopicInAtleastOneCategory}
 
-                        <div class="codo_topics_head_item"><a href="#">{_t('Topics')}</a></li></div>
+                        <div class="codo_topics_head hidden-xs">
 
-                    </div>
+                            <div class="codo_topics_start_button_div">
+                                <a class="btn btn-default codo_topics_start_button" href="#" role="button" onclick="codo_create_topic()">{_t("Start New Topic")}</a>
+                            </div>
+                        </div>
+                    {/if}
                     <div class="codo_topics_body" id="codo_topics_body">
 
                         {if $total_num_topics > 0}
@@ -138,13 +37,9 @@
                             </div>
                         {/if}
                     </div>
-                    {if !$load_more_hidden}
-                        <a href="{$smarty.const.RURI}topics/{$curr_page+1}"
-                           class="codo_topics_load_more codo_btn codo_btn_def"
-                           id="codo_topics_load_more">
-                            {_t("Load more")}
-                        </a>
-                    {/if}
+
+
+
                     <span style="display: none">
                         {*Skeleton DIV to clone in jQuery*}
                         <div id="codo_topic_page_info">
@@ -154,29 +49,204 @@
                         </div>
                     </span>
                 </div>
+                <!--end all topics -->
 
-                <div id='codo_delete_topic_confirm_html'>
-                    <div class='codo_posts_topic_delete'>
-                        <div class='codo_content'>
-                            {_t("All posts under this topic will be ")}<b>{_t("deleted")}</b> ?
-                            <br/>
+                <div class="codo_categories col-md-4" id="codo_categories_sidebar">
 
-                            <div class="codo_consider_as_spam codo_spam_checkbox">
-                                <input id="codo_spam_checkbox" name="spam" type="checkbox" checked="">
-                                <label class="codo_spam_checkbox" for="spam">{_t('Mark as spam')}</label>
+                    <div class="row" id="codo_category_all_topics" style="border-bottom:1px solid #eee;">
+
+                        <div class="codo_categories_category col-md-12">
+                            <!--<i class="icon-arrow-up"></i>-->
+                            <div class="codo_category_title_header">{_t("Categories")}</div>
+                            <!--{if isset($new_topics) && count($new_topics)}
+                                <div id="codo_mark_all_read" class="codo_btn codo_mark_all_read">{_t('Mark all as read')}</div>
+                            {/if}
+                            <span class="codo_category_num_topics">{$total_num_topics}</span>-->
                             </div>
                         </div>
 
-                        <div class="codo_modal_footer">
-                            <div class="codo_btn codo_btn_def codo_modal_delete_topic_cancel">{_t("Cancel")}</div>
-                            <div class="codo_btn codo_btn_primary codo_modal_delete_topic_submit">{_t("Delete")}</div>
-                        </div>
-                        <div class="codo_spinner"></div>
+                        <ul id="codo_categories_ul">
+
+                            <!--<div class="row active" id="codo_category_all_topics">
+                                    <div class="codo_categories_category col-md-12">
+                                            <div class="codo_category_title"></div>
+                            {if isset($new_topics) && count($new_topics)}
+                                    <div id="codo_mark_all_read" class="codo_btn codo_mark_all_read">{_t('Mark all as read')}</div>
+                            {/if}
+                            <span class="codo_category_num_topics">{$total_num_topics}</span>
                     </div>
+            </div>-->
+
+                            <li>
+                                <div class="row">
+
+                                    <div class="codo_categories_category col-md-11 col-xs-11">
+                                        <a href="#">
+                                            <div style="padding-left: 25px" class="codo_category_title codo_category_title_active">{_t("All topics")}</div>
+                                        </a>
+                                        <span data-toggle="tooltip" data-placement="bottom" title="{_t('No. of topics')}" class="codo_category_num_topics codo_bs_tooltip">
+                                            {$total_num_topics}
+                                        </span>
+                                    </div>
+                                </div>                                
+                            </li>
+
+
+
+                            {foreach from=$cats item=cat}
+                                <li>
+                                    <div class="row">
+
+                                        <div class="codo_categories_category col-md-11 col-xs-11">
+                                            <a href="{$smarty.const.RURI}category/{$cat->cat_alias|escape:url}">
+                                                <div class="codo_category_title">{$cat->cat_name}</div>
+                                            </a>
+                                            <span data-toggle="tooltip" data-placement="bottom" title="{_t('No. of topics')}" class="codo_category_num_topics codo_bs_tooltip">
+                                                {if $cat->granted eq 1}
+                                                    {$cat->no_topics|abbrev_no}
+                                                {else} - 
+                                                {/if}
+                                            </span>
+
+                                            {*
+                                            {if isset($new_topics) && isset($new_topics[$cat->cat_id])}                                     
+                                            <a title="{_t('new topics')}"><span class="codo_new_topics_count">{$new_topics[$cat->cat_id]|abbrev_no}</span></a>
+                                            {/if}
+                                            *}
+                                        </div>
+
+                                        {if $cat->show_children eq 0}
+                                            <div class="codo_category_toggle col-md-1 col-xs-1"><i class="icon-arrow-down"></i></div>
+                                            {/if}
+
+                                    </div>
+                                    {get_children cat=$cat new_topics=$new_topics}
+                                </li>
+                            {/foreach}
+                        </ul>
+                        {"block_catgory_list_after"|load_block} 
+
+                        <div class="codo_sidebar_fixed">
+
+                            {if $can_search}
+                                <div id="codo_sidebar_fixed_search" class="codo_sidebar_search codo_sidebar_fixed_els">
+                                    <input type="text" placeholder="{_t('Search')}" class="form-control codo_topics_search_input" />
+                                    <i class="glyphicon glyphicon-search codo_topics_search_icon" title="Advanced search" ></i>
+                                </div>
+                            {/if}
+
+                            <div class="dropdown codo_sidebar_navigation codo_sidebar_fixed_els" id="codo_category_select">
+                                <button value="" class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                    <span>{_t("All topics")}</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+                                    {foreach from=$cats item=cat}
+
+                                        <li role="presentation"><a data-alias="{$cat->cat_alias}">{$cat->cat_name}</a></li>
+
+                                        {print_children cat=$cat}
+                                    {/foreach}
+                                </ul>
+                            </div>
+
+                            <div class="codo_sidebar_settings">
+
+                                <div style="border-bottom:1px solid #eee;margin:0;height:50px;">
+
+                                    <div class="codo_categories_category col-md-12">
+
+                                        <div class="codo_category_title" style="margin-top:15px;">{_t("Actions")}</div>
+
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="codo_switch">
+                                        <!--<div class="codo_switch_toggle"></div>-->
+                                        <input type="checkbox" name="group1" id="codo_sidebar_hide_msg_switch" class="chk-box codo_switch codo_switch_off">
+                                        <label for="codo_sidebar_hide_msg_switch"></label>
+    <!--<span class="codo_switch_on">{_t('Yes')}</span>
+    <span class="codo_switch_off">{_t('No')}</span>-->
+                                    </div>
+                                    <span>{_t("Hide topic messages")}</span>                                
+                                </div>
+
+                                <div>
+                                    <div class="codo_switch">
+                                        <!--<div class="codo_switch_toggle"></div>
+                                        <span class="codo_switch_on">{_t('Yes')}</span>
+                                        <span class="codo_switch_off">{_t('No')}</span>-->
+                                        <input type="checkbox" name="group1" id="codo_sidebar_inf_scroll_switch" class="chk-box codo_switch codo_switch_off">
+                                        <label for="codo_sidebar_inf_scroll_switch"></label>
+                                    </div>
+                                    <span>{_t("Enable infinite scrolling")}</span>                                                            
+                                </div>
+
+                            </div>    
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div id='codo_delete_topic_confirm_html'>
+                        <div class='codo_posts_topic_delete'>
+                            <div class='codo_content'>
+                                {_t("All posts under this topic will be ")}<b>{_t("deleted")}</b> ?
+                                <br/>
+
+                                <div class="codo_consider_as_spam codo_spam_checkbox">
+                                    <input id="codo_spam_checkbox" name="spam" type="checkbox" checked="">
+                                    <label class="codo_spam_checkbox" for="spam">{_t('Mark as spam')}</label>
+                                </div>
+                            </div>
+
+                            <div class="codo_modal_footer">
+                                <div class="codo_btn codo_btn_def codo_modal_delete_topic_cancel">{_t("Cancel")}</div>
+                                <div class="codo_btn codo_btn_primary codo_modal_delete_topic_submit">{_t("Delete")}</div>
+                            </div>
+                            <div class="codo_spinner"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="codo_topics_loadmore_div row" id="codo_topics_load_more">
+            {if true or !$load_more_hidden}
+
+                <div onclick="CODOF.changePage(this, {$curr_page}, 'prev')" class="pagination_previous_page col-md-offset-1 col-md-2 col-sm-12{if $curr_page neq 1} active_page_controls{/if}">
+
+                    <i class="icon icon-arrow-left"></i>
+                    <div>{_t("Previous")}</div>
                 </div>
 
-            </div>
-        </div>
+                <div class="col-md-4 pagination_pages col-sm-12">
+                    {$pagination}
+                </div>
+
+                <div  onclick="CODOF.changePage(this, {$curr_page}, 'next')" class="pagination_next_page col-md-2 col-sm-12{if $curr_page neq $total_pages} active_page_controls{/if}">
+
+                    <div>{_t("Next")}</div>
+                    <i class="icon icon-arrow-right"></i>
+                </div>
+
+                {if $can_create_topic}
+                    <div class="pagination_new_topic col-md-2 col-sm-12">
+                        <button id="codo_create_topic_btn" type="submit" class="codo_btn codo_btn_primary">{_t("Create new topic")}</button>
+                    </div>
+                {/if}
+                <div class="col-md-offset-1"></div>
+
+            {/if}
+        </div>                            
+
 
         <div id="codo_topics_multiselect" class="codo_topics_multiselect">
 
@@ -334,4 +404,4 @@
 
         </script>
 
-    {/block}
+        {/block}

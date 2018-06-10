@@ -1,14 +1,77 @@
+https://codologic.com/forum/index.php?u=/topic/8961/installer-bombs#post-19411
+
 Changelog
 --
 
-[3.8]
- - Make images click to zoom to fit large images properly
+
+ [4.3] - [UNDER DEVELOPMENT]
+ - Profile avatar button [FIXED]
+ - Search bar in mobile [DONE] 
+ - Edit profile with custom fields error [FIXED]
  - Handle request URI too long
  - Add descriptions for the new added permissions
  - Edit profile permissions incorrect
- - Poll plugin
  - codopm add option send a copy via mail
  - codopm add more visible send pm button
+ - Add sort by
+ - FB sharing
+ - Add option to precheck remember me
+ - Search doesn't work well with pagination
+ - Mark as read button not working
+ - Enable Infinite scroll -> disable -> Active page shown wrong
+ - Category labels feature
+ 
+
+[4.2] - [Released]
+
+ - checkbox design 
+ - poll alerts to be hidden on esc or enter key with a primary button for 'ok'
+ - Order by topics rework [Sticky topics -> Normal topics -> Closed sticky topics -> Closed normal topics] each ordered by time [DONE]
+ - Clear cache option in backend [DONE]
+ - Changing preview translation caused preview to not work [FIXED]
+ - Add an icon to left of internal attachments [DONE]
+ - Download file with orginal name [DONE]
+ - Fix repeated failed requests for non-image uploads [DONE]
+ - Click to view full size image with lightbox [DONE]
+ - Many mobile design fixes [DONE]
+
+[4.1.2] - [Released]
+
+ - Topic title special characters in category/topic/profile/urls [done]
+ - Smiley and headers button in editor [done]
+ - Improved profile view css
+ - Pre select category when creating topic from category page
+ - Added breadcrumbs in new topic based on source
+ - Mass mails bug fixed
+ - Added missing translations
+ - rep button design fixed 
+ - footer pagination to be fixed positioned [done]
+ - Sub category shows old style num. of unread topics [fixed]
+ - No. of views doesn't fit in the fixed sidebar when you scroll [fixed]
+
+[4.1.1] - [Released]
+
+ - Create new topic not fixed in sidebar in categories page
+ - Category name and topic title wrong in topic page [fixed]
+ - Automatically check for new version in admin dashboard
+ - Fixed css in user profile view/edit for tablet and mobile
+
+[4.1] - Beta
+ - Handle special ` characters &acute;
+ - Better pagination design
+ - Fixed theme switch from backend
+ - Reputation not visible [fixed]
+ - Blocks not visible fixed
+ - better reputation design
+ - Fixed polls not working by default
+ - Fixed PM not loading and added notifications
+
+[4.0] - Alpha
+ - Added Moderator only access in the admin panel. 
+ - Poll plugin
+ - New theme
+ - Sort by Most popular, newest and most commented
+ - facebook share
 
 [3.7.2]
 
@@ -101,10 +164,9 @@ http://codologic.com/forum/index.php?u=/topic/5436/links-and-smileys-active-on-f
 
 
 http://codologic.com/forum/index.php?u=/topic/3365/freichat-integration-with-codoforum
+
 -----------------------------------------------------------------
 
-
------
 
 table bug fixed
 search bug fixed
@@ -257,10 +319,6 @@ TODO
  - when reply clicked , the text highlighted for that post is quoted
  - backend option for default notification level
  - numeric list onclick should print numbers sequentially
-
-IN PROGRESS
-===========
-
  - cache dir and attachments dir not created in buildsrcipt
  - move created from codo_notify_queue to codo_notify
 
@@ -367,7 +425,7 @@ DONE
  - article:published_time, article:modified_time added to meta
  - 3rd topic creation in category bug fixed
  - auto subscribe only on first reply to topic
- - make <code> fixed height to prevent long codes to take unnecessary space
+ - make \<code> fixed height to prevent long codes to take unnecessary space
  - notification user preferences fixed
  - removed unnecessary css classes
  - printable pages with @media print
@@ -561,3 +619,14 @@ DONE
 
  - freichat framework
  - all basic features
+
+
+Requirements
+====
+
+ - Apache/nginx or any web server that supports PHP
+ - PHP 5.4+
+ - MySQL or equivalent
+ - php mbstring, php xml, php gd, php curl
+
+MySQL specific query used in Topic.php, talk with developers if wanting to port to different database.

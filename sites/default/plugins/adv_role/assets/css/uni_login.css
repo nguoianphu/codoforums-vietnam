@@ -1,0 +1,67 @@
+.codo_uni_login {
+    
+    margin-left: 4px;
+}
+.codo_login_btn {
+
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    display: inline-block;
+    border-radius: 1px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-color: black;
+    background-size: 16px;
+    padding-right: 30px;
+}
+
+.codo_login_btn > span {
+
+    border-left: 1px solid white;
+    height: 100%;
+    display: inline-block;
+    line-height: 30px;
+    padding-left: 12px;    
+}
+
+.codo_twitter_login_btn {
+
+    background-color: #00bced;
+    border-color: #00afdc;
+    background-image: url('../img/twitter.png');
+    padding-left: 35px;
+}
+.codo_twitter_login_btn:hover {
+
+    background-color: #00c9fe;
+}
+
+.codo_fb_login_btn {
+
+    background-color: #4e69a2;
+    border-color: #435a8b #3c5488 #334c83;
+    background-image: url('../img/fb.png');
+    padding-left: 35px;
+}
+.codo_fb_login_btn:hover {
+
+    background-color: #5471ad;
+}
+
+.codo_google_login_btn {
+
+    background-color: #dd4b39;
+    border-color: #00afdc;
+    background-image: url('../img/google.png');
+    padding-left: 35px;
+
+    background-size: 21px;
+    background-position: 8px;
+
+}
+.codo_google_login_btn:hover {
+
+    background-color: #e74b37;
+}

@@ -18,13 +18,13 @@ CF = CODOF;
 jQuery.fn.visible = function (partial) {
 
     var $t = $(this),
-            $w = $(window),
-            viewTop = $w.scrollTop(),
-            viewBottom = viewTop + $w.height(),
-            _top = $t.offset().top,
-            _bottom = _top + $t.height(),
-            compareTop = partial === true ? _bottom : _top,
-            compareBottom = partial === true ? _top : _bottom;
+        $w = $(window),
+        viewTop = $w.scrollTop(),
+        viewBottom = viewTop + $w.height(),
+        _top = $t.offset().top,
+        _bottom = _top + $t.height(),
+        compareTop = partial === true ? _bottom : _top,
+        compareBottom = partial === true ? _top : _bottom;
     return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
 };
 //workaroud for $.browser for jQuery 1.9
@@ -90,8 +90,8 @@ var CODOF = {
     ret_pagination: function (curr_page, num_pages, constants) {
 
         var times = 5 + (curr_page - 2),
-                cnt = 1,
-                i;
+            cnt = 1,
+            i;
         var pages = {
             page: []
         };
@@ -176,6 +176,51 @@ var CODOF = {
         });
     },
     util: {
+        simpleNotify: function (text, onlyOnce) {
+
+            var onlyOnce = onlyOnce || false;
+
+            if (onlyOnce && localStorage.getItem(onlyOnce) != null) return;
+            if (onlyOnce) localStorage.setItem(onlyOnce, true);
+
+            if ($('.simple_head_notify').length > 0) return;
+
+            $('.CODOFORUM').append("<div class='simple_head_notify'>" + text + "</div>");
+
+            setTimeout(function () {
+                $('.simple_head_notify').slideUp();
+            }, 2000);
+        },
+        alert: function (message, title) {
+
+            if (typeof title === "undefined")
+                title = "Warning";
+
+            if ($('#codo_alert').length > 0) {
+                $('#codo_alert').modal('hide').data('bs.modal', null).remove();
+                $('.modal-backdrop').remove();
+            }
+            console.log($('#codo_alert').length);
+            var dialog_content = '<div id="codo_alert" class="modal fade">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
+                '<h4 class="modal-title">' + title + '</h4>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                '<p>' + message + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+            $('#alert_placeholder').html(dialog_content);
+            $('#codo_alert').modal('show').on('hidden.bs.modal', function () {
+
+                $('#codo_alert').remove();
+            });
+        },
         /**
          *  Adds codo_input_error class to blank input field else removes them
          * @param {type} id
@@ -215,9 +260,9 @@ var CODOF = {
             }
 
             el.html(response.msg)
-                    .addClass(addclass)
-                    .removeClass(removeclass)
-                    .show('slow');
+                .addClass(addclass)
+                .removeClass(removeclass)
+                .show('slow');
             if (typeof saccade !== "undefined") {
                 //shake it 
                 CODOF.ui.saccade(el);
@@ -255,7 +300,7 @@ var CODOF = {
             img.onerror = function () {
                 callback(url, false);
             };
-            img.src = url;
+            img.src = codo_defs.url + url;
         },
         isRemote: function (path) {
 
@@ -273,7 +318,7 @@ var CODOF = {
     ui: {
         animating: false,
         /**
-         * 
+         *
          * @param {jQuery object} el
          * @returns {undefined}
          */
@@ -283,19 +328,24 @@ var CODOF = {
 
                 this.animating = true;
                 el.css('position', 'relative')
-                        .animate({"left": "+=30px"})
-                        .animate({"left": "-=60px"})
-                        .animate({"left": "+=30px"},
-                                {
-                                    complete: function () {
-                                        CODOF.ui.animating = false;
-                                    }
-                                });
+                    .animate({"left": "+=30px"})
+                    .animate({"left": "-=60px"})
+                    .animate({"left": "+=30px"},
+                        {
+                            complete: function () {
+                                CODOF.ui.animating = false;
+                            }
+                        });
             }
         },
         scrollToBottom: function () {
 
             $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
+        },
+        scrollToDiv: function (id) {
+
+            $("html, body").animate({scrollTop: $("#" + id).offset().top});
+
         }
 
     },
@@ -330,8 +380,7 @@ var CODOF = {
         return codo_defs.duri + codo_defs.smiley_path + name;
     },
     smiley: {
-        smileylist: function (smileys)
-        {
+        smileylist: function (smileys) {
             var i = 0;
             var sm_array = [], len = smileys.length;
             for (i = 0; i < len; i++) {
@@ -343,16 +392,13 @@ var CODOF = {
             str = '<span class="smileylist">' + this.mksmileyurl(sm_array) + '</span>';
             return str;
         },
-        mksmileyurl: function (name)
-        {
+        mksmileyurl: function (name) {
             var namelen = name.length;
             var i = 0;
             var str = '';
             var j = 0;
-            for (i = 0; i <= namelen; i++)
-            {
-                if (name[i] === null || typeof name[i] === "undefined")
-                {
+            for (i = 0; i <= namelen; i++) {
+                if (name[i] === null || typeof name[i] === "undefined") {
                     break;
                 }
 
@@ -396,12 +442,12 @@ var CODOF = {
                     if (no_click) {
 
                         replaced_mesg = replaced_mesg.codo_smiley_replace(symbols[len],
-                                '<img src="' + CODOF.make_url(smileys[i].image_name, codo_defs.smiley_path) + '" alt="smile" />');
+                            '<img src="' + CODOF.make_url(smileys[i].image_name, codo_defs.smiley_path) + '" alt="smile" />');
                     } else {
 
                         replaced_mesg = replaced_mesg.codo_smiley_replace(symbols[len],
-                                '<img onclick="CODOF.smiley.add_smiley(\'' + symbols[len].replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '\')" src="'
-                                + CODOF.make_url(smileys[i].image_name, codo_defs.smiley_path) + '" alt="smile" />');
+                            '<img onclick="CODOF.smiley.add_smiley(\'' + symbols[len].replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '\')" src="'
+                            + CODOF.make_url(smileys[i].image_name, codo_defs.smiley_path) + '" alt="smile" />');
                     }
                 }
                 //   break;
@@ -411,11 +457,11 @@ var CODOF = {
         add_smiley: function (name) {
 
             jQuery.markItUp(
-                    //{replaceWith: '!['+name+'](' + codo_defs.url + 'serve/smiley?path=' + name + ') '}
-                            {replaceWith: name + ' '}
-                    );
-                    CODOF.mark.smiley.hide();
-                }
+                //{replaceWith: '!['+name+'](' + codo_defs.url + 'serve/smiley?path=' + name + ') '}
+                {replaceWith: name + ' '}
+            );
+            CODOF.mark.smiley.hide();
+        }
 
     },
     BBcode2html: function (s) {
@@ -491,7 +537,7 @@ var CODOF = {
                             var popover = $(this).next();
                             popover.css('left', '-207px');
                             mod.arrow = popover.find('.arrow')
-                                    .hide();
+                                .hide();
                         }
                     });
                     $that.parent().on('click', '.codo_modal_delete_topic_cancel', function () {
@@ -543,7 +589,7 @@ var CODOF = {
         }
 
     },
-    switch : {
+    switch: {
         get: function (id) {
 
             var el = $('#' + id);
@@ -679,7 +725,7 @@ var CODOF = {
                 var $this = $(this);
                 var mention = $this.text();
                 if (!CODOF.mentions.exists(mention) &&
-                        CODOF.mentions.wrong.indexOf(mention.replace("@", "")) === -1) {
+                    CODOF.mentions.wrong.indexOf(mention.replace("@", "")) === -1) {
                     unmanned.push(mention.replace("@", ""));
                 }
             });
@@ -735,18 +781,18 @@ var CODOF = {
 
     },
     /**
-     * 
-     * Hook system to manage events . 
+     *
+     * Hook system to manage events .
      * @object type
-     * 
+     *
      */
     hook: {
         hooks: CF.hook.hooks,
         add: CF.hook.add,
         /**
-         * 
+         *
          * args must be an object
-         * 
+         *
          * @param {type} myhook
          * @param {Object} args
          * @returns {undefined}
@@ -765,7 +811,7 @@ var CODOF = {
             if (typeof CODOF.hook.hooks[myhook] !== "undefined") {
 
                 var len = CODOF.hook.hooks[myhook].length,
-                        curr;
+                    curr;
 
                 CODOF.hook.hooks[myhook].sort(function (a, b) {
 
@@ -820,7 +866,7 @@ var CODOF = {
             if (_options.preventParallel) {
 
                 if (typeof this.requests[_options.hook] !== 'undefined'
-                        && this.requests[_options.hook] !== 'completed') {
+                    && this.requests[_options.hook] !== 'completed') {
 
                     //prevent duplicate request before completion
                     return false;
@@ -895,7 +941,7 @@ var CODOF = {
             });
         },
         /**
-         * 
+         *
          * @param {
          * 
          *    url <string> [required]
@@ -1001,7 +1047,7 @@ CODOF.notify = {
     init: function () {
 
         if (codo_defs.preferences.notify.desktop === 'yes'
-                && Notify.isSupported) {
+            && Notify.isSupported) {
 
             //take permission from user if required
             if (Notify.needsPermission) {
@@ -1077,15 +1123,15 @@ CODOF.notify = {
             window.open(CODOF.util.generatePostUrl(data.tid, data.pid) + "&page=from_notify");
         };
         CODOF.notify.create(
-                {
-                    title: data.label,
-                    icon: data.actor.avatar,
-                    richBody: textBody,
-                    textBody: textBody,
-                    tag: event.type,
-                    notifyClick: notifyClick,
-                    timeout: 10000
-                }
+            {
+                title: data.label,
+                icon: data.actor.avatar,
+                richBody: textBody,
+                textBody: textBody,
+                tag: event.type,
+                notifyClick: notifyClick,
+                timeout: 10000
+            }
         );
     }
 };
@@ -1093,12 +1139,9 @@ CODOF.notify.init();
 jQuery(document).mouseup(function (e) {
 
     var container = jQuery('#codo_markitup_smileys')
-    if (container.has(e.target).length === 0)
-    {
+    if (container.has(e.target).length === 0) {
         container.hide();
     }
-
-
 
 
 }).ready(function ($) {
@@ -1143,7 +1186,7 @@ CODOF.hook.add('on_req_new_stuff', function (data) {
      */
     var events = data.events;
     var no_events = events.length,
-            event, data;
+        event, data;
     CODOF.request.updatePageTime(data.time);
 
     for (var i = 0; i < no_events; i++) {
@@ -1213,11 +1256,11 @@ jQuery(document).ready(function ($) {
     };
     //only for logged in users
     if (codo_defs.logged_in === 'yes' &&
-            codo_defs.preferences.notify.real_time === 'yes') {
+        codo_defs.preferences.notify.real_time === 'yes') {
         //delay the server polling by pre set interval
         setTimeout(CODOF.events.createTimer, 300);
     }
-    
+
     CODOF.hasSetLastReadTime = false;
 
     $('#codo_inline_notifications').on('click', function () {
@@ -1230,7 +1273,7 @@ jQuery(document).ready(function ($) {
         var showNotifications = function () {
 
             $('.codo_inline_notification_header > .codo_load_more_bar_black_gif')
-                    .hide();
+                .hide();
             $('#codo_inline_notification_header_content').show();
             $('#codo_inline_notifications_mark_read').tooltip();
             $('#codo_inline_notifications_preferences').tooltip();
@@ -1248,8 +1291,8 @@ jQuery(document).ready(function ($) {
 
             $('#codo_inline_notification_body .codo_inline_notification_el_rolled').tooltip();
 
-            if(!CODOF.hasSetLastReadTime && codo_defs.unread_notifications > 0) {
-                
+            if (!CODOF.hasSetLastReadTime && codo_defs.unread_notifications > 0) {
+
                 CODOF.hasSetLastReadTime = true;
                 CODOF.request.post({url: codo_defs.url + 'Ajax/set/lastNotificationRead'});
             }
@@ -1281,7 +1324,7 @@ jQuery(document).ready(function ($) {
 
                                 //this is <v.3.7 notification so link needs to be built manually
                                 link = 'topic/' + data.tid + '/post-' + data.pid +
-                                        '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
+                                    '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
                                 unique = parseInt(data.tid);
 
                             } else {
@@ -1314,7 +1357,7 @@ jQuery(document).ready(function ($) {
 
                                         //if not defined, this is the second one, else + 1
                                         notifications[nLen].rolledX =
-                                                (typeof notifications[nLen].rolledX === 'undefined')
+                                            (typeof notifications[nLen].rolledX === 'undefined')
                                                 ? 2
                                                 : notifications[nLen].rolledX + 1;
                                         break;
@@ -1462,11 +1505,11 @@ String.prototype.codo_smiley_replace = function (name, value) {
     var re = new RegExp(name, "g");
     return this.replace(re, value);
 };
+
 function codo_create_topic() {
 
     window.location.href = codo_defs.url + 'new_topic';
 }
-
 
 
 jQuery(document).ready(function ($) {
@@ -1476,7 +1519,7 @@ jQuery(document).ready(function ($) {
     var three_bars_visible = !$('#codo_is_xs').is(':visible');
     if (three_bars_visible) {
 
-        $('#mmenu').mmenu({
+        CODOF.mmenu = $('#mmenu').mmenu({
             dragOpen: {
                 open: true,
                 threshold: 10
@@ -1485,7 +1528,7 @@ jQuery(document).ready(function ($) {
         });
 
     } else {
-        $('#mmenu').mmenu();
+        CODOF.mmenu = $('#mmenu').mmenu();
     }
 
     /*$('.codo_topics').on('click', ".codo_readmore", function () {
@@ -1493,4 +1536,66 @@ jQuery(document).ready(function ($) {
      window.location = $(this).data('href');
      });*/
 
+
+    $('#codo_global_search').on('click', function () {
+
+        var input = $('.codo_global_search_head_input');
+        input.show();
+        input.focus();
+
+        if (input.val() !== "") {
+            CODOF.globalSearch(input.val());
+        }
+    });
+
+    $('.codo_global_search_input').keypress(function (e) {
+
+        if (e.which == 13) {
+            CODOF.globalSearch(this.value);
+        }
+    });
+
+
+    //footer pagination scroll above footer
+    var footerHeight = $('.footer').height();
+    var offset = 2;
+    var $paginationDiv = $(".codo_topics_loadmore_div");
+    var applyDelayedAdjustment = false;
+    var startedApplyingDelayedAdjustment = false;
+    (CODOF.adjustPaginationPosition = function () {
+
+        var scrolled = $(window).scrollTop() + (footerHeight - offset);
+        var fullHieght = $(document).height() - $(window).height();
+
+        if (scrolled > fullHieght) {
+
+            $paginationDiv.css("bottom", (scrolled - fullHieght) + "px");
+            applyDelayedAdjustment = true;
+        } else {
+
+            //apply a delayed adjustment
+            if (applyDelayedAdjustment && !startedApplyingDelayedAdjustment) {
+
+                startedApplyingDelayedAdjustment = true;
+                setTimeout(function () {
+
+
+                    var scrolled = $(window).scrollTop() + (footerHeight - offset);
+                    var fullHieght = $(document).height() - $(window).height();
+                    if (scrolled < fullHieght) {
+                        $paginationDiv.animate({"bottom": "0px"});
+                    }
+                    startedApplyingDelayedAdjustment = false;
+                    applyDelayedAdjustment = false;
+
+                }, 100);
+            }
+        }
+
+    })();
+
+    $(window).scroll(function () {
+
+        CODOF.adjustPaginationPosition();
+    });
 });

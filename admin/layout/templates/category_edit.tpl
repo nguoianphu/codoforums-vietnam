@@ -36,7 +36,7 @@
 <div class="row" id="add_cat" style="">
     <div class="col-lg-6">
         <div class="box box-info">
-            <form class="box-body" action="?page=categories&action=edit&cat_id={$cat_id}" role="form" method="post" enctype="multipart/form-data">
+            <form class="box-body" action="?page=categories&action=edit&cat_id={$cat_id}" role="form" method="post">
                 <input type="hidden" value="edit" name="mode"/>
                 <input type="hidden" value="{$cat_id}" name="id"/>
 
@@ -44,10 +44,15 @@
                 <input type="text" name="cat_name"  value="{$cat.cat_name}" class="form-control" placeholder="Category name" required />
                 <br/>
 
-                <label>Image(Upload a new one to change it):</label><br/>
-                <img width="200px" draggable="false" src="{$smarty.const.A_DURI}{$smarty.const.CAT_IMGS}{$cat.cat_img}" />
-                <br>
-                <input type="file" name="cat_img" class="form-control"   />
+                <label>Icon[Only visible for labels]:</label><br/>
+                <input type="text" name="cat_img" value="{$cat.cat_img}" class="form-control"   />
+                <br/>
+
+                <label>Is a label ?:</label><br/>
+                <select class="form-control"  name="is_label">
+                    <option value="yes" {if $cat.is_label eq 1}selected{/if}>Yes</option>
+                    <option value="no" {if $cat.is_label eq 0}selected{/if}>No</option>
+                </select>
                 <br/>
 
                 <label>Description:</label><br/>                

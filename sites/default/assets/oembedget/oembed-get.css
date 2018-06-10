@@ -457,7 +457,7 @@ div.oembedall-lanyard .first{
     position: relative
 }
 
-#codo_new_reply_preview i, .codo_loading_embed_gif{
+#codo_new_reply_preview .codo_loading_embed_gif{
     
     display: none; /*We dont want this preview things inside the editor , right ?*/
 }

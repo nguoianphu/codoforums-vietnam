@@ -31,6 +31,9 @@ class ImageResize {
         $final_width = 0;
         $final_height = 0;
         list($width_old, $height_old) = $info;
+
+        if($width > $width_old) $width = $width_old;
+
         $cropHeight = $cropWidth = 0;
 
         # Calculating proportionality

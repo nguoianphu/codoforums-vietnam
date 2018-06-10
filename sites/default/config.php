@@ -30,7 +30,7 @@ $DB = get_codo_db_conf();
 $CONF = array (
     
   'driver' => 'Custom',
-  'UID'    => '5b1cee8a684c6',
-  'SECRET' => '5b1cee8a68507',
+  'UID'    => '5b1d3c8e82d54',
+  'SECRET' => '5b1d3c8e82d90',
   'PREFIX' => ''
 );

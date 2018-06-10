@@ -43,5 +43,8 @@ if($res3) {
 $smarty->assign('no_views',$topics['no_views']);
 //------------------------------------------------------------------------
 
+CODOF\Util::get_config($db);
+$smarty->assign('version', CODOF\Util::get_opt('version'));
+
 $content=$smarty->fetch('dashboard.tpl');
 

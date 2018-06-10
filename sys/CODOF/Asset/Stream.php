@@ -204,6 +204,8 @@ class Stream {
                         $remoteUrls[] = array("data" => $file['data'], "type" => $file['type']);
                         continue;
                     } else {
+
+                        //Not recommended to use HTTP/HTTPS                      
                         $contents .= file_get_contents($file['data']);
                     }
                 } else {

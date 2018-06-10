@@ -38,8 +38,14 @@
                 <input type="hidden" value="new" name="mode"/>
                 <input type="text" name="cat_name"  value="" class="form-control" placeholder="Category name" required />
                 <br/>
-                Category Image [420x420]:<br/>
-                <input type="file" name="cat_img" class="form-control"  required />
+                Category Icon[Only visible for labels]:<br/>
+                <input type="text" name="cat_img" class="form-control" placeholder="icon that must be available in fonts"  required />
+                <br/>
+                Is a Label ?:<br/>
+                <select class="form-control" name="is_label">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
                 <br/>
                 <textarea name="cat_description" placeholder="Category Description" class="form-control" required ></textarea>
                 <br/>

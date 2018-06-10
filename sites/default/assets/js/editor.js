@@ -12,6 +12,10 @@ function saveToLocalStorage() {
             'text': $("#codo_new_reply_textarea").val(),
             'title': $('#codo_topic_title').val(),
             'tags': $('#codo_tags').tagsinput('items'),
+            'poll_title': $('#poll_question').val(),
+            'poll_options': $('#codo_poll_inputs input').map(function () {
+                return this.value;
+            }).get(),
             'cat': CODOF.draftCurrentCategory ? CODOF.draftCurrentCategory : $.trim($('#codo_topic_cat').val()), //selected category
             'tid': CODOF.edit_topic_id //false -> if new topic                            
         }));
@@ -135,35 +139,36 @@ CODOF.editor_settings = {
     onShiftEnter: {keepDefault: false, openWith: '\n\n'},
     onTab: {keepDefault: false, replaceWith: '    '},
     markupSet: [
-        {name: 'Bold', key: 'B', openWith: '**', closeWith: '**'},
-        {name: 'Italic', key: 'I', openWith: '_', closeWith: '_'},
+        {name: codo_defs.trans.editor.bold, key: 'B', openWith: '**', closeWith: '**'},
+        {name: codo_defs.trans.editor.italic, key: 'I', openWith: '_', closeWith: '_'},
+        //{name: 'Underline', key: 'U', openWith: '[u]', closeWith: '[/u]'},
         {separator: '---------------'},
-        {name: 'Bulleted List', openWith: '- '},
-        {name: 'Numeric List', openWith: function (markItUp) {
+        {name: codo_defs.trans.editor.bulleted_list, openWith: '- '},
+        {name: codo_defs.trans.editor.numeric_list, openWith: function (markItUp) {
                 return markItUp.line + '. ';
             }},
         {separator: '---------------'},
         //{name: 'Picture', key: 'P', replaceWith: '![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
         //{name: 'Link', key: 'L', openWith: '[', closeWith: ']([![Url:!:http://]!] "[![Title]!]")', placeHolder: 'Your text to link here...'},
-        {name: 'Picture', key: 'U', replaceWith: function (markItUp) {
+        {name: codo_defs.trans.editor.picture, key: 'U', replaceWith: function (markItUp) {
                 CODOF.mark.upload.show(markItUp);
                 return false;
             }
         },
-        {name: 'Link', replaceWith: function (markItUp) {
+        {name: codo_defs.trans.editor.link, replaceWith: function (markItUp) {
                 CODOF.mark.linker.show(markItUp);
                 return false;
             }
         },
         {separator: '---------------'},
-        {name: 'Quotes', key: 'Q', openWith: '> '},
+        {name: codo_defs.trans.editor.quotes, key: 'Q', openWith: '> '},
         {name: 'Code Block / Code', openWith: '\n```` \r', closeWith: '\r\n````'},
         {separator: '---------------'},
         {name: 'Smiley', beforeInsert: function (markItUp) {
                 CODOF.mark.smiley.show(markItUp);
                 return false;
             }
-        },
+        },        
         {name: 'Preview', call: 'preview', className: "preview"},
         {name: 'Headers', className: "heading", dropMenu: [
                 {name: 'Header 1', key: '1', className: "header1", placeHolder: 'Your title here...', closeWith: function (markItUp) {
@@ -178,12 +183,28 @@ CODOF.editor_settings = {
                 {name: 'Header 6', key: '6', className: "header6", openWith: '###### ', placeHolder: 'Your title here...'}
             ]
         }
+        
+
     ],
     previewInElement: jQuery('#codo_new_reply_preview'),
+    getImageHtml: function(href, title, text) {
+
+        var src = href;
+        if(href.indexOf("serve/attachment") > -1) {
+
+            src = src.replace('serve/attachment', 'serve/attachment/preview');
+        }
+
+        if(title == null) title = "";
+        if(text == null) text = "";
+
+        return '<a title="'+codo_defs.trans.editor.clickToViewFull+'" class="codo_lightbox_container" href="' + href + '"><img alt="' + text + '" src="' + src + '" title="' + title + '" /></a>';
+    },
     previewParser: function (content) {
 
         var renderer = new marked.Renderer();
         var xRenderer = new marked.Renderer();
+        var editor = this;
 
         renderer.link = function (href, title, text) {
 
@@ -193,15 +214,15 @@ CODOF.editor_settings = {
             if (/\.(?:jpg|jpeg|gif|png)$/i.test(href)) {
 
                 //may be an image
-                return '<img src="' + href + '" title="' + title + '" />';
+                return editor.getImageHtml(href, title);
             }
 
             if (CODOF.cache.validImages.indexOf(href.replace(/&amp;/g, '&')) > -1) {
 
-                return '<img src="' + href + '" title="' + title + '" />';
+                return editor.getImageHtml(href, title);
             }
 
-            if (CODOF.cache.invalidImages.indexOf(href) === -1) {
+            if (CODOF.cache.invalidImages.indexOf(href.replace(/&amp;/g, '&')) === -1) {
 
                 //sometime
                 CODOF.util.isImage(href.replace(/&amp;/g, '&'), function (src, isImage) {
@@ -232,10 +253,10 @@ CODOF.editor_settings = {
                             }
                             embed = "<a href='" + href + "' class='codo_oembed' target='_blank'><div class='codo_embed_container'>" + embed + no_preview_div + "</div></a>";
                         }/*,
-                        onEmbed: function () {
-                            console.log('call me instead')
-                        }, afterEmbed: function () {
-                        }*/
+                         onEmbed: function () {
+                         console.log('call me instead')
+                         }, afterEmbed: function () {
+                         }*/
                     }
             );
 
@@ -251,9 +272,15 @@ CODOF.editor_settings = {
 
             if (patt.test(href)) {
 
-                return '<img src="' + href + '" title="' + title + '" />';
+                return editor.getImageHtml(href, title);
             }
 
+
+            //An uploaded file
+            if(href.indexOf("serve/attachment") !== -1) {
+
+                return '<a href="'+codo_defs.url + href+'" title="'+codo_defs.trans.editor.download_file+'"><i class="glyphicon glyphicon-file"></i>'+text+'</a>';
+            }
 
             return (embed) ? embed : xRenderer.link(href, title, text);
 
@@ -373,8 +400,7 @@ CODOF.editor_settings = {
                 // Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
                 var len = $(this).val().length * 2;
                 this.setSelectionRange(len, len);
-            }
-            else
+            } else
             {
                 // ... otherwise replace the contents with itself
                 // (Doesn't work in Google Chrome)

@@ -76,10 +76,7 @@ function codo_cat_build_structure($cat, $new_topics) {
     $url = RURI . 'category/' . $cat->cat_alias;
     echo <<<EOD
     <div class="row"> 
-    <div class="codo_category_img col-md-2 col-xs-2">
-        <img draggable="false" src="$DURI$CAT_IMGS$cat->cat_img" />
-    </div>
-   <div class="codo_categories_category col-md-9 col-xs-9">
+   <div class="codo_categories_category">
         <a href="$url"><div class="codo_category_title">$cat->cat_name</div></a>
         <span data-toggle="tooltip" data-placement="bottom" title="$no_topics_title" class="codo_category_num_topics codo_bs_tooltip">$no_topics</span>            
         $new_no    

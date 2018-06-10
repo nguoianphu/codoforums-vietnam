@@ -52,7 +52,7 @@ class Forum {
     /**
      * Generates a parent child object tree from a linear array
      * @param type $res
-     * @param type $pid
+     * @param type|int $pid
      * @param \stdClass $tree
      * @return \stdClass
      */
@@ -82,7 +82,7 @@ class Forum {
     }
 
     /**
-     * 
+     *
      * Recursively adds no_topics of sub categories to parent categories
      * @param type $cats
      * @return int
@@ -271,13 +271,13 @@ class Forum {
         $rids = implode(",", $user->rids);
 
         /**
-         * 
+         *
          * 0   0   view all topics  0
          * 0   0   view my  topics  1
          * 3   0   view all topics  1
          * 3   0   view my  topics  0
-         * 
-         * 
+         *
+         *
          */
         //NOTE: 'view my topics' & 'view all topics' are mutuall exclusive
         //      so they both cannot be set as granted at once.

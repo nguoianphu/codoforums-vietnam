@@ -15,9 +15,6 @@ error_reporting(-1);
 
 define('IN_CODOF', true);
 
-if (!isset($_COOKIE['user_id']))
-    setcookie("user_id", 0);
-
 //contains config.php and path definitions
 require 'sys/load.php';
 ini_set('display_errors', 1);

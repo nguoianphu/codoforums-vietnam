@@ -40,9 +40,11 @@ class Post extends Forum {
         //show oldest first
         $posts = array();
         $num_posts = \CODOF\Util::get_opt("num_posts_per_topic");
-        
-        if($num_posts  < 0) $num_posts = 0;
-        if($from < 0) $from = 0;
+
+        if ($num_posts < 0)
+            $num_posts = 0;
+        if ($from < 0)
+            $from = 0;
         $from *= $num_posts;
 
         $qry = "SELECT u.id, r.rid, u.name AS name, u.avatar, u.no_posts, "
@@ -52,7 +54,7 @@ class Post extends Forum {
                 . "LEFT JOIN codo_users AS u ON u.id=p.uid "
                 . "LEFT JOIN codo_user_roles AS r ON r.uid=p.uid AND r.is_primary=1 "
                 . "WHERE p.topic_id=$tid AND p.post_status=1 "
-                . "ORDER BY case when p.post_id=".$this->topic_post_id." then 0 else 1 end, post_created "
+                . "ORDER BY case when p.post_id=" . $this->topic_post_id . " then 0 else 1 end, post_created "
                 . "LIMIT " . $num_posts . " OFFSET " . $from;
 
         $res = $this->db->query($qry);
@@ -413,6 +415,64 @@ class Post extends Forum {
         \CODOF\Util::set_promoted_or_demoted_rid();
     }
 
+
+    /**
+     * Uploads an attachment
+     *
+     * @param $_FILES['file'] $attachment
+     * @return array(name)
+     */
+    public static function uploadAttachment($attachment) {
+        
+        $visibleHash = \uniqid();
+        $storedHash = $visibleHash; //can make more secure by generating another hash here
+        $destination = DATA_PATH . \CODOF\Util::get_opt('forum_attachments_path');
+
+        $id = \DB::table(PREFIX . 'codo_attachments')
+            ->where("visible_hash", '=', $visibleHash)
+            ->pluck('id');
+
+        //one time uniqueness check    
+        if(!$id) {
+         
+            $visibleHash = \uniqid();
+            $storedHash = $visibleHash;
+        }
+
+        \DB::table(PREFIX . 'codo_attachments')
+            ->insert(array(
+                "original_name" => $attachment['name'],
+                "visible_hash" => $visibleHash,
+                "stored_hash" => $storedHash,
+                "location" => "/",
+                "uid" => \CODOF\User\CurrentUser\CurrentUser::id(),
+                "upload_time" => time(),
+                "file_size" => $attachment['size']
+            ));
+
+        \CODOF\Hook::call(\CODOF\Hook::ON_FILE_SAVE, array($attachment, $visibleHash, $storedHash));
+            
+        \CODOF\File\Upload::save($attachment, $storedHash, $destination, 0777);
+        $originalFilePath = $destination . '/' . $storedHash;
+
+        if(@\is_array(getimagesize($originalFilePath))) {
+
+            $resizer = new \Ext\ImageResize();
+            $previewFilePath = $destination . '/preview/' . $storedHash;
+            $success = $resizer->smart_resize_image($originalFilePath, NULL, 683, 0, true, $previewFilePath, FALSE, FALSE, 90);
+    
+            if(!$success) {
+                $success = @copy($originalFilePath, $previewFilePath); 
+            }
+    
+            if($success) {
+                chmod($previewFilePath, 0777);            
+            }    
+        }
+
+        return array("name" => $visibleHash);
+    }
+
     /** private functions --------------------------------------------------------- */
     public function gen_posts_arr($posts, $search = false) {
 
@@ -440,10 +500,9 @@ class Post extends Forum {
                 "message" => $message,
                 "imessage" => htmlentities($post['imessage'], ENT_QUOTES, "UTF-8"),
                 "reputation" => $post['reputation'],
-                //
-                "role" => \CODOF\User\User::getRoleName($post['rid']),
                 "no_posts" => \CODOF\Util::abbrev_no($post['no_posts'], 1),
-                "signature" => $post['signature']
+                "signature" => $post['signature'],
+                "is_neg_rep" => $post['reputation'] < 0
             );
 
             $_posts[$i] ['tid'] = $this->tid;
@@ -467,7 +526,7 @@ class Post extends Forum {
                 }
                 $_posts [$i]['can_manage_topic'] = $_posts[$i]['can_edit_topic'] ||
                         $_posts[$i]['can_delete_topic'];
-                
+
                 $_posts[$i]['can_move_topic'] = $user->can('move posts', $this->cat_id);
             } else {
                 $_posts[$i]['is_topic'] = false;
@@ -482,10 +541,11 @@ class Post extends Forum {
                 }
                 $_posts [$i]['can_manage_post'] = $_posts[$i]['can_edit_post'] ||
                         $_posts[$i]['can_delete_post'];
-                
+
                 $_posts[$i]['can_move_post'] = $user->can('move posts', $this->cat_id);
-                
-            } $_posts[$i]['can_see_history'] = $user->can('see history', $this->cat_id);
+            }
+            $_posts[$i]['can_see_history'] = $user->can('see history', $this->cat_id);
+            $_posts [$i] ['can_rep'] = $user->canAll(array('rep up', 'rep down'));
 
             if ($this->tuid == $uid) {
 
@@ -496,14 +556,14 @@ class Post extends Forum {
             }
 
             $_posts[$i]['is_closed'] = $this->topic_status == Forum::APPROVED_CLOSED ||
-            $this->topic_status == Forum::STICKY_CLOSED || $this->topic_status == Forum::STICKY_ONLY_CATEGORY_CLOSED;
-            
-            if($_posts[$i]['is_closed']) {
-                
+                    $this->topic_status == Forum::STICKY_CLOSED || $this->topic_status == Forum::STICKY_ONLY_CATEGORY_CLOSED;
+
+            if ($_posts[$i]['is_closed']) {
+
                 $_posts[$i]['can_reply'] = false;
             }
-            
-            
+
+
             if ($search) {
 
                 $_posts[$i]['in_search'] = true;
@@ -525,4 +585,5 @@ class Post extends Forum {
         return $status[$option];
     }
 
+    
 }
