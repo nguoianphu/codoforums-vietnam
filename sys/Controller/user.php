@@ -323,7 +323,8 @@ class user {
 
             $publickey = \CODOF\Util::get_opt('captcha_public_key'); // you got this from the signup page
             $this->smarty->assign('recaptcha', '<div class="g-recaptcha col-md-6" data-sitekey="' . $publickey . '"></div>');
-            $this->js_files[] = array('https://www.google.com/recaptcha/api.js', array('type' => 'remote'));
+            // nguoianphu Adding Vietnamese language
+            $this->js_files[] = array('https://www.google.com/recaptcha/api.js?hl=vi', array('type' => 'remote'));
         }
 
         $this->smarty->assign('min_pass_len', \CODOF\Util::get_opt('register_pass_min'));

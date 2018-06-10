@@ -23,8 +23,62 @@ class Filter {
      * @param array $options
      * @return string
      */
-    static function URL_safe($str, $options = array()) {
+	// nguoianphu strip VN 
+    static function totranslit($var, $lower = true, $punkt = true) {
+	if ( is_array($var) ) return "";
 
+	$var = trim( strip_tags( $var ) );
+	$var = str_replace(
+	array(' ','%',"/","\\",'"','?','<','>',"#","^","`","'","=","!",":" ,",,","..","*","&","__","▄","--","---"),
+	array('-','' ,'' ,'' ,'' ,'' ,'' ,'' ,'' ,'' ,'' ,'' ,'-','' ,'-','' ,'' ,'' , "-" ,"" ,"","-","-"),$var);
+	$var = preg_replace( "/\s+/ms", "-", $var );
+	$var = str_replace( "/", "-", $var );
+
+	$var = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $var);
+	$var = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $var);
+	$var = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $var);
+	$var = preg_replace("/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/", 'o', $var);
+	$var = preg_replace("/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/", 'u', $var);
+	$var = preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/", 'y', $var);
+	$var = preg_replace("/(đ)/", 'd', $var);
+	$var = preg_replace("/(À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ)/", 'A', $var);
+	$var = preg_replace("/(È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ)/", 'E', $var);
+	$var = preg_replace("/(Ì|Í|Ị|Ỉ|Ĩ)/", 'I', $var);
+	$var = preg_replace("/(Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ)/", 'O', $var);
+	$var = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $var);
+	$var = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $var);
+	$var = preg_replace("/(Đ)/", 'D', $var);
+	$var = str_replace(" ", "-", str_replace("&*#39;","",$var));
+	
+	if ( $punkt ) $var = preg_replace( "/[^a-z0-9\_\-.]+/mi", "", $var );
+	else $var = preg_replace( "/[^a-z0-9\_\-]+/mi", "", $var );
+
+	$var = preg_replace( '#[\-]+#i', '-', $var );
+
+	// Chuyen cac chu in HOA thanh chu in thuong
+	if ( $lower ) $var = strtolower( $var );
+
+	$var = str_ireplace( ".php", "", $var );
+	$var = str_ireplace( ".php", ".ppp", $var );
+	
+	
+	// Neu SEO link dai hon 200 ky tu thi rut ngan lai thanh 200 ky tu.
+	// Ban co the thay doi so 200 thanh so ban muon
+	if( strlen( $var ) > 200 ) {
+		
+		$var = substr( $var, 0, 200 );
+		
+		if( ($temp_max = strrpos( $var, '-' )) ) $var = substr( $var, 0, $temp_max );
+	
+	}
+	
+	return $var;
+	
+	}
+    static function URL_safe($str, $options = array()) {
+		
+	return	$str = \CODOF\Filter::totranslit( stripslashes( $str ), true, false );
+/*		
         // Make sure string is in UTF-8 and strip invalid UTF-8 characters
         $str = mb_convert_encoding((string) $str, 'UTF-8', mb_list_encodings());
 
@@ -119,6 +173,7 @@ class Filter {
         $str = trim($str, $options['delimiter']);
 
         return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
+*/
     }
 
     /**

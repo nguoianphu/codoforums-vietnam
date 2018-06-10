@@ -4,7 +4,8 @@
 
         <div class="codo_topics_topic_img">
             <a href="{{{const "RURI"}}}category/{{{cat_alias}}}">
-                <img draggable="false" src="{{{const "DURI"}}}{{{const "CAT_ICON_IMGS"}}}{{{cat_img}}}" />
+				<!-- nguoianphu add alt attribute into image -->
+                <img draggable="false" src="{{{const "DURI"}}}{{{const "CAT_ICON_IMGS"}}}{{{cat_img}}}" alt="{{{cat_alias}}}" />
             </a>
         </div>
 
@@ -65,6 +66,7 @@
             {{#if new_topic}}
             <a class="codo_tooltip" title="{{{i18n "new topic"}}}" data-placement="bottom" data-toggle="tooltip" href="{{{const "RURI"}}}topic/{{topic_id}}/{{safe_title}}"><div class=''><i class="glyphicon glyphicon-asterisk"></i></div></a>    
             {{/if}}
+
             {{#if new_replies}}
             <a class="codo_tooltip" title="{{{i18n "new replies"}}}" data-placement="bottom" data-toggle="tooltip" href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{safe_title}}/post-{{{last_reply_id}}}#post-{{{last_reply_id}}}"><div class='codo_unread_replies'>{{{new_replies}}}</div></a>
             {{/if}}
@@ -75,7 +77,8 @@
         <div class="codo_topics_topic_content">
             <div class="codo_topics_topic_avatar">
                 <a href="{{{const "RURI"}}}user/profile/{{id}}">
-                    <img draggable="false" src="{{avatar}}" />
+					<!-- nguoianphu add alt attribute into image -->
+                    <img draggable="false" src="{{avatar}}" alt="{{name}}" />
                 </a>
             </div>
             <div class="codo_topics_topic_name">

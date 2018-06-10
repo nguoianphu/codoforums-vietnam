@@ -424,7 +424,8 @@ class forum {
         $this->smarty->assign('topic_info', $topic_info);
 
         $this->smarty->assign('is_closed', $is_closed);
-        $this->smarty->assign('title', htmlentities($topic_info['title'], ENT_QUOTES, "UTF-8"));
+            // $this->smarty->assign('title', htmlentities($topic_info['title'], ENT_QUOTES, "UTF-8"));
+            $this->smarty->assign('title', $topic_info['title']); // nguoianphu
 
         $search_data = array();
         if (isset($_GET['str'])) {
@@ -487,6 +488,22 @@ class forum {
         $mesg = $posts[0]['imessage'];
         \CODOF\Store::set('og:desc', (strlen($mesg) > 200) ? substr($mesg, 0, 197) . "..." : $mesg);
 
+			// nguoianphu
+			// get image link for Facebook sharing
+			// get the featured image
+			$image = $posts[0]['message'];
+			// get the src for that image
+			$img_src = 'http://www.nguoianphu.com/sites/default/assets/img/cats/5520bd0f7d055nguoianphu_logo420.png';
+			$pattern = '/src="([^"]*)"/';
+			preg_match($pattern, $image, $matches);
+			if (!empty($matches[1])){
+				$img_src = $matches[1];
+			}
+			unset($matches);
+			// \CODOF\Store::set('og:image', ($img_src != '') ? $img_src : 'http://www.nguoianphu.com/sites/default/assets/img/cats/5520bd0f7d055nguoianphu_logo420.png');
+			\CODOF\Store::set('og:image', $img_src);
+			// nguoianphu
+			
         if ($from > 0) {
 
             //previous page exists

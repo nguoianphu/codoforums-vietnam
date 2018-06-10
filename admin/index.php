@@ -44,6 +44,8 @@ codoForumAdmin::$action["system/importer"]="system/importer";
 codoForumAdmin::$action["system/cron"]="system/cron";
 codoForumAdmin::$action["system/upgrade"]="system/upgrade";
 codoForumAdmin::$action["system/massmail"]="system/massmail";
+// nguoianphu sitemap
+codoForumAdmin::$action["system/sitemap"]="system/sitemap";
 codoForumAdmin::$action["permission/roles"]="permission/roles";
 codoForumAdmin::$action["permission/role_edit"]="permission/role_edit";
 codoForumAdmin::$action["permission/categories"]="permission/categories";

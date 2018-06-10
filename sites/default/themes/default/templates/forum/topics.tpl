@@ -37,7 +37,8 @@
                                 <div class="row">
 
                                     <div class="codo_category_img col-md-2 col-xs-2">
-                                        <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" />
+										<!-- nguoianphu add alt attribute into image -->
+                                        <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" alt="{$cat->cat_name}"/>
                                     </div>
 
                                     <div class="codo_categories_category col-md-9 col-xs-9">

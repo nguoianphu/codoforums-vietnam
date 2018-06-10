@@ -606,8 +606,10 @@ class Topic extends Forum {
 					"post_created" => \CODOF\Time::get_pretty_time ( $topic ['post_created'] ),
 					"topic_id" => $topic ['topic_id'],
 					"post_id" => $topic ['post_id'],
-					"safe_title" => \CODOF\Filter::URL_safe ( $topic ['title'] ),
-					"title" => \CODOF\Util::mid_cut ( $topic ['title'], 200 ),
+                    // nguoianphu Do not encode URL
+                    "safe_title" => \CODOF\Filter::URL_safe(html_entity_decode($topic['title'])),
+                    // nguoianphu Do not encode URL
+                    "title" => \CODOF\Util::mid_cut(html_entity_decode($topic['title']), 200),                    
 					"no_replies" => \CODOF\Util::abbrev_no ( ($topic ['no_posts'] - 1), 1 ),
 					"no_views" => \CODOF\Util::abbrev_no ( $topic ['no_views'], 1 ),
 					"last_post_uid" => $topic ['last_post_uid'],
@@ -703,7 +705,8 @@ class Topic extends Forum {
 					"topic_id" => $topic ['topic_id'],
 					"post_id" => $topic ['post_id'],
 					"safe_title" => \CODOF\Filter::URL_safe ( html_entity_decode ( $topic ['title'] ) ),
-					"title" => $topic ['title'],
+                    // nguoianphu Do not encode URL
+                    "title" => html_entity_decode($topic['title']),                    
 					"no_replies" => \CODOF\Util::abbrev_no ( ($topic ['no_posts'] - 1), 1 ),
 					"no_views" => \CODOF\Util::abbrev_no ( $topic ['no_views'], 1 ),
 					"last_post_name" => $topic ['lname'],

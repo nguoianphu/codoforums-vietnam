@@ -193,12 +193,28 @@ CODOF.editor_settings = {
             if (/\.(?:jpg|jpeg|gif|png)$/i.test(href)) {
 
                 //may be an image
-                return '<img src="' + href + '" title="' + title + '" />';
+				
+				// nguoianphu alt is more important than title
+				if (text=="" || text === undefined || text===null || text==href) {
+					text = $('#codo_topic_title').val();
+					if (text=="" || text === undefined || text===null) {
+						text = $('.codo_widget_header_title').text();
+					}
+					if (text=="" || text === undefined || text===null) {
+						text = href;
+					}
+				}
+
+				if (title=="" || title=== undefined || title===null) {
+					title = text;
+				}
+				
+                return '<img src="' + href + '" alt="' + text + '" />';
             }
 
             if (CODOF.cache.validImages.indexOf(href.replace(/&amp;/g, '&')) > -1) {
-
-                return '<img src="' + href + '" title="' + title + '" />';
+				// nguoianphu
+                return '<img src="' + href + '" alt="' + text + '" />';
             }
 
             if (CODOF.cache.invalidImages.indexOf(href) === -1) {
@@ -244,14 +260,15 @@ CODOF.editor_settings = {
             if (patt.test(href)) {
 
                 var part = patt.exec(href);
-                return '<a href="' + href + '"><img src="http://i.imgur.com/' + part[1] + '.jpg" title="' + title + '" /></a>';
+				// nguoianphu
+                return '<a href="' + href + '"><img src="http://i.imgur.com/' + part[1] + '.jpg" alt="' + text + '" /></a>';
             }
 
             patt = new RegExp("http://i.imgur.com/(.+).jpg");
 
             if (patt.test(href)) {
-
-                return '<img src="' + href + '" title="' + title + '" />';
+				// nguoianphu
+                return '<img src="' + href + '" alt="' + text + '" />';
             }
 
 

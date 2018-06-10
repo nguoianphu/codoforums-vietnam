@@ -34,7 +34,17 @@ class plg_similar_topics{
 
 		
 			$search = new \CODOF\Search\Search();
-			$title=$info[0]['title'];
+			// $title=$info[0]['title'];
+			
+			// nguoianphu
+			// $pid='t.post_id';
+			// $info = $this->\CODOF\Forum\get_post_info(post_id);
+			// $title=html_entity_decode($info[0]['title']);
+			$title=$info[0]['full_title'];
+			// $title='me-kong-ky-su-dvd-16-phan-qua-huyen-an-phu';
+			// $title = str_replace("-", " ",$title);
+			// $title=html_entity_decode($title);
+			// nguoianphu
 
 			//replace double spaces with single space
 			$title = str_replace("  ", " ",$title);
@@ -51,6 +61,21 @@ class plg_similar_topics{
 			$search->str=$title;
 			$search->tid = '!= ' . $info[0]['topic_id'];
 			$search->pid = '= t.post_id';
+			// nguoianphu
+			$search->sort = 'no_views';
+			/**
+			 * How should the results be sorted ?
+			 *  - 'post_created': Sorts by post created
+			 *  - 'no_posts': Sorts by no. of replies to the topic
+			 *  - 'no_views': Sorts by no. of views to the topic
+			 *  - 'last_post_time': Sorts by latest reply time to the topic
+			 *  - 'message': Sorts by relevance i.e keywords matching post
+			 *  - 'name': Sorts by author creating the topic
+			 *  - 'title': Sorts by topic title
+			 *
+			 * Note: The order of each respective sort is <$order>
+			 * @var <table field>
+			 */
 
             $links=$this->generate_links($search->search());
 

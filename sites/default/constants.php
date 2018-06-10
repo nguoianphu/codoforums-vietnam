@@ -22,8 +22,9 @@ define('CODO_DEBUG', 1);
 define('DISPLAY_ERRORS', 'ON');
 define('MODE', 'PRODUCTION'); //Can be DEVELOPMENT or PRODUCTION
 
-define('SEF', 0); //Search engine freindly urls , 1=> enable , 0=> disable
-define('LOCALE', 'en_US');
+// nguoianphu
+define('SEF', 1); //Search engine freindly urls , 1=> enable , 0=> disable
+define('LOCALE', 'vi_VN');
 define('SYSPATH', ABSPATH . 'sys/');
 define('CONTROLLERS_DIR', SYSPATH . 'Controller/');
 
@@ -77,7 +78,9 @@ class Constants {
             define('NRURI', RURI);            
         } else {
             define('RURI', $ruri);
-            define('NRURI', $ruri . 'index.php?u=/');
+			// nguoianphu
+            // define('NRURI', $ruri . 'index.php?u=/');
+            define('NRURI', $ruri);
         }
 
 

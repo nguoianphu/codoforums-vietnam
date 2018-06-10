@@ -12,13 +12,11 @@
     {assign "tid" $topic_info.topic_id}
     {assign "cid" $topic_info.cat_id}
 
-    <div id="breadcrumb" class="col-md-12">
-
-
-        {"block_breadcrumbs_before"|load_block}
-
-        <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
-            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i></div></a>
+    <!-- nguoianphu -->
+	<div id="breadcrumb" class="col-md-12">
+	
+        <div class="codo_breadcrumb_list btn-breadcrumb">
+            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;{_t('All topics')}</div></a>
 
             {foreach from=$parents item=crumb}
                 <a title="{$crumb.name}" data-placement="bottom" data-toggle="tooltip" href="{$smarty.const.RURI}category/{$crumb.alias}"><div>{$crumb.name}</div></a>                    
@@ -26,7 +24,8 @@
             &nbsp;
         </div>
 
-
+		<!-- nguoianphu mobile -->
+		<!--
         <select id="codo_breadcrumb_select" class="form-control hidden-sm hidden-md hidden-lg">
             <option selected="selected" value="">{_t("Where am I ?")}</option>
             {assign space "&nbsp;&nbsp;&nbsp;"}
@@ -39,8 +38,8 @@
                 <option value="{$smarty.const.RURI}category/{$crumb.alias}">{$indent}{$crumb.name}</option>                   
             {/foreach}
 
-        </select>    
-        {"block_breadcrumbs_after"|load_block}                
+        </select>
+		-->   <!-- nguoianphu -->      
     </div>
 
     <div class="container">
@@ -57,9 +56,10 @@
                     <div class="codo_widget-header" id="codo_head_title">
                         <div class="row">
                             <div class="codo_topic_title">
-                                <a href="{$smarty.const.RURI}topic/{$tid}/{$safe_title}">
+								<!-- nguoianphu Don't need a link here -->
+                                <!-- <a href="{$smarty.const.RURI}topic/{$tid}/{$safe_title}"> -->
                                     <h1><div class="codo_widget_header_title">{$title|unescape}</div></h1>
-                                </a>
+                                <!-- </a> -->
                             </div>
                             <div id="codo_topic_title_pagination" class="codo_head_navigation">
                                 {$pagination}
@@ -150,8 +150,8 @@
                     </div>
                 {/if}
 
-
-                {"block_topic_info_after"|load_block}
+				<!-- nguoianphu -->
+             <!--   "block_topic_info_after"|load_block -->
 
             </div>
 
@@ -190,8 +190,27 @@
         </div>
 
         {include file='forum/editor.tpl'}
-    </div>
 
+		<!-- nguoianphu -->
+		
+        {"block_topic_info_after"|load_block}
+		
+		<div id="breadcrumb_footer" class="col-md-12">
+
+			<div class="codo_breadcrumb_list btn-breadcrumb">
+				<a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;{_t('All topics')}</div></a>
+				{foreach from=$parents item=crumb}
+					<a title="{$crumb.name}" data-placement="bottom" data-toggle="tooltip" href="{$smarty.const.RURI}category/{$crumb.alias}">
+					<div>{$crumb.name}</div></a>                    
+						{/foreach}
+						&nbsp;
+			</div>
+			
+		</div>
+		<!-- nguoianphu -->
+		
+	</div>
+    
     <div id="codo_topics_multiselect" class="codo_topics_multiselect">
 
         {{_t("With")}} <span id="codo_number_selected"></span> {{_t("selected")}} 
@@ -337,9 +356,9 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    {* History modal *}
+    </div><!-- /.modal -->    
+	
+	{* History modal *}
     <div class="modal fade" id='codo_history_modal'>
         <div class="modal-dialog">
             <div class="modal-content">

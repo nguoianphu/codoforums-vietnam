@@ -89,6 +89,11 @@ class Layout {
         if (\CODOF\Store::has('og:desc')) {
 
             $og['desc'] = \CODOF\Store::get('og:desc');
+			// nguoianphu remove Multiple spaces and newlines are replaced with a single space.
+			$og['desc'] = trim(preg_replace('/\s\s+/', ' ', $og['desc']));
+			// nguoianphu Removes special characters.
+			$og['desc'] = str_replace(array('#', '[', ']', '(', ')', '*', '/', '>', '!', ':'), '', $og['desc']);
+			// $og['desc'] = preg_replace('/[^A-Za-z0-9\-\s]/', '', $og['desc']);
         } else {
 
             $og['desc'] = \CODOF\Util::get_opt('site_description');

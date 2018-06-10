@@ -13,7 +13,8 @@
         {"block_breadcrumbs_before"|load_block}
 
         <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
-            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i></div></a>
+			<!-- nguoianphu -->
+            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;{_t('All topics')}</div></a>
 
             {foreach from=$parents item=crumb}
                 <a title="{$crumb.name}" data-toggle="tooltip" href="{$smarty.const.RURI}category/{$crumb.alias}"><div>{$crumb.name}</div></a>                    
@@ -253,7 +254,8 @@
                                         <div class="row">
 
                                             <div class="codo_category_img col-md-2 col-xs-2">
-                                                <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" />
+												<!-- nguoianphu add alt attribute into image -->
+                                                <img draggable="false" src="{$smarty.const.DURI}{$smarty.const.CAT_ICON_IMGS}{$cat->cat_img}" alt="{$cat->cat_name}" />
                                             </div>
 
                                             <div class="codo_categories_category col-md-10">

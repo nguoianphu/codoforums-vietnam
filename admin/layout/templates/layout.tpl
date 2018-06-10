@@ -233,7 +233,9 @@
                                             <i class="fa fa-angle-left pull-right"></i>
                                         </a>
                                         <ul class="treeview-menu">
-                                            <li  class="{$active['system/massmail']}"><a href="index.php?page=system/massmail"><i class="fa fa-envelope-square"></i> Mass mail</a></li>                  
+                                            <li  class="{$active['system/massmail']}"><a href="index.php?page=system/massmail"><i class="fa fa-envelope-square"></i> Mass mail</a></li>  
+											<!-- nguoianphu -->                
+                                            <li  class="{$active['system/sitemap']}"><a href="index.php?page=system/sitemap"><i class="fa fa-exclamation-circle"></i> Sitemap</a></li>                  
                                             <li  class="{$active['system/cron']}"><a href="index.php?page=system/cron"><i class="fa fa-clock-o"></i> Cron</a></li>
                                             <li  class="{$active['system/importer']}"><a href="index.php?page=system/importer"><i class="fa fa-exclamation-circle"></i> Importer</a></li>                  
                                             <li  class="{$active['system/upgrade']}"><a href="index.php?page=system/upgrade"><i class="fa fa-level-up"></i> Upgrade</a></li>                  

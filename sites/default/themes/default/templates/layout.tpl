@@ -3,24 +3,22 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="utf-8">
+		<!-- nguoianphu -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="generator" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta name="description" content="{"site_description"|get_opt}">
+        <meta name="description" content="{$og.desc}">
 
-        <meta name="author" content="BABA">
-        <title>{block "title"}{$sub_title} | {$site_title}{/block}</title>
+        <meta name="author" content="{$site_title}">
+        <title>{block "title"}{$sub_title} {$og.desc}{/block}</title>
         <!--[if lte IE 8]>
          <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js"></script>
         <![endif]-->
 
         {"block_head"|load_block}
 
-<!--
-        <script type="text/javascript" language="javascipt" src="http://localhost/codoforum/freichat/client/main.php"></script> 
-        <link rel="stylesheet" href="http://localhost/codoforum/freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
--->
+
         <script type="text/javascript">
 
             var on_codo_loaded = function () {
@@ -261,8 +259,8 @@
                         {if $canCreateTopicInAtleastOneCategory}
                             <li class="" onclick="codo_create_topic()">
 
-
-                                <a class="glyphicon glyphicon-pencil" >  <span>{_t('New topic')}</span></a>
+								<!-- nguoianphu -->
+                                <a class="glyphicon glyphicon-pencil" >  <span>{_t('Add new Topic')}</span></a>
 
                             </li>
                         {/if}
@@ -439,6 +437,19 @@
                         </div>
 
                         <div class="col-sm-4 pull-right" style="text-align: center">
+							<!-- nguoianphu display rigister link on mobile GUI -->
+							<small>
+							{if $I->loggedIn()}
+								{if $canCreateTopicInAtleastOneCategory}
+									<a class="codo_nav_icon" href="#" onclick="codo_create_topic()">{_t('Add new Topic')}</a>
+								{/if}
+								 | <a href="{$logout_url}">{_t("Logout")}</a>
+							{else}
+								
+									<a href="{$register_url}">{_t("Register")}</a> |
+									<a href="{$login_url}">{_t("Login")}</a>
+							{/if}
+							</small>
 
 
                             {"block_footer_right"|load_block}

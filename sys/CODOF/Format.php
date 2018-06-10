@@ -123,7 +123,7 @@ class Format {
         //$mesg = str_replace("<", "&lt;", $mesg);
         //$mesg = str_replace(">", "&gt;", $mesg);
 
-        //$mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
+        // $mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
         return $mesg;
     }
 
@@ -132,7 +132,9 @@ class Format {
         //$mesg = str_replace("<", "&lt;", $mesg);
         //$mesg = str_replace(">", "&gt;", $mesg);
         //$mesg = htmlspecialchars($mesg);
-        $mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
+        // $mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
+		// nguoianphu Save it in FULL Unicode and not encode it to Unicode symbols
+        $mesg = strip_tags($mesg);
         return $mesg;
     }
 
@@ -198,11 +200,14 @@ class Format {
 
     public static function omessage($mesg) {
 
-        $html = new \Ext\Html();
+		// nguoianphu - don't want to encode the alt in img tag
+        // $html = new \Ext\Html();
 
         
         //$imesg; no escaping required
-        $mesg = $html->filter(str_replace("STARTCODOTAG", "<", $mesg));
+        // $mesg = $html->filter(str_replace("STARTCODOTAG", "<", $mesg));
+		// nguoianphu - don't want to encode the alt in img tag
+        $mesg = str_replace("STARTCODOTAG", "<", $mesg);
 
         return $mesg;
     }

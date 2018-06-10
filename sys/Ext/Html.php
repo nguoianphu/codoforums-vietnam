@@ -28,7 +28,7 @@ class Html {
         'rx_esc' => // Directory traversal/escaping/injection
         '/(\\~\/|\.\.|\\\\|\-\-)/sm',
         'scrub_depth' => 6, // URL Decoding depth (fails on exceeding this)
-        'nofollow' => true // Set rel='nofollow' on all links
+        'nofollow' => false // nguoianphu Set rel='nofollow' on all links
     );
 
     /**
@@ -280,7 +280,8 @@ class Html {
         libxml_clear_errors();
         libxml_use_internal_errors($err);
 
-        return $out;
+		// nguoianphu Do not encode Unicode
+        return html_entity_decode($out);
     }
 
     protected function cleanAttributeNode(
