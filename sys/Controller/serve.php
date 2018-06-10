@@ -2,54 +2,105 @@
 
 namespace Controller;
 
-class serve {
+/**
+ * Serves static files
+ */
+class Serve {
 
+    /**
+     * Serves forum attachments
+     *
+     * @return void
+     */
     public function attachment() {
 
-        $name = $this->sanitize($_GET['path']);
-        $dir = DATA_PATH . 'assets/img/attachments/';
-
-        $this->set_headers($name, $dir);
+        $this->serve('assets/img/attachments/');
     }
 
+    /**
+     * Serves forum attachments preview
+     *
+     * @return void
+     */
+    public function previewAttachment() {
+        
+        $this->serve('assets/img/attachments/preview/');
+    }
+     
+    /**
+     * Serves the attachment
+     *
+     * @return void
+     */
+    private function serve($path) {
+
+        $name = $this->sanitize($_GET['path']);
+        $dir = DATA_PATH . $path;
+
+        $path = $this->setBasicheaders($name, $dir);
+        header('Content-Disposition: attachment; filename="' . $this->getRealFileName($name) . '"');
+        @readfile($path);        
+        exit;
+    }
+
+    /**
+     * Serves smileys
+     *
+     * @return void
+     */
     public function smiley() {
 
         $name = $this->sanitize($_GET['path']);
         $dir = DATA_PATH . 'assets/img/smileys/';
 
-        $this->set_headers($name, $dir);
-    }
-
-    private function set_headers($name, $dir) {
-
-        $filename = $dir . $name;
-
-        $ext = pathinfo($name, PATHINFO_EXTENSION);
-        $mime_type = \CODOF\File\Extension::get_mime_type($ext);
-
-
-
-
-        //session_cache_limiter(false);
-        //header('Cache-Control: private');
-        // Checking if the client is validating his cache and if it is current.
-        /*if (isset($_SERVER["HTTP_IF_MODIFIED_SINCE"]) && (strtotime($_SERVER["HTTP_IF_MODIFIED_SINCE"]) == filemtime($filename))) {
-            // Client's cache IS current, so we just respond '304 Not Modified'.
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 304);
-        } else*/ {
-            // Image not cached or cache outdated, we respond '200 OK' and output the image.
-            //@readfile($filename);
-            //exit($filename);
-            header("Content-type: $mime_type");
-
-            header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime("+6 months")), true);
-            header("Pragma: public");
-            header("Cache-Control: public");
-            @readfile($filename);
-        }
+        $path = $this->setBasicheaders($name, $dir);
+        @readfile($path);        
         exit;
     }
 
+    /**
+     * Gets the original name of file from table from hash
+     * If not found a dummy name is returned
+     *
+     * @param [type] $hash
+     * @return void
+     */
+    private function getRealFileName($hash) {
+
+        $dummyName = "download";
+        $name = \DB::table(PREFIX . 'codo_attachments')
+            ->where('visible_hash', '=', $hash)
+            ->pluck('original_name');
+
+        return $name ? $name : $dummyName;
+    }
+
+    /**
+     * Sets some basic headers for serving file
+     *
+     * @param [string] $name
+     * @param [string] $dir
+     * @return void
+     */
+    private function setBasicheaders($name, $dir) {
+
+        $filename = $dir . $name;
+        $mime_type = mime_content_type($filename);
+
+        header("Content-type: $mime_type");
+        header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime("+6 months")), true);
+        header("Pragma: public");
+        header("Cache-Control: public");
+
+        return $filename;
+    }
+
+    /**
+     * Some security checks/sanitization
+     *
+     * @param [string] $name
+     * @return string
+     */
     private function sanitize($name) {
 
         $name = str_replace("..", "", $name);
