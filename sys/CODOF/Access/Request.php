@@ -61,21 +61,19 @@ class Request {
 
     public static function processReq($closure, $getNewStuff, $args) {
 
-        if (Request::valid($_REQUEST['_token'])) {
+        $token = null;
+
+        if (isset($_REQUEST['token'])) {
+            $token = $_REQUEST['token'];
+        } else if (isset($_REQUEST['_token'])) {
+            $token = $_REQUEST['_token'];
+        }
+
+        if (Request::valid($token)) {
 
             $data = call_user_func_array($closure, $args);
-            $newStuff = array();
 
-            if ($getNewStuff) {
-
-                //$newStuff = self::whatsNew();
-            }
-
-            if (!is_array($data)) {
-
-                $data = array();
-            }
-            echo json_encode(array_merge($data, $newStuff));
+            echo json_encode($data);
         }
     }
 
@@ -84,7 +82,7 @@ class Request {
      */
     public static function start() {
 
-        
+
         function server_error($errno, $errstr, $errfile = null, $errline = null) {
 
             $args = compact('errno', 'errstr', 'errfile', 'errline');

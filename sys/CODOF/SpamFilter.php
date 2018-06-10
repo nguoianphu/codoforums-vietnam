@@ -4,12 +4,14 @@ namespace CODOF;
 
 require SYSPATH . 'Ext/b8/b8.php';
 
-class SpamFilter {
+class SpamFilter
+{
 
     private static $b8 = false;
     private $use;
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $ml_enabled = Util::get_opt('ml_spam_filter');
 
@@ -27,11 +29,6 @@ class SpamFilter {
             'user' => $conf['username'],
             'pass' => $conf['password']
         );
-
-        if ($conf['driver'] == 'mysql') {
-
-            $this->use = true;
-        }
 
         $this->use = ($ml_enabled == 'yes');
 
@@ -57,29 +54,21 @@ class SpamFilter {
         }
     }
 
-    public function spam($text) {
-
-        if (!$this->use) {
-
-            return false;
-        }
-
-        self::$b8->learn($text, \b8::SPAM);
+    public function spam($text)
+    {
+        if ($this->use)
+            self::$b8->learn($text, \b8::SPAM);
     }
 
-    public function ham($text) {
-
-        if (!$this->use) {
-
-            return true;
-        }
-        self::$b8->learn($text, \b8::HAM);
+    public function ham($text)
+    {
+        if ($this->use)
+            self::$b8->learn($text, \b8::HAM);
     }
 
-    public function isSpam($text) {
-
+    public function isSpam($text)
+    {
         if (!$this->use) {
-
             return false;
         }
 

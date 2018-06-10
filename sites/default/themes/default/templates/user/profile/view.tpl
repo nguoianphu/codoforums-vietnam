@@ -7,18 +7,34 @@
 {extends file='layout.tpl'}
 
 {block name=body}
-
-    <style>
-
-        .container {
-
-            padding-top: 60px;
-        }
-
-
-    </style>
-
-    <div class="container" style="padding-top: 60px">
+	
+	<div class="container-fluid top-custom-container-profile">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-1">
+					
+                    <img draggable="false" class="img-rounded profile-avatar-img" src="{$user->avatar}" />
+				</div>	
+                <div class="codo_username col-md-6 codo-username-profile">
+					<h4>{$user->username}</h4>
+					<p>
+					{_t("Post all your questions and problems related to codoforum here.")}
+					</p>
+				</div> 
+			</div>
+			<hr align="left" style="width:65%;"/>
+			<div class="row nav-main-profile">
+				<div class="col-md-1 nav-box-profile nav-box-profile-active">
+					<span class="nav-text-profile">{_t("Overview")}</span>
+				</div>
+				<div class="col-md-1 nav-box-profile">
+					<span class="nav-text-profile" id="codo_edit_profile">{_t("Edit Account")}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <div class="container" style="padding-top: 0px">
         {"block_profile_view_before"|load_block}
         <div style="display:none" class="codo_notification codo_notification_error" id="codo_resend_mail_failed"></div>
 
@@ -32,7 +48,7 @@
             <div class="codo_notification codo_notification_warning">
                 {_t("You have not yet confirmed your email address.")}
                 <a id="codo_resend_mail" href="#">{_t("Resend email")}</a>
-                <img id="codo_email_sending_img" src="{$smarty.const.DEF_THEME_PATH}img/ajax-loader-orange.gif" />
+                <img id="codo_email_sending_img" src="{$smarty.const.CURR_THEME}img/ajax-loader-orange.gif" />
             </div>
         {/if}
         {if $user_not_approved}
@@ -41,98 +57,18 @@
                 {_t("Your account is awaiting approval.")}
             </div>
         {/if}
-
+		
         <div class="row">
-
-            <div class="col-md-4">
-
-                <div class="codo_profile" id="">
-
-                    <div class="codo_user">
-
-                        <div class="codo_user_header">
-
-                            <span>{_t("Profile")}</span>
-                            {if $can_edit}
-
-                                <i id="codo_edit_profile" class="icon-edit"></i>
-                            {/if}
-
-                        </div>
-
-                        <div class="codo_user_body">
-                            <div>
-                                <img draggable="false" src="{$user->avatar}" />
-                                <div class="codo_username">{$user->username}</div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="codo_user_statistics">
-
-
-                        <div class="codo_info_block">
-                            <div class="codo_blue_dot">
-
-                            </div>
-                            <div class="codo_user_info_label">
-                                {_t("views")}
-                            </div>
-
-                            <div class="codo_user_info_num">
-                                {$user->profile_views|abbrev_no}
-                            </div>
-                        </div>
-                        <div class="codo_info_block">
-                            <div class="codo_red_dot">
-
-                            </div>
-                            <div class="codo_user_info_label">
-                                {_t("posts")}
-                            </div>
-
-                            <div class="codo_user_info_num">
-                                {$user->no_posts|abbrev_no}
-                            </div>
-                        </div>
-                        <div class="codo_info_block">
-                            <div class="codo_green_dot">
-
-                            </div>
-                            <div class="codo_user_info_label">
-                                {_t("reputation")}
-                            </div>
-
-                            <div class="codo_user_info_num">
-                                {$user->reputation}
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="codo_user_details">
-
-                        <div> <b>{_t("Joined")}</b> {$user->created|get_pretty_time}
-                        </div>
-                        <div>
-                            <b>{_t("Last login")}</b> {if $user->last_access eq 0}{_t('never')}{else}{$user->last_access|get_pretty_time}{/if}
-                        </div>
-                        {foreach from=$custom_fields item=field}
-                        
-                            {$field.output}
-                        {/foreach}
-                    </div>
-
-                </div>
-            </div>
+			
+			
 
             <div class="col-md-8">
 
                 <div class="codo_tabs">
 
-                    <ul class="nav nav-tabs">
+                    <!--<ul class="nav nav-tabs">
                         <li role="presentation" class="active"><a data-toggle="tab" href="#recent_posts">Recent posts</a></li>
-                    </ul>
+                    </ul>-->
 
                     <div class="codo_tabs_content tab-content">
 
@@ -147,11 +83,33 @@
                                     {{#each topics}}
                                     <article class="clearfix">
 
-                                        <div class="codo_topics_topic_img">
+                                        <!--<div class="codo_topics_topic_img">
                                             <a href="{{../RURI}}category/{{cat_alias}}">
                                                 <img draggable="false" src="{{../DURI}}{{../CAT_IMGS}}{{cat_img}}" />
                                             </a>
-                                        </div>
+                                        </div>-->
+										
+										<div class="row" style="position:absolute;top: 10px;right: 0;width:120px;">
+			
+											<div class="col-md-5" style="padding-left:0px;padding-right:0px;float:right;">
+                                                                                                <div style="float:left;padding-top:2px;" style="float:left;">
+                                                                                                    <i class="icon icon-message" style="font-size:16px;color:#0097f6;"></i>
+                                                                                                </div>
+												<div style="float:left;font-weight:bold;padding-left:3px;">
+												<span>{{no_replies}}</span>
+												</div>
+											</div>
+											<div class="col-md-5" style="padding-left:0px;padding-right:0px;float:right;" id="codo_topics_no_views">
+                                                                                                <div style="float:left;padding-top:2px;" style="float:left;">
+                                                                                                    <i class="icon icon-eye2" style="font-size:16px;color:#00b147;"></i>
+                                                                                                </div>
+												<div style="float:left;font-weight:bold;padding-left:3px;">
+												{{no_views}}
+												</div>
+											</div>
+											
+											
+										</div>
 
                                         <div class="codo_topics_topic_content">
                                             <div class="codo_topics_topic_avatar">
@@ -165,12 +123,11 @@
 
                                                 </a>
                                             </div>
-                                            <div class="codo_topics_topic_name">
-                                                <a href="{{../RURI}}user/profile/{{id}}"><span class="role_{{role}}">{{name}}</span></a>
-                                                <span>{{../created}} {{topic_created}}</span>
-                                            </div>
+											
+											<div class="codo_topics_topic_title"><a href="{{../RURI}}topic/{{topic_id}}/{{safe_title}}"style="font-size:16px;color:#000;">{{title}}</a></div>
+											
 
-                                            <div class="codo_topics_topic_title"><a href="{{../RURI}}topic/{{topic_id}}/{{safe_title}}">{{title}}</a></div>
+                                            
 
                                         </div>
 
@@ -184,15 +141,21 @@
                                             </div>
                                         </div>
                                         {{/each}}
+										
+										<!--<div class="codo_topics_topic_name">
+                                            <a href="{{../RURI}}user/profile/{{id}}"><span class="role_{{role}}">{{name}}</span></a>
+                                            <span>{{../created}} {{topic_created}}</span>
+                                        </div>-->
 
-                                        <div class="codo_topics_topic_foot clearfix">
+                                        <!--<div class="codo_topics_topic_foot clearfix">
 
                                             <div class="codo_topics_no_replies"><span>{{no_replies}}</span>{{../reply_txt}}</div>
                                             <div class="codo_topics_no_replies"><span>{{no_views}}</span>{{../views_txt}}</div>
 
-                                        </div>
+                                        </div>-->
 
-
+									<br/>
+									<br/>
                                     </article>
                                     {{else}}
 
@@ -214,6 +177,103 @@
                         </div>
                     </div>
                 </div>
+				
+				
+				<!--admin profile-->
+            <div class="col-md-4 profile-user-statistics-right">
+
+                <div class="codo_profile profile-user-statistics-right-inner" id="">
+
+                    <!--<div class="codo_user">
+
+                        <div class="codo_user_header">
+
+                            <span>{_t("Profile")}</span>
+                            {if $can_edit}
+
+                                <i id="codo_edit_profile" class="icon-edit"></i>
+                            {/if}
+
+                        </div>
+
+                        <div class="codo_user_body">
+                            <div>
+                                <img draggable="false" src="{$user->avatar}" />
+                                <div class="codo_username">{$user->username}</div>
+
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <div class="codo_user_statistics">
+
+
+                        <div class="row codo_info_block">
+                            <!--<div class="codo_blue_dot">
+
+                            </div>
+                            <div class="codo_user_info_label">
+							
+                                {_t("views")}
+                            </div>-->
+							<div class="col-md-6 codo_profile_left">
+							<i class="material-icons" style="color:#00b147;">visibility</i>
+							</div>
+                            <div class="col-md-6 codo_user_info_num codo_profile_right">
+                                {$user->profile_views|abbrev_no}
+                            </div>
+                        </div>
+                        <div class="row codo_info_block">
+                            <!--<div class="codo_red_dot">
+
+                            </div>
+                            <div class="codo_user_info_label">
+							
+                                {_t("posts")}
+                            </div>-->
+							<div class="col-md-6 codo_profile_left">
+							<i class="material-icons" style="color:#0097f6;">chat_bubble</i>
+							</div>
+                            <div class="col-md-6 codo_user_info_num codo_profile_right">
+                                {$user->no_posts|abbrev_no}
+                            </div>
+                        </div>
+                        <div class="row codo_info_block">
+                            <!--<div class="codo_green_dot">
+
+                            </div>
+                            <div class="codo_user_info_label">
+							
+                                {_t("reputation")}
+                            </div>-->
+							<div class="col-md-6 codo_profile_left">
+							<i class="material-icons" style="color:#5a7fee;">stars</i>
+							</div>
+                            <div class="codo_user_info_num col-md-6 codo_profile_right">
+                                {$user->reputation}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="codo_user_details">
+
+                        <div style="color:#9f9f9f;"> {_t("Joined :")} <span style="float:right;color:#3e3e3e;font-weight:bold">{$user->created|get_pretty_time}</span>
+                        </div>
+                        <div style="color:#9f9f9f;">
+                            {_t("Last login :")} <span style="float:right;color:#3e3e3e;font-weight:bold">{if $user->last_access eq 0}{_t('never')}{else}{$user->last_access|get_pretty_time}{/if}</span>
+                        </div>
+                        {foreach from=$custom_fields item=field}
+                        
+                            {$field.output}
+                        {/foreach}
+                    </div>
+
+                </div>
+            </div>
+			
+			<!--end admin profile-->
+				
+				
             </div>
 
 

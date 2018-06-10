@@ -1,12 +1,76 @@
 /*
 @CODOLICENSE
 */
-
-
+.codo_profile_right
+{
+	text-align:right;
+}
+.codo_profile_left
+{
+	text-align:left;
+}
+.container 
+{
+    padding-top: 60px;
+}
+.top-custom-container-profile
+{
+	background: #844aa6; /* Old browsers */
+	background: -moz-linear-gradient(left, #844aa6 0%, #5a7fee 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, #844aa6 0%,#5a7fee 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, #844aa6 0%,#5a7fee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#844aa6', endColorstr='#5a7fee',GradientType=1 ); /* IE6-9 */
+	height:220px;
+}
+.profile-avatar-img{
+	width:80px;
+			
+}
+.codo-username-profile
+{
+	margin-top:10px;
+	color:#ffffff;
+}
+.nav-text-profile
+{
+	color:#ffffff;
+	font-weight:bold;
+}
+.nav-box-profile
+{
+	width:10%;
+	//background:transparent;
+    text-align: center;
+    padding-top: 18px;
+	margin-top: -21px;
+	
+}
+.nav-box-profile-active
+{
+	background: url('../img/box.jpg') no-repeat transparent;
+	background-position: 50% -120%;
+	background-origin: content-box;
+	background-size: 12px 6px;
+}
+.nav-main-profile
+{
+	//padding-left:20px;
+        cursor: pointer;
+}
+.profile-user-statistics-right
+{
+	margin-top:-150px;
+	width:28%
+}
+.profile-user-statistics-right-inner
+{
+	border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;
+	background:#ffffff;
+}
 
 .codo_profile {
 
-    box-shadow: 0px 1px 3px 1px #999;
+   // box-shadow: 0px 1px 3px 1px #999;
    // position: relative;
     z-index: 9;
 }
@@ -69,7 +133,7 @@
 .codo_user_statistics {
 
     padding: 20px;
-    background: #fff;
+    background: transparent;
 
     .codo_red_dot {
 
@@ -106,7 +170,7 @@
     .codo_user_info_num {
 
         font-family: @numericFontFamily;
-        font-size: 2em;
+        font-size: 1.5em;
     }
     .codo_info_block {
 
@@ -114,6 +178,7 @@
         padding: 5px;
         text-align: center;      
         margin-right: 20px;
+		width:100%;
     }
 }
 
@@ -123,7 +188,7 @@
 .codo_user_details {
 
     padding: 24px;
-    background: #fff;
+    background: transparent;
 
     //border-top: 1px solid #ccc;
 
@@ -137,7 +202,7 @@
 
 .codo_tabs {
 
-    box-shadow: 0px 1px 3px 1px #999;
+    //box-shadow: 0px 1px 3px 1px #999;
 
     .nav-tabs {
 
@@ -169,7 +234,7 @@
     
     .codo_tabs_content {
         
-        padding: 20px;
+        padding: 0px;
         background: #fff;
     }
 }
@@ -327,7 +392,7 @@ body {
 .codo_topics_topic_contents {
 
     position: relative;
-    border-top: 1px dotted @borderLightColor;
+    //border-top: 1px dotted @borderLightColor;
 
     > .codo_topics_topic_message {
 
@@ -337,9 +402,9 @@ body {
 
     .codo_topics_last_post {
 
-        position: absolute;
-        right: 10px;
-        top: 2px;
+        //position: absolute;
+        //right: 10px;
+        //top: 2px;
         z-index:2;
         //background: #7f7f7f;
         //color: white;
@@ -348,6 +413,8 @@ body {
         //text-shadow: 1px 0 #222;
         text-align: right;
         float: right;
+		width:100%;
+		padding-right: 10px;
     }
 }
 #codopm_tabs ul {
@@ -386,9 +453,10 @@ body {
         padding-top: 12px;
         margin-bottom: 2px;
         margin-top: 2px;
-        background: @articleBg;
+        //background: @articleBg;
         overflow-x: hidden;
-        .box-shadow(0px 2px 5px rgba(0,0,0,0.25));
+        //.box-shadow(0px 2px 5px rgba(0,0,0,0.25));
+        border-bottom:1px solid #efefef;
 
 
         .codo_posts_post_moderation {
@@ -446,7 +514,7 @@ body {
                 top: 14px;
                 left: 15px;
                 img {
-                    border-radius: 36px;
+                    border-radius: 4px;
 
                     width: 36px;
                     height: 36px;
@@ -493,7 +561,8 @@ body {
 
             position: relative;
             z-index: 1;
-            background: @articleMessageBg;
+            //background: @articleMessageBg;
+			padding: 0px 40px 20px 63px;
 
             img {
 
@@ -515,9 +584,9 @@ body {
             overflow: hidden;
             min-height: 40px;
             max-height: 260px;
-            border-top: 1px solid @articleMessageBorderColor;
-            color: @articleMessageColor;
-            padding: 15px 20px;
+            //border-top: 1px solid @articleMessageBorderColor;
+            color: #222;
+            //padding: 15px 20px;
             word-wrap: break-word;
             margin-bottom: 0;
             padding-bottom: 5px;
@@ -527,9 +596,9 @@ body {
         > .codo_topics_topic_foot {
 
             padding: 6px;
-            border-top: 1px solid @articleFooterBorderTopColor;
+            //border-top: 1px solid @articleFooterBorderTopColor;
             color: @articleFooterColor;
-            background: @articleFooterBg;
+            //background: @articleFooterBg;
             text-shadow:  @articleFooterTextShadow;
             font-size: 12px;
 

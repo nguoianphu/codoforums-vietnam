@@ -21,7 +21,7 @@ class Time {
      * M D at HH:MM -> Same year
      * M D 'Y at HH:MM -> Different year
      */
-    public static function get_pretty_time($time) {
+    public static function get_pretty_time($time, $force_time = false) {
 
         if (!$time) {
 
@@ -31,6 +31,7 @@ class Time {
         $pretty_time = '';
         $at = _t("at");
         $time = intval($time);
+
 
         if (self::same_min($time)) {
 

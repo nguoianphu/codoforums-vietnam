@@ -18,6 +18,8 @@ defined('IN_CODOF') or die();
  * defined in index.php
  */
 
+
+
 define('CODO_DEBUG', 1);
 define('DISPLAY_ERRORS', 'ON');
 define('MODE', 'PRODUCTION'); //Can be DEVELOPMENT or PRODUCTION
@@ -54,6 +56,13 @@ define('CODOFORUM_PATH', '');
 
 class Constants {
 
+    const MODE_DEVELOPMENT = 'DEVELOPMENT';
+    const MODE_PRODUCTION = 'PRODUCTION';
+
+    /**
+     * The very beginning
+     * @param $path
+     */
     public static function pre_config($path) {
 
         define('THEME_DIR', DATA_PATH . 'themes/');
@@ -90,16 +99,25 @@ class Constants {
         define('PLUGIN_PATH', DURI . 'plugins/');
     }
 
+    /**
+     * After config.php is loaded, DB connection not yet made
+     * @param $CONF
+     */
     public static function post_config($CONF) {
 
         define('UID', $CONF['UID']);
         define('SECRET', $CONF['SECRET']);
         define('PREFIX', $CONF['PREFIX']);
+
     }
 
+    /**
+     * After database connection has been made and everything is setup
+     * @param $views_dirA
+     */
     public static function post_boot($views_dir) {
 
-
+        define('LOCALE', Util::get_opt('default_language'));
         define('CURR_THEME', DURI . $views_dir);
         define('CURR_THEME_PATH', DATA_PATH . $views_dir);
     }

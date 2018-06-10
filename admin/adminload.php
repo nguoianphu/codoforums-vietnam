@@ -66,9 +66,6 @@ if (file_exists(DATA_PATH . 'config.php')) {
     //  Util::$use_normal_sessions=true;
     Util::start_session();
 
-    //loads translation system
-    require DATA_PATH . 'locale/lang.php';
-
     require SYSPATH . 'globals/global.php';
 
     //initiate all plugins
@@ -77,5 +74,5 @@ if (file_exists(DATA_PATH . 'config.php')) {
     //$plg->init();
 } else {
 
-    die('codo forums not installed!');
+    die('codoforum is not installed!');
 }

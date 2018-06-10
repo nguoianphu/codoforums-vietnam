@@ -29,7 +29,7 @@ class Category extends Forum {
 
         $cats = array();
         $user = \CODOF\User\User::get();
-        $qry = 'SELECT cat_id, cat_pid, cat_name, cat_alias, no_topics, cat_img, granted, show_children'
+        $qry = 'SELECT cat_id, cat_pid, cat_name, cat_alias, no_topics, cat_img, is_label,granted, show_children'
                 . ' FROM ' . PREFIX . 'codo_categories, codo_permissions '
                 . ' WHERE permission=\'view all topics\' AND cid=cat_id AND rid=' . $user->rid . ''
                 . ' AND EXISTS (SELECT 1 FROM codo_permissions AS p WHERE '

@@ -17,6 +17,14 @@ if (isset($_GET['to'])) {
     //    $(window).load(function() {
 
     CODOF.hook.add('on_scripts_loaded', function () {
+        
+        $('#codo_messenger').show().on('click', function() {
+            
+            $('.nav-box-profile-active').removeClass('nav-box-profile-active');
+            $('#recent_posts').hide();
+            $('#pms').show('slow');
+            $(this).addClass('nav-box-profile-active');
+        });
         $.get(codopm.req_path + 'do=get_config&id=' + codopm.from + '&xhash=' + codopm.xhash, {}, function (data) {
 
             codopm.config = JSON.parse(data);
@@ -46,12 +54,13 @@ if (isset($_GET['to'])) {
         
         <?php if(isset($_GET['action']) && $_GET['action'] == 'view') { ?>
                         
+            $('#codo_messenger').trigger('click')            
             codopm.load_conversations(codopm.from,<?php echo $_GET['id']; ?>);
         <?php } ?>
 
-        $('.codo_tabs .nav-tabs').append('<li data-toggle="tab" role="presentation"><a data-toggle="tab"  href="#pms">Messages</a></li>');
-
-        CODOF.hook.call('added_li');
+        //$('.codo_tabs .nav-tabs').append('<li data-toggle="tab" role="presentation"><a data-toggle="tab"  href="#pms">Messages</a></li>');
+            //TODO REMOVE HARDCODED 
+       // CODOF.hook.call('added_li');
     }, 2);
     //}(jQuery));
 </script>
@@ -64,7 +73,7 @@ require 'client/inbox.php';
 <script type="text/javascript" src="<?php echo codopm::$path; ?>client/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript" src="<?php echo codopm::$path; ?>client/js/jquery.autosize.min.js"></script>
 -->
-<div class="<?php echo $row_class ?> tab-pane codopm fade" id="pms">
+<div class="<?php echo $row_class ?> codopm" id="pms" style="display: none">
     <div class="col-md-12">
 
         <div class="codo_send_pm" style="display: <?php echo ($user->id == codopm::$profile_id) ? 'none' : 'block' ?>">

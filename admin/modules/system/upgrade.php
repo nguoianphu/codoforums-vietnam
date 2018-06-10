@@ -51,13 +51,11 @@ class upgrader {
         foreach ($array as $thing) {
 
             $ftp->chmod($prepend . $thing, $mode);
-            // echo $res.$thing."<br>"; 
         }
     }
 
     static function ftp_step() {
 
-        echo "hey";
         $result = upgrader::get_all_files();
 
 
@@ -151,8 +149,6 @@ class upgrader {
         $zip = new PclZip(ABSPATH . 'cache/' . $_SESSION['codo_file_to_download']);
 
         $x = $zip->extract(PCLZIP_OPT_PATH, ABSPATH);
-
-        //var_dump($x);
     }
 
     static function upgrade_schema() {

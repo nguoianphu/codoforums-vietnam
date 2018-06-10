@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
      });*/
 
     var hash = window.location.hash;
-    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+    hash && $('.nav-main-profile a[href="' + hash + '"]').tab('show');
 
     $('.nav-tabs a').click(function (e) {
         $(this).tab('show');
@@ -64,14 +64,10 @@ jQuery(document).ready(function ($) {
             if (no_pass_txt.hasClass('codo_pass_no_match_txt_twice')) {
 
                 CODOF.ui.saccade(no_pass_txt);
-            }
-
-            else if (no_pass_txt.hasClass('codo_pass_no_match_txt_again')) {
+            } else if (no_pass_txt.hasClass('codo_pass_no_match_txt_again')) {
 
                 no_pass_txt.addClass('codo_pass_no_match_txt_twice');
-            }
-
-            else if (no_pass_txt.is(":visible")) {
+            } else if (no_pass_txt.is(":visible")) {
 
                 no_pass_txt.addClass('codo_pass_no_match_txt_again');
             } else {
@@ -118,8 +114,8 @@ jQuery(document).ready(function ($) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#codo_avatar_preview').show().attr('src', e.target.result);
-                $('#codo_right_arrow').show('slow');
+                $('.codo_avatar_img').show().attr('src', e.target.result);
+                //$('#codo_right_arrow').show('slow');
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -325,142 +321,159 @@ jQuery(document).ready(function ($) {
      * Notifications tab
      * TODO: Remove duplicated code
      */
+    $('#notifications_tab').on('click', function () {
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        console.log("clicked");
+        onClickNotifications();
+    });
 
-        if (e.target.href.indexOf('#notifications') > -1) {
+    $('#codo_edit_profile').parent().on('click', function () {
 
-            var notifications = [];
-            var last = CODOFVAR.lim_notifications;
+        $('.nav-box-profile-active').removeClass('nav-box-profile-active');
+        $(this).addClass('nav-box-profile-active');
 
-            var showNotifications = function () {
+        $('.codo_edit_profile').show();
+        $('#notifications .codo_edit_profile').hide();
 
-                var source = $("#codo_inline_notifications_template").html();
-                var template = Handlebars.compile(source);
-                var context = {
-                    objects: notifications,
-                    url: codo_defs.url,
-                    duri: codo_defs.duri,
-                    caught_up: codo_defs.trans.notify.caught_up
-                };
-                var html = template(context);
+    });
 
-                if (notifications.length === 0) {
+    var onClickNotifications = function () {
 
-                    $('#codo_all_notifications').html(html).show();
-                } else {
 
-                    $('#codo_all_notifications').html(html).show();
-                }
+        $('.codo_edit_profile').hide();
+        $('#notifications .codo_edit_profile').show();
+        $('.nav-box-profile-active').removeClass('nav-box-profile-active');
+        $('#notifications_tab').addClass('nav-box-profile-active');
+        var notifications = [];
+        var last = CODOFVAR.lim_notifications;
 
-                $('#codo_all_notifications .codo_inline_notification_el_rolled').tooltip();
-                notifications = [];
+        var showNotifications = function () {
+
+            var source = $("#codo_inline_notifications_template").html();
+            var template = Handlebars.compile(source);
+            var context = {
+                objects: notifications,
+                url: codo_defs.url,
+                duri: codo_defs.duri,
+                caught_up: codo_defs.trans.notify.caught_up
             };
+            var html = template(context);
 
-            $(window).scroll(function () {
+            if (notifications.length === 0) {
 
-                var offset = 10;
-                if ($(window).scrollTop() + offset > $(document).height() - $(window).height()) {
+                $('#codo_all_notifications').html(html).show();
+            } else {
 
-                    CODOF.request.get({
-                        hook: 'get_all_notifications',
-                        url: codo_defs.url + 'Ajax/notifications/all',
-                        data: {offset: last},
-                        done: function (_notifications) {
+                $('#codo_all_notifications').html(html).show();
+            }
 
-                            last += CODOFVAR.lim_notifications;
-                            var len = _notifications.length, notification, data,
-                                    unique, location;
+            $('#codo_all_notifications .codo_inline_notification_el_rolled').tooltip();
+            notifications = [];
+        };
 
-                            for (var i = 0; i < len; i++) {
+        $(window).scroll(function () {
 
-                                notification = _notifications[i];
-                                data = notification.data;
-                                //unique = parseInt(data.tid);//"(" + data.actor.id + "," + data.tid + ")";
+            var offset = 10;
+            if ($(window).scrollTop() + offset > $(document).height() - $(window).height()) {
 
-                                var link, unique;
-                                if (data.tid) {
+                CODOF.request.get({
+                    hook: 'get_all_notifications',
+                    url: codo_defs.url + 'Ajax/notifications/all',
+                    data: {offset: last},
+                    done: function (_notifications) {
 
-                                    //this is <v.3.7 notification so link needs to be built manually
-                                    link = 'topic/' + data.tid + '/post-' + data.pid +
-                                            '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
-                                    unique = parseInt(data.tid);
+                        last += CODOFVAR.lim_notifications;
+                        var len = _notifications.length, notification, data,
+                                unique, location;
 
-                                } else {
+                        for (var i = 0; i < len; i++) {
 
-                                    link = data.link.replace("[NID]", notification.id);
-                                    unique = parseInt(notification.status_link);
-                                }
-                                
-                                notifications.push({
-                                    created: notification.created,
-                                    actor: data.actor,
-                                    body: notification.body,
-                                    is_read: notification.is_read,
-                                    id: notification.id,
-                                    unique: unique,
-                                    title: data.label,
-                                    link: link
-                                    
-                                });
+                            notification = _notifications[i];
+                            data = notification.data;
+                            //unique = parseInt(data.tid);//"(" + data.actor.id + "," + data.tid + ")";
 
+                            var link, unique;
+                            if (data.tid) {
 
+                                //this is <v.3.7 notification so link needs to be built manually
+                                link = 'topic/' + data.tid + '/post-' + data.pid +
+                                        '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
+                                unique = parseInt(data.tid);
+
+                            } else {
+
+                                link = data.link.replace("[NID]", notification.id);
+                                unique = parseInt(notification.status_link);
                             }
 
-                            if (notifications.length)
-                                showNotifications();
+                            notifications.push({
+                                created: notification.created,
+                                actor: data.actor,
+                                body: notification.body,
+                                is_read: notification.is_read,
+                                id: notification.id,
+                                unique: unique,
+                                title: data.label,
+                                link: link
+
+                            });
+
+
                         }
+
+                        if (notifications.length)
+                            showNotifications();
+                    }
+                });
+
+            }
+        });
+        CODOF.request.get({
+            hook: 'get_all_notifications',
+            url: codo_defs.url + 'Ajax/notifications/all',
+            done: function (_notifications) {
+
+                var len = _notifications.length, notification, data,
+                        unique, location;
+
+                for (var i = 0; i < len; i++) {
+
+                    notification = _notifications[i];
+                    data = notification.data;
+
+                    var link, unique;
+                    if (data.tid) {
+
+                        //this is <v.3.7 notification so link needs to be built manually
+                        link = 'topic/' + data.tid + '/post-' + data.pid +
+                                '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
+                        unique = parseInt(data.tid);
+
+                    } else {
+
+                        link = data.link.replace("[NID]", notification.id);
+                        unique = parseInt(notification.status_link);
+                    }
+
+                    notifications.push({
+                        created: notification.created,
+                        actor: data.actor,
+                        body: notification.body,
+                        is_read: notification.is_read,
+                        id: notification.id,
+                        unique: unique,
+                        title: data.label,
+                        link: link
+
                     });
 
                 }
-            });
-            CODOF.request.get({
-                hook: 'get_all_notifications',
-                url: codo_defs.url + 'Ajax/notifications/all',
-                done: function (_notifications) {
 
-                    var len = _notifications.length, notification, data,
-                            unique, location;
+                showNotifications();
+            }
+        });
+    }
 
-                    for (var i = 0; i < len; i++) {
-
-                        notification = _notifications[i];
-                        data = notification.data;
-
-                        var link, unique;
-                        if (data.tid) {
-
-                            //this is <v.3.7 notification so link needs to be built manually
-                            link = 'topic/' + data.tid + '/post-' + data.pid +
-                                    '&page=from_notify&nid=' + notification.id + '/#post-' + data.pid;
-                            unique = parseInt(data.tid);
-
-                        } else {
-
-                            link = data.link.replace("[NID]", notification.id);
-                            unique = parseInt(notification.status_link);
-                        }
-                        
-                        notifications.push({
-                            created: notification.created,
-                            actor: data.actor,
-                            body: notification.body,
-                            is_read: notification.is_read,
-                            id: notification.id,
-                            unique: unique,
-                            title: data.label,
-                            link: link
-                            
-                        });
-
-                    }
-
-                    showNotifications();
-                }
-            });
-        }
-
-    });
 
 
     /**

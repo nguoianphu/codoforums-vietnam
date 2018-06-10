@@ -81,13 +81,13 @@ class user {
 
 
         $user = \CODOF\User\User::getByIdOrUsername($uid, $uid);
-        
+
         $tab = 'recent_posts';
-        if(isset($_GET['tab']) && $_GET['tab'] == 'codopm') {
-            
+        if (isset($_GET['tab']) && $_GET['tab'] == 'codopm') {
+
             $tab = 'pms';
         }
-        
+
         $this->smarty->assign('tab', $tab);
 
         if ($user) {
@@ -100,6 +100,7 @@ class user {
 
             \CODOF\Store::set('sub_title', $user->username);
             $can_edit = $this->can_edit_profile($uid);
+            $this->smarty->assign('can_edit', $can_edit);
 
             $cf = new \CODOF\User\CustomField();
 
@@ -134,7 +135,6 @@ class user {
                 $reg_req_admin = \CODOF\Util::get_opt('reg_req_admin') == 'yes';
                 $this->smarty->assign('user_not_approved', $uid == $currUser->id && (int) $user->rid == ROLE_UNVERIFIED && $reg_req_admin);
 
-                $this->smarty->assign('can_edit', $can_edit);
 
                 $this->css_files = array('profile_view');
                 $this->js_files = array(
@@ -407,7 +407,7 @@ class user {
         \CODOF\Store::set('sub_title', _t('Reset passsword'));
     }
 
-    public static function access_denied() {
+    /*public static function access_denied() {
 
         $this->view = 'access_denied';
         \CODOF\Store::set('sub_title', _t('Access Denied'));
@@ -417,6 +417,6 @@ class user {
 
         $this->view = 'not_found';
         \CODOF\Store::set('sub_title', _t('Not found'));
-    }
+    }*/
 
 }

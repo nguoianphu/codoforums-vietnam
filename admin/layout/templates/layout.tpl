@@ -122,6 +122,7 @@
                                         </a>
                                     </li>
                                     
+                                    {if $A_layout_type eq "admin_layout" }
                                     <li class="treeview {$active['users/manage']} {$active['users/profile_fields']}">
                                         <a href="#">
                                             <i class="fa fa-users"></i> <span>Users</span>
@@ -143,7 +144,6 @@
                                             <span>Categories</span>
                                         </a>
                                     </li>
-
                                     <li class="{$active.config}">
                                         <a href="index.php?page=config">
                                             <i class="fa fa-wrench"></i>
@@ -156,8 +156,7 @@
                                             <span>Plugins</span>
                                         </a>
                                     </li>
-
-
+                                    {/if}
                                     <li class="treeview {$active['moderation/ban_user']} {$active['moderation/approve_users']} {$active['moderation/reports']}">
                                         <a href="#">
                                             <i class="fa fa-shield"></i> <span>Moderation</span>
@@ -170,7 +169,7 @@
                                         </ul>
                                     </li> 
 
-
+                                    {if $A_layout_type eq "admin_layout" }
                                     <li class="{$active['pages/pages']}">
                                         <a href="index.php?page=pages/pages">
                                             <i class="fa fa-file-powerpoint-o"></i>
@@ -233,15 +232,17 @@
                                             <i class="fa fa-angle-left pull-right"></i>
                                         </a>
                                         <ul class="treeview-menu">
+                                            <li  class="{$active['system/massmail']}"><a href="index.php?page=system/language_settings"><i class="fa fa-language"></i> Language settings</a></li>
                                             <li  class="{$active['system/massmail']}"><a href="index.php?page=system/massmail"><i class="fa fa-envelope-square"></i> Mass mail</a></li>  
 											<!-- nguoianphu -->                
                                             <li  class="{$active['system/sitemap']}"><a href="index.php?page=system/sitemap"><i class="fa fa-exclamation-circle"></i> Sitemap</a></li>                  
                                             <li  class="{$active['system/cron']}"><a href="index.php?page=system/cron"><i class="fa fa-clock-o"></i> Cron</a></li>
                                             <li  class="{$active['system/importer']}"><a href="index.php?page=system/importer"><i class="fa fa-exclamation-circle"></i> Importer</a></li>                  
                                             <li  class="{$active['system/upgrade']}"><a href="index.php?page=system/upgrade"><i class="fa fa-level-up"></i> Upgrade</a></li>                  
-
+                                            <li  class="{$active['system/clear_cache']}"><a href="index.php?page=system/clear_cache"><i class="fa fa-trash-o"></i> Clear cache</a></li>                  
                                         </ul>
-                                    </li>                        
+                                    </li>   
+                                    {/if}
                                 </ul>
                             </section>
                             <!-- /.sidebar -->

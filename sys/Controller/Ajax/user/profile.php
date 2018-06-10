@@ -43,7 +43,6 @@ class profile {
                 . ' LIMIT 20 OFFSET 0';
 
         $obj = $this->db->query($qry);
-
         if ($obj) {
 
             $posts = $this->gen_posts_arr($obj->fetchAll());
@@ -98,8 +97,8 @@ class profile {
                 "cat_img" => $post['cat_img'],
                 "contents" => array(array("post_id" => $post['post_id'],"message" => \CODOF\Format::message($post['message']), "post_created" => \CODOF\Time::get_pretty_time($post['post_created']))),
                 "topic_id" => $post['topic_id'],
-                "safe_title" => \CODOF\Filter::URL_safe($post['title']),
-                "title" => html_entity_decode(\CODOF\Util::mid_cut($post['title'], 200),ENT_NOQUOTES,"UTF-8")
+                "safe_title" => \CODOF\Filter::URL_safe(html_entity_decode($post['title'])),
+                "title" => \CODOF\Util::mid_cut($post['title'], 200)
             );
             
             

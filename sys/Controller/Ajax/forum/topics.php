@@ -8,6 +8,8 @@ namespace Controller\Ajax\forum;
 
 class topics {
 
+    private $db;
+
     public function __construct() {
         $this->db = \DB::getPDO();
     }
@@ -40,7 +42,7 @@ class topics {
      * Ajax/topics/get_topics/:page/filter=[str=:str,]/sort=[title,created]
      * 
      */
-    public function get_topics($from, $search = false) {
+    public function get_topics($from, $type, $search = false) {
 
         $from = (int) $from;
         $num_pages = 0;
@@ -59,30 +61,37 @@ class topics {
         if ($search) {
 
             $user = \CODOF\User\User::get();
+            $search = new \CODOF\Search\Search();
+            
             if(!$user->can('use search')) {
                 
                 exit('permission denied');
             }
-            $search = new \CODOF\Search\Search();
+            
+            if(!isset($_GET['search_within'])) {
+                
+                $_GET['search_within'] = $search->time_within;
+            }
+
+            if(!isset($_GET['match_titles'])) {
+                
+                $_GET['match_titles'] = $search->match_titles;
+            }
+
+            if(!isset($_GET['order'])) {
+                
+                $_GET['order'] = 'Desc';
+            }
+
+            if(!isset($_GET['sort'])) {
+                
+                $_GET['sort'] = $search->sort;
+            }
+            
             $search->str = $_GET['str'];
             $search->from = $from;
             $search->num_results = $num_posts;
             $search->count_rows = true;
-
-            //include sub categories ?
-            /* if ($_GET['search_subcats'] == 'Yes') {
-
-              $cat = new \CODOF\Forum\Category($this->db);
-              //get sub categories of all selected categories
-              $tree = $cat->generate_tree($cat->get_categories());
-              foreach ($tree as $branch) {
-
-              $this->get_children($branch, $_GET['cats']);
-              }
-              } */
-
-            //$cat_ids = array_merge($this->ids, $_GET['cats']);
-            //$cats = implode(",", $cat_ids);
             $search->cats = null;
             $search->match_titles = $_GET['match_titles'];
             $search->order = $_GET['order'];
@@ -96,7 +105,7 @@ class topics {
 
         } else {
 
-            $_topics = $topic->get_all_topics($from);
+            $_topics = $topic->getTopics($from, $type);
 
             $tids = array();
             foreach ($_topics as $one_topic) {
@@ -174,3 +183,4 @@ class topics {
     }
 
 }
+

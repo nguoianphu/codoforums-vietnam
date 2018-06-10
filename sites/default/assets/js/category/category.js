@@ -6,8 +6,10 @@
 
 jQuery('document').ready(function ($) {
 
+    //$('#codo_categories').css("margin-top", (($('.top-custom-container-profile').height() - 70) * -1) + "px");
+
     if ($('#datetimepicker').length > 0) {
-        $datepicker = $('#datetimepicker').pickadate();
+        var $datepicker = $('#datetimepicker').pickadate();
         CODOF.datepicker = $datepicker.pickadate('picker');
 
         $('#topic_auto_close').on('switch_on', function () {
@@ -18,6 +20,20 @@ jQuery('document').ready(function ($) {
             $('#content_toggle_topic_auto_close').hide();
         });
     }
+
+    /**
+     * The icon above the topics trigger this method
+     * It will  toggle the visibility of topics and
+     * categories
+     */
+    CODOF.toggleTopicsAndCategories = function () {
+
+        $('.codo_topics').toggle();
+        $('.codo_categories').toggle();
+        $('#codo_topics_load_more').toggle();
+        CODOF.util.simpleNotify($('#icon-books-click-trans').text());
+    };
+
 
     CODOF.editor_form = $('#codo_new_topic_form');
     CODOF.editor_preview_btn = $('#codo_post_preview_btn');
@@ -184,15 +200,15 @@ jQuery('document').ready(function ($) {
                                 if (CODOFVAR.total > 0) {
 
                                     if ($('#codo_topics_body .codo_topics_topic_message').length > 0) {
-                                        CODOF.topic_creator.body.append('<article class="codo_topics_end">' + CODOFVAR.no_more_posts + '</article>');
+                                       // CODOF.topic_creator.body.append('<article class="codo_topics_end">' + CODOFVAR.no_more_posts + '</article>');
                                     } else {
-                                        CODOF.topic_creator.body.append('<article class="codo_topics_end">' + CODOFVAR.no_posts + '</article>');
+                                        //CODOF.topic_creator.body.append('<article class="codo_topics_end">' + CODOFVAR.no_posts + '</article>');
                                     }
                                 }
                                 CODOF.topic_creator.end = $('.codo_topics_end');
                                 CODOF.topic_creator.end.fadeIn('slow');
                                 CODOF.topic_creator.ended = true;
-                                $('#codo_topics_load_more').hide();
+                               // $('#codo_topics_load_more').hide();
 
                             }
 
@@ -292,6 +308,7 @@ jQuery('document').ready(function ($) {
     }
 
 
+
     //Do not show description div if empty
     if ($.trim($('.codo_cat_desc').text()) === "") {
 
@@ -332,7 +349,7 @@ jQuery('document').ready(function ($) {
         $('.perm_sticky_auto_close, .perm_auto_close').show();
 
 
-        $('#codo_topics_create').animate({
+        /*$('#codo_topics_create').animate({
             marginLeft: "-6%",
             width: "100%"
         }, {
@@ -343,7 +360,7 @@ jQuery('document').ready(function ($) {
                 $(this).animate({marginLeft: 0}, 500);
                 CODOF.cache.sideBarMenu.top = CODOF.cache.sideBarMenu.el.offset().top;
             }
-        });
+        });*/
     });
     $('.codo_create_topic_cancel').click(function () {
 
@@ -391,7 +408,7 @@ jQuery('document').ready(function ($) {
         var str = $('#codo_non_mentionable').html();
         $('#codo_non_mentionable').html(str.replace('%MENTIONS%', '<span id="codo_nonmentionable_users"></span>'));
     }
-    
+
     CODOF.submitted = function () {
 
         //$('#codo_reply_replica').val($('#codo_new_reply_preview').html());
@@ -509,6 +526,11 @@ jQuery('document').ready(function ($) {
         //}
     });
 
+    $('.codo_create_topic_btn').on('click', function () {
+
+        window.location.href = codo_defs.url + 'new_topic&selected_cat=' + CODOFVAR.cid;
+    });
+
 
     CODOF.cache.sideBarMenu = {
         el: $('.codo_sidebar_fixed'),
@@ -577,17 +599,42 @@ jQuery('document').ready(function ($) {
 
     });
 
-    $('#codo_topics_load_more').on('click', function (e) {
+    /*$('#codo_topics_load_more').on('click', function (e) {
+     
+     CODOF.topic_creator.cInsert(true);
+     if (!CODOF.req_started && !CODOF.topic_creator.has_built_topics) {
+     
+     CODOF.req_started = true;
+     CODOF.topic_creator.fetch();
+     }
+     
+     return false; //prevent link 
+     });*/
+    //replaced above with changePage
+    /**
+     * Changes the page to previos or next based on current page
+     * @param {type} el
+     * @param {type} currPage
+     * @param {type} action
+     * @returns {Boolean}
+     */
+    CODOF.changePage = function (el, currPage, action) {
 
-        CODOF.topic_creator.cInsert(true);
-        if (!CODOF.req_started && !CODOF.topic_creator.has_built_topics) {
+        var $el = $(el);
 
-            CODOF.req_started = true;
-            CODOF.topic_creator.fetch();
-        }
+        if (!$el.hasClass("active_page_controls"))
+            return false;
 
-        return false; //prevent link 
-    });
+        var nextPage = currPage + 1;
+
+        if (action === 'prev')
+            nextPage = currPage - 1;
+
+        var url = codo_defs.url + 'category/' + CODOFVAR.cat_alias + '/' + nextPage;
+
+        window.location.href = url;
+    };
+
 
     CODOF.search_data = {};
     CODOF.hook.add('before_req_fetch_topics', function () {
@@ -595,41 +642,26 @@ jQuery('document').ready(function ($) {
         $.extend(CODOF.req.data, CODOF.search_data);
     });
 
-    function codo_create_filter(val) {
-
-        $('#codo_topics_load_more').hide();
-        CODOF.search_data = {
-            str: val,
-            cats: '',
-            match_titles: 'Yes',
-            sort: 'post_created',
-            order: 'Desc',
-            search_within: 'anytime',
-            get_page_count: 'yes'
-        };
-        $('.codo_topics_pagination').remove();
-        $('#codo_no_topics_display').hide();
-        CODOF.topic_creator.search_switch = true;
-        CODOF.topic_creator.refresh();
-    }
 
 
-    $('.codo_topics_search_icon').click(function () {
 
-        search_triggered($(this).prev().val());
-    });
+    /*$('.codo_topics_search_icon').click(function () {
+     
+     search_triggered($(this).prev().val());
+     });
+     
+     function search_triggered(val) {
+     
+     $('.codo_topics_search_input').val(val);
+     codo_create_filter(val);
+     }
+     
+     $('.codo_topics_search_input').keypress(function (e) {
+     if (e.which == 13) {
+     search_triggered(this.value);
+     }
+     });*/
 
-    function search_triggered(val) {
-
-        $('.codo_topics_search_input').val(val);
-        codo_create_filter(val);
-    }
-
-    $('.codo_topics_search_input').keypress(function (e) {
-        if (e.which == 13) {
-            search_triggered(this.value);
-        }
-    });
 
     /*setTimeout(function() {
      $('#codo_search_keywords').focus();
@@ -735,8 +767,25 @@ jQuery('document').ready(function ($) {
 
     $('#codo_zero_topics').click(function () {
 
-        $('#codo_topic_desc_div').trigger('click');
-        return false;
+        window.location.href = codo_defs.url + 'new_topic';
     });
 
+
+    CODOF.globalSearch = function (val) {
+
+        $('#codo_topics_load_more').hide();
+        CODOF.search_data = {
+            str: val,
+            cats: '',
+            match_titles: 'Yes',
+            sort: 'post_created',
+            order: 'Desc',
+            search_within: 'anytime',
+            get_page_count: 'yes'
+        };
+        $('.codo_topics_pagination').remove();
+        $('#codo_no_topics_display').hide();
+        CODOF.topic_creator.search_switch = true;
+        CODOF.topic_creator.refresh();
+    }
 });

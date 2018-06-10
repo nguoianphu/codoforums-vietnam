@@ -47,7 +47,8 @@ namespace CODOF\Search;
  *  It is considered as AND . so cat dog rat is equivalent to cat AND dog AND rat
  *
  */
-class Search {
+class Search
+{
 
     /**
      * Raw search string expression provided by the user
@@ -87,8 +88,8 @@ class Search {
     public $cats = null;
 
     /**
-     * 
-     * Topic id 
+     *
+     * Topic id
      * @var int
      */
     public $tid = null;
@@ -150,7 +151,8 @@ class Search {
         "last_post_time" => "t.",
         "no_posts" => "t.",
         "no_views" => "t.",
-        "name" => "u."
+        "name" => "u.",
+        "popular" => "" //exclusive handling
     );
 
     /**
@@ -188,6 +190,7 @@ class Search {
         //$t1 = microtime(true);
         $base_qry = $this->build_query();
         $qry = $this->setSelectors($base_qry, $this->getSelectors());
+
         $obj = $this->db->prepare($qry);
 
         if (!empty($this->cats)) {
@@ -267,10 +270,10 @@ class Search {
         $chunks = array();
         $start = 0;
         $end = strlen($str);
-        
+
         while (true) {
 
-            if($start + $chunk_size > $end) break;
+            if ($start + $chunk_size > $end) break;
             $pos = $this->strpos($str, " ", $start + $chunk_size);
             $chunks[] = substr($str, $start, $pos - $start);
 
@@ -297,7 +300,7 @@ class Search {
     public function get_matching_str($str) {
 
         $chunk_size = 300;
-       // var_dump(debug_backtrace())
+        // var_dump(debug_backtrace())
         $this->_keys = array();
         array_walk_recursive($this->keys, array($this, 'linearize_array'));
         $first_positions = $last_positions = array();
@@ -312,7 +315,7 @@ class Search {
             $first_positions[$key] = strpos($l_str, $key);
             $last_positions[$key] = strrpos($l_str, $key);
         }
-        
+
         $start = min(($first_positions)); //removed array_filter CF 3.0
         $end = max($last_positions);
         //if the length between first keyword and last
@@ -382,9 +385,9 @@ class Search {
     private function getSelectors() {
 
         return 'p.post_id, p.imessage AS message,p.imessage, p.post_created,p.post_modified,p.reputation,last_post_id, '
-                . 'u.id, u.username as name, u.avatar, u.signature,r.rid, c.cat_img, c.cat_alias, t.topic_created,'
-                . 't.topic_id, t.uid, t.title,t.cat_id, t.no_posts, t.no_views, t.last_post_time, '
-                . 't.last_post_uid, t.last_post_name AS last_post_name, t.topic_status';
+            . 'u.id, u.username as name, u.avatar, u.signature,r.rid, c.cat_img, c.cat_alias, t.topic_created,'
+            . 't.topic_id, t.uid, t.title,t.cat_id, t.no_posts, t.no_views, t.last_post_time, '
+            . 't.last_post_uid, t.last_post_name AS last_post_name, t.topic_status';
     }
 
     private function setSelectors($qry, $selectors) {
@@ -409,15 +412,23 @@ class Search {
             $count = '';
         }
 
-        $qry = 'SELECT ' . $count . ' #SELECTORS# '
-                . 'FROM codo_posts AS p '
-                . 'LEFT JOIN codo_topics AS t ON t.topic_id=p.topic_id '
-                . 'LEFT JOIN codo_users AS u ON u.id=p.uid '
-                . 'LEFT JOIN codo_categories AS c ON c.cat_id=t.cat_id '
-                . 'LEFT JOIN codo_user_roles AS r ON r.uid=u.id AND r.is_primary=1 '
-                . 'WHERE t.topic_status<>0 '
-                . '      AND p.post_status=1'
-                . '      #CONDITIONS# ';
+        $qry = 'SELECT ' . $count . ' #SELECTORS# ';
+
+        if ($this->sort == "popular") {
+
+            $qry .= " , (SELECT COUNT(id) FROM codo_reputation rep WHERE rep.post_id=p.post_id) AS rep_points ";
+        }
+
+
+        $qry .= 'FROM codo_posts AS p '
+            . 'LEFT JOIN codo_topics AS t ON t.topic_id=p.topic_id '
+            . 'LEFT JOIN codo_users AS u ON u.id=p.uid '
+            . 'LEFT JOIN codo_categories AS c ON c.cat_id=t.cat_id '
+            . 'LEFT JOIN codo_user_roles AS r ON r.uid=u.id AND r.is_primary=1 ';
+
+        $qry .= 'WHERE t.topic_status<>0 '
+            . '      AND p.post_status=1'
+            . '      #CONDITIONS# ';
 
         if ($this->cats != null) {
 
@@ -426,8 +437,8 @@ class Search {
 
         if ($this->tid != null) {
 
-            if(strpos($this->tid, '=') === FALSE) {
-                
+            if (strpos($this->tid, '=') === FALSE) {
+
                 $this->tid = ' = ' . $this->tid;
             }
             $qry .= ' AND p.topic_id ' . $this->tid;
@@ -501,6 +512,9 @@ class Search {
 
     private function get_sort_by() {
 
+        if ($this->sort == "popular")
+            return " rep_points ";
+
         return $this->sort_keys[$this->sort] . $this->sort;
     }
 
@@ -513,6 +527,9 @@ class Search {
 
         $str = '';
         $title_str = '';
+
+        if($this->sort == "popular")
+            return " ";
 
         if ($this->match_titles == 'Yes') {
 

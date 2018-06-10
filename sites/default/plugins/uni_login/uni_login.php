@@ -66,7 +66,6 @@ dispatch_get('uni_login/login/:name', function($name) {
     // config and includes    
     $config = SYSPATH . 'Ext/hybridauth/config.php';
     require_once SYSPATH . "Ext/hybridauth/Hybrid/Auth.php";
-
     try {
         // hybridauth EP
         $hybridauth = new Hybrid_Auth($config);

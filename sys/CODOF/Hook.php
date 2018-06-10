@@ -10,6 +10,13 @@ defined('IN_CODOF') or die();
 
 class Hook {
 
+
+    /**
+     * When forum attachment is saved in database
+     * data-> array($_FILES['file'], $hash, $hash)
+     */
+    const ON_FILE_SAVE = "on_file_save"; 
+
     private static $hooks = array();
 
     /*
@@ -108,6 +115,8 @@ class Hook {
                 return $function[0] . $function[1]; //converts to string
             }
         }
+
+        return $function;
     }
 
 }

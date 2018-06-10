@@ -194,10 +194,10 @@ class topic {
                     "link" => 'topic/' . $tid . '/post-' . $pid . '&page=from_notify&nid=[NID]/#post-' . $pid,
                     "cid" => $catid,
                     "tid" => $tid,
-                    "pid" => $pid, 
+                    "pid" => $pid,
                     "notifyFrom" => \CODOF\User\CurrentUser\CurrentUser::id(),
                     "message" => \CODOF\Util::start_cut(\CODOF\Format::imessage($_POST['input_txt']), 120), //OPTIONAL
-                    "mentions" => $ids, 
+                    "mentions" => $ids,
                     "notification" => "%actor% replied to <b>%title%</b>",
                     "bindings" => array("title" => \CODOF\Util::start_cut($title, 100))
                 );
@@ -233,8 +233,7 @@ class topic {
                 $errors[] = "Error While uploading the image.";
             } else {
 
-                $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-                $file_info[] = \CODOF\File\Upload::save($image, uniqid() . "." . $ext, DATA_PATH . \CODOF\Util::get_opt('forum_attachments_path'), 0777);
+                $file_info[] = \CODOF\Forum\Post::uploadAttachment($image);
             }
         }
 
@@ -252,8 +251,6 @@ class topic {
 
             echo 'dude';
         }
-
-
 
 
         if (isset($_POST['title']) && isset($_POST['cat']) && isset($_POST['imesg']) && isset($_POST['omesg'])) {
@@ -320,6 +317,11 @@ class topic {
             $pid = $post->ins_post($catid, $tid, $_POST['imesg'], $_POST['omesg']);
             $topic->link_topic_post($pid, $tid);
 
+            if ($_POST['has_poll'] == 'yes') {
+
+                $topic->addPollToTopic($tid, $_POST['poll_title'], $_POST['poll_data']);
+            }
+
 
             if ($is_auto_close == 'yes') {
 
@@ -346,7 +348,7 @@ class topic {
                     "tid" => $tid,
                     "pid" => $pid,
                     "link" => 'topic/' . $tid . '/post-' . $pid . '&page=from_notify&nid=[NID]/#post-' . $pid,
-                    "notifyFrom" => \CODOF\User\CurrentUser\CurrentUser::id(),                    
+                    "notifyFrom" => \CODOF\User\CurrentUser\CurrentUser::id(),
                     "message" => \CODOF\Util::start_cut(\CODOF\Format::imessage($_POST['imesg']), 120),
                     "notification" => "%actor% created <b>%title%</b>",
                     "bindings" => array("title" => \CODOF\Util::start_cut($title, 100))
@@ -440,7 +442,7 @@ class topic {
                             "cid" => $cid,
                             "tid" => $tid,
                             "pid" => $pid,
-                            "notifyFrom" => \CODOF\User\CurrentUser\CurrentUser::id(),                            
+                            "notifyFrom" => \CODOF\User\CurrentUser\CurrentUser::id(),
                             "notification" => "%actor% moved <b>%title%</b> to %category%",
                             "bindings" => array("title" => \CODOF\Util::start_cut($topic_info['title'], 100),
                                 "category" => $categoryName)
@@ -451,6 +453,7 @@ class topic {
                     }
                 }
 
+                $topic->updatePollIfExists($tid, $_POST['poll_title'], $_POST['poll_data'], $_POST['has_poll']);
 
                 $sticky = $_POST['sticky'];
                 $open = $_POST['is_open'];

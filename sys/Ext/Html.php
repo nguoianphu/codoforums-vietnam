@@ -51,7 +51,7 @@ class Html {
         'center' => array(),
         'strong' => array(),
         'em' => array(),
-        'i' => array(),
+        'i' => array('class'),
         'b' => array(),
         'u' => array(),
         'strike' => array(),
@@ -65,7 +65,7 @@ class Html {
         'sub' => array(),
         'marquee' => array(),
         // Took out 'rel' and 'title', because we're using those below
-        'a' => array('href', 'target', 'class'),
+        'a' => array('href', 'target', 'class', 'title'),
         'img' => array('src',
             'alt', 'title',
         ),
@@ -103,6 +103,8 @@ class Html {
             $out = ($val[1]);
             return '<code>' . $out . '</code>';
         }
+
+        return $val;
     }
 
     /**
@@ -340,6 +342,7 @@ class Html {
             }
 
             if ('' !== $val) {
+
                 $node->setAttribute($name, $val);
             }
         }
@@ -360,7 +363,7 @@ class Html {
             if ($node->hasAttribute('class')) {
 
                 $cls = explode(" ", $node->getAttribute('class'));
-                $allowed_cls = array('codo_oembed');
+                $allowed_cls = array('codo_oembed', 'codo_lightbox_container');
 
                 $filtered_cls = "";
 
@@ -385,9 +388,12 @@ class Html {
                 $title = $f['basename'];
             }
 
-            $node->setAttribute(
+            if(!$node->hasAttribute('title')) {
+    
+                $node->setAttribute(
                     'title', $title
-            );
+                );
+            }
 
             if (self::$options['nofollow']) {
                 $node->setAttribute(
@@ -397,6 +403,34 @@ class Html {
         } catch (Exception $e) {
             
         }
+    }
+
+
+    /**
+     * Allow a class for <i> tag
+     *
+     * @param [type] $node
+     * @return void
+     */
+    protected function addIWithAllowedClass(&$node) {
+
+        if ($node->hasAttribute('class')) {
+            
+            $cls = explode(" ", $node->getAttribute('class'));
+            $allowed_cls = array('glyphicon', 'glyphicon-file');
+
+            $filtered_cls = "";
+
+            foreach ($cls as $class) {
+
+                if (in_array($class, $allowed_cls)) {
+
+                    $filtered_cls .= $class . " ";
+                }
+            }
+
+            $node->setAttribute('class', trim($filtered_cls));
+        }               
     }
 
     /**
@@ -442,6 +476,12 @@ class Html {
                 if ('a' === $node->nodeName && '' !== $href) {
                     self::linkAttributes($node, $href);
                 }
+
+                if('i' === $node->nodeName) {
+
+                    $this->addIWithAllowedClass($node);
+                }
+
             } // End if( $node->hasAttributes() )
 
             /**
@@ -531,7 +571,7 @@ class Html {
             if ($out) {
                 $out = self::decodeScrub($v);
             }
-        } else if (strpos($v, "/serve/attachment") !== FALSE) {
+        } else if (strpos($v, "serve/attachment") !== FALSE) {
 
             $out = urlencode($v); //need improvement here
         } else {

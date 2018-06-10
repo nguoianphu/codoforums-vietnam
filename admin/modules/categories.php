@@ -48,36 +48,18 @@ if (isset($_GET['action'])) {
             
             $show_children = "on" === $_POST['show_children'] ? 1 : 0;
 
-            $query = "UPDATE " . PREFIX . "codo_categories SET cat_name=:cat_name,"
-                    . "cat_description=:cat_description, show_children=:show_children";
+            $query = "UPDATE " . PREFIX . "codo_categories SET cat_name=:cat_name,is_label=:is_label,"
+                    . "cat_description=:cat_description, show_children=:show_children, cat_img=:cat_img";
             $imgql = "";
             $cond = " WHERE cat_id=:cat_id";
 
             $arr[':cat_name'] = $_POST['cat_name'];
+            $arr[':is_label'] = $_POST['is_label'] == 'yes' ? 1  : 0;
             $arr[':cat_description'] = $_POST['cat_description'];
             $arr[':show_children'] = $show_children;
             $arr[':cat_id'] = $_GET['cat_id'];
+            $arr[":cat_img"] = $_POST['cat_img'];
 
-            //$image=$_FILES['cat_img'];
-            if (isset($_FILES['cat_img'])) {
-
-                $image = $_FILES['cat_img'];
-                if (
-                        !\CODOF\File\Upload::valid($image) OR ! \CODOF\File\Upload::not_empty($image) OR ! \CODOF\File\Upload::type($image, array('jpg', 'jpeg', 'png', 'gif', 'pjpeg', 'bmp', 'svg'))) {
-                    $smarty->assign('err', 1);
-                    $smarty->assign('msg', "Error While uploading the image.");
-                } else {
-
-                    \CODOF\File\Upload::$width = 425;
-                    \CODOF\File\Upload::$height = 425;
-                    \CODOF\File\Upload::$resizeImage = true;
-                    \CODOF\File\Upload::$resizeIconPath = DATA_PATH . CAT_ICON_IMGS;
-
-                    $file_info = \CODOF\File\Upload::save($image, NULL, DATA_PATH . 'assets/img/cats', 0777);
-                    $arr[":cat_img"] = $file_info["name"];
-                    $imgql = ",cat_img=:cat_img";
-                }
-            }
             $stmt = $db->prepare($query . $imgql . $cond);
             $stmt->execute($arr);
         }
@@ -280,40 +262,28 @@ if (isset($_POST['mode'])) {
 
 
         $qry = 'INSERT INTO ' . PREFIX . 'codo_categories'
-                . '(cat_pid,cat_name,cat_alias,cat_description,cat_img,no_topics,no_posts,cat_order)'
-                . 'VALUES(:cat_pid,:cat_name,:cat_alias,:cat_description,:cat_img,:no_topics,:no_posts,:cat_order)';
+                . '(cat_pid,cat_name,cat_alias,cat_description,cat_img,no_topics,no_posts,cat_order, is_label)'
+                . 'VALUES(:cat_pid,:cat_name,:cat_alias,:cat_description,:cat_img,:no_topics,:no_posts,:cat_order, :is_label)';
         $stmt = $db->prepare($qry);
 
         $arr[":cat_pid"] = 0;
         $arr[":cat_name"] = $_POST['cat_name'];
         $arr[":cat_alias"] = CODOF\Filter::URL_safe($_POST['cat_name']); //
-        $arr[":cat_img"] = 1; //$_POST['cat_img']; //
+        $arr[":cat_img"] = $_POST['cat_img']; //
         $arr[":cat_description"] = $_POST['cat_description'];
         $arr[":no_topics"] = 0;
         $arr[":no_posts"] = 0;
         $arr[":cat_order"] = 0;
+        $arr[':is_label'] = $_POST['is_label'] == 'yes' ? 1  : 0;
+
         //$stmt->execute($arr);
-        $image = $_FILES['cat_img'];
 
-        if (
-                !\CODOF\File\Upload::valid($image) OR ! \CODOF\File\Upload::not_empty($image) OR ! \CODOF\File\Upload::type($image, array('jpg', 'jpeg', 'png', 'gif', 'pjpeg', 'bmp', 'svg'))) {
-            $smarty->assign('err', 1);
-            $smarty->assign('msg', "Error While uploading the image.");
-        } else {
+        $stmt->execute($arr);
+        $cid = $db->lastInsertId('cat_id');
+        $manager = new \CODOF\Permission\Manager();
+        $manager->copyCategoryPermissionsFromRole($cid);
+        $smarty->assign('msg', 'New Category Created!');
 
-            \CODOF\File\Upload::$width = 425;
-            \CODOF\File\Upload::$height = 425;
-            \CODOF\File\Upload::$resizeImage = true;
-            \CODOF\File\Upload::$resizeIconPath = DATA_PATH . CAT_ICON_IMGS;
-
-            $file_info = \CODOF\File\Upload::save($image, NULL, DATA_PATH . 'assets/img/cats', 0777);
-            $arr[":cat_img"] = $file_info["name"];
-            $stmt->execute($arr);
-            $cid = $db->lastInsertId('cat_id');
-            $manager = new \CODOF\Permission\Manager();
-            $manager->copyCategoryPermissionsFromRole($cid);
-            $smarty->assign('msg', 'New Category Created!');
-        }
     }
 }
 

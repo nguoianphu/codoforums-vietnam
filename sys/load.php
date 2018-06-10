@@ -66,9 +66,6 @@ if (file_exists(DATA_PATH . 'config.php')) {
     //$u = \User::get();
     //var_dump($u->id);
     //exit('hello');
-    
-    //loads translation system
-    require DATA_PATH . 'locale/lang.php';
 
     require SYSPATH . 'globals/global.php';
 

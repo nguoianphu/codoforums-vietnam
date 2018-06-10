@@ -60,11 +60,11 @@ class Session {
 
         $result = $obj->fetch(\PDO::FETCH_ASSOC);
 
-        if (!empty($result)) {
+        if (!is_null($result) && !empty($result)) {
 
             return $result['session_data'];
         }
-        return false;
+        return "NO_DATA";
     }
 
     /**
@@ -74,7 +74,7 @@ class Session {
      */
     public function write($id, $data) {
 
-        if ($this->read($id) === false) {
+        if ($this->read($id) === "NO_DATA") {
             $sql = "INSERT INTO codo_sessions VALUES(:sid, :last_active, :data)";
         } else {
 

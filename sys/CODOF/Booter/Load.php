@@ -39,6 +39,12 @@ class Load extends Container {
             $namespace = 'Ext/' . $namespace;
         }
 
+        if($namespace == 'Facebook') {
+            
+            $namespace = 'Ext/hybridauth/Hybrid/Providers/';
+        }
+
+
         if($class == 'LightnCandy') {
             
             $namespace = 'Ext/LightnCandy';
@@ -48,7 +54,7 @@ class Load extends Container {
 
         if (is_file($file)) {
 
-            require $file;
+            require_once $file;
         } else {
             
             echo 'Unable to require ' . $file;

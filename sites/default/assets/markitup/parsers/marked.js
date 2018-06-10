@@ -906,12 +906,8 @@
 
             href = codo_defs.url + href;
         }
-        var out = '<img src="' + href + '" alt="' + text + '"';
-        if (title) {
-            out += ' title="' + title + '"';
-        }
-        out += this.options.xhtml ? '/>' : '>';
-        return out;
+
+        return CODOF.editor_settings.getImageHtml(href, title, text);
     };
 
     /**

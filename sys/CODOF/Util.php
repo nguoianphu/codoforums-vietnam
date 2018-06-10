@@ -10,7 +10,8 @@ defined('IN_CODOF') or die();
 
 //Assumes config.php has been included before
 
-class Util {
+class Util
+{
 
     //Not used now, since logging is done in the database
     public static $log = 'logs/file.log';
@@ -18,11 +19,12 @@ class Util {
     public static $use_normal_sessions = false;
 
     /**
-     * 
+     *
      * Logger function
      * @param type $message
      */
-    public static function log($message) {
+    public static function log($message)
+    {
 
         if (CODO_DEBUG) {
 
@@ -31,11 +33,12 @@ class Util {
     }
 
     /**
-     * 
-     * Gets all configuration information 
+     *
+     * Gets all configuration information
      * @param type $db -> DB connection
      */
-    public static function get_config($db) {
+    public static function get_config($db)
+    {
 
         $qry = 'SELECT * FROM codo_config';
         $res = $db->query($qry);
@@ -49,7 +52,8 @@ class Util {
         self::$options = $info;
     }
 
-    public static function get_smileys($db) {
+    public static function get_smileys($db)
+    {
 
         $qry = 'SELECT symbol, image_name FROM codo_smileys';
         $res = $db->query($qry);
@@ -69,11 +73,12 @@ class Util {
     }
 
     /**
-     * 
+     *
      * starts custom session that works on database rather than file
      * for faster access/write speed
      */
-    public static function start_session() {
+    public static function start_session()
+    {
 
         //initiate/update/destroy user sessions
         if (!self::$use_normal_sessions) {
@@ -85,15 +90,16 @@ class Util {
     }
 
     /**
-     * 
+     *
      * Validates json
-     * 
+     *
      * @param type $str
      * @return type
-     * 
+     *
      * returns decoded json if valid string else returns the string itself
      */
-    public static function valid_JSON($str) {
+    public static function valid_JSON($str)
+    {
 
         //we want associative array so pass true
         $json = json_decode($str, true);
@@ -110,12 +116,14 @@ class Util {
      * @param type $option
      * @return type
      */
-    public static function optionExists($option) {
+    public static function optionExists($option)
+    {
 
         return !empty(self::$options) && isset(self::$options[$option]);
     }
 
-    public static function get_opt($option) {
+    public static function get_opt($option)
+    {
 
         if (empty(self::$options) || !isset(self::$options[$option])) {
             return 'The option ' . $option . ' does not exist in the table';
@@ -124,20 +132,41 @@ class Util {
         }
     }
 
-    public static function trim($str, $len) {
+    public static function set_opt($option, $value)
+    {
+        if (empty(self::$options)){
+            self::get_config(\DB::getPDO());
+        }
+
+        if (empty(self::$options) || !isset(self::$options[$option])) {
+            \DB::table(PREFIX . 'codo_config')->insert(array(
+                array(
+                    'option_name' => $option,
+                    'option_value' => $value,
+                )));
+        } else {
+            \DB::table(PREFIX . 'codo_config')
+                ->where('option_name', $option)
+                ->update(['option_value' => $value]);
+        }
+    }
+
+    public static function trim($str, $len)
+    {
 
         //make sure trimmed string does not exceed given length
         return (strlen(trim($str)) > $len);
     }
 
     /**
-     * 
+     *
      * Checks if all $req_fields are present in $array
      * @param {array} $array
      * @param {array} $req_fields
      * @return boolean
      */
-    public static function is_set($array, $req_fields) {
+    public static function is_set($array, $req_fields)
+    {
 
         foreach ($req_fields as $req_field) {
 
@@ -149,7 +178,8 @@ class Util {
         return true;
     }
 
-    public static function is_empty($array, $req_fields) {
+    public static function is_empty($array, $req_fields)
+    {
 
         foreach ($req_fields as $req_field) {
 
@@ -162,14 +192,15 @@ class Util {
     }
 
     /**
-     * 
+     *
      * Abbreviates a big number with k,m,b,t
-     * 
+     *
      * @param type $number -> input number
      * @param type $decPlaces -> precision
      * @return string -> abbreviated number
      */
-    public static function abbrev_no($number, $decPlaces) {
+    public static function abbrev_no($number, $decPlaces)
+    {
 
         // 2 decimal places => 100, 3 => 1000, etc
         $decPlaces = pow(10, $decPlaces);
@@ -210,9 +241,10 @@ class Util {
     }
 
     /**
-     * 
+     *
      */
-    public static function inc_global_views() {
+    public static function inc_global_views()
+    {
 
         $view = array('is there');
         $date = date('Y-m-d');
@@ -233,7 +265,8 @@ class Util {
         }
     }
 
-    public static function re_array_files(&$file_post) {
+    public static function re_array_files(&$file_post)
+    {
 
         $file_ary = array();
         $file_count = count($file_post['name']);
@@ -250,14 +283,15 @@ class Util {
 
     /**
      * Replaces any parameter placeholders in a query with the value of that
-     * parameter. Useful for debugging. Assumes anonymous parameters from 
+     * parameter. Useful for debugging. Assumes anonymous parameters from
      * $params are are in the same order as specified in $query
      *
      * @param string $query The sql query with parameter placeholders
      * @param array $params The array of substitution parameters
      * @return string The interpolated query
      */
-    public static function interpolate_query($query, $params) {
+    public static function interpolate_query($query, $params)
+    {
         $keys = array();
 
         # build a regular expression for each parameter
@@ -276,14 +310,15 @@ class Util {
         return $query;
     }
 
-    public static function count_children($cat) {
+    public static function count_children($cat)
+    {
 
         if (property_exists($cat, 'children')) {
 
             //find no of children upto single nest
             //we need to convert the object into array first
             //to use count()
-            return count((array) $cat->children);
+            return count((array)$cat->children);
         }
 
         return 0;
@@ -296,13 +331,14 @@ class Util {
      */
 
     /**
-     * 
+     *
      * @param string $text
      * @param int $max_chars
      * @param string $mid
      * @return string
      */
-    public static function mid_cut($text, $max_chars, $mid = "...") {
+    public static function mid_cut($text, $max_chars, $mid = "...")
+    {
 
         $text_len = strlen($text);
 
@@ -321,7 +357,8 @@ class Util {
      * @param int $max_chars
      * @return string
      */
-    public static function start_cut($text, $max_chars) {
+    public static function start_cut($text, $max_chars)
+    {
 
         if (strlen($text) > $max_chars) {
 
@@ -331,7 +368,8 @@ class Util {
         return $text;
     }
 
-    public static function get_avatar_path($name, $id, $icon = true) {
+    public static function get_avatar_path($name, $id, $icon = true)
+    {
 
         if ($name == null) {
 
@@ -350,7 +388,8 @@ class Util {
         return DURI . PROFILE_IMG_PATH . $name;
     }
 
-    public static function is_field_present($value, $field) {
+    public static function is_field_present($value, $field)
+    {
 
         $db = \DB::getPDO();
         //no need for limit because the fields are always checked for uniqueness
@@ -373,7 +412,8 @@ class Util {
      * get all directories that need 0777 permissions
      */
 
-    public static function get_777s() {
+    public static function get_777s()
+    {
 
         return array("sites/default/assets/img/attachments",
             "sites/default/assets/img/cats",
@@ -392,57 +432,60 @@ class Util {
     }
 
     /**
-     * 
+     *
      * Converts an array of type
-     * 
+     *
      * (
      *     [0] =>
      *          ["A"] => ["hello"],
      *          ["B"] => ["hi"]
-     *      
-     *  
+     *
+     *
      * )
      */
-    public static function flatten_2d_to_1d() {
+    public static function flatten_2d_to_1d()
+    {
 
         //flattens the array 2D to 1D
     }
 
     /**
-     * 
+     *
      * just a dummy echo function
      * @param type $message
      */
-    public static function e($message) {
+    public static function e($message)
+    {
 
         echo $message;
     }
 
-    public static function set_promoted_or_demoted_rid() {
+    public static function set_promoted_or_demoted_rid()
+    {
 
         $user = User\User::get();
         $rids = \DB::table(PREFIX . 'codo_promotion_rules')
-                        ->where(function($query) use($user) {
+            ->where(function ($query) use ($user) {
 
-                            $query->where('reputation', '<=', $user->reputation)
-                            ->where('type', '=', 1);
-                        })
-                        ->orWhere(function($query) use($user) {
+                $query->where('reputation', '<=', $user->reputation)
+                    ->where('type', '=', 1);
+            })
+            ->orWhere(function ($query) use ($user) {
 
-                            $query->where('posts', '<=', $user->no_posts)
-                            ->where('type', '=', 1);
-                        })
-                        ->orWhere(function($query) use($user) {
+                $query->where('posts', '<=', $user->no_posts)
+                    ->where('type', '=', 1);
+            })
+            ->orWhere(function ($query) use ($user) {
 
-                            $query->where('reputation', '<=', $user->reputation)
-                            ->where('posts', '<=', $user->no_posts)
-                            ->where('type', '=', 0);
-                        })->lists('rid');
+                $query->where('reputation', '<=', $user->reputation)
+                    ->where('posts', '<=', $user->no_posts)
+                    ->where('type', '=', 0);
+            })->lists('rid');
 
 
         $current_roles = \DB::table(PREFIX . 'codo_user_roles')
-                        ->select('rid', 'is_promoted')
-                        ->where('uid', '=', $user->id)->get();
+            ->select('rid', 'is_promoted')
+            ->where('uid', '=', $user->id)->get();
 
         $deletions = array();
         $additions = array();
@@ -481,15 +524,15 @@ class Util {
                 );
             }
             \DB::table(PREFIX . 'codo_user_roles')
-                    ->insert($new_roles);
+                ->insert($new_roles);
         }
 
         if (!empty($deletions)) {
 
             \DB::table(PREFIX . 'codo_user_roles')
-                    ->where('uid', '=', $user->id)
-                    ->whereIn('rid', $deletions)
-                    ->delete();
+                ->where('uid', '=', $user->id)
+                ->whereIn('rid', $deletions)
+                ->delete();
         }
     }
 

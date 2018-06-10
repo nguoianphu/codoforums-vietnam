@@ -21,6 +21,10 @@ $db = \DB::getPDO();
 
 Util::get_config($db);
 \Constants::post_boot('themes/' . Util::get_opt('theme') . "/");
+
+//loads translation system
+require DATA_PATH . 'locale/lang.php';
+
 CODOF\Smarty\Single::get_instance();
 
 if(!\CODOF\User\CurrentUser\CurrentUser::loggedIn()) {
@@ -51,21 +55,21 @@ dispatch_get('Ajax/history/posts', function() {
     }
 });
 
-dispatch_get('Ajax/reputation/:pid/up', function($pid) {
+dispatch_get('Ajax/reputation/:tid/:pid/up', function($tid, $pid) {
 
     if (Request::valid($_GET['_token'])) {
 
         $rep = new \CODOF\Forum\Reputation();
-        $rep->up($pid);
+        $rep->up($tid, $pid);
     }
 });
 
-dispatch_get('Ajax/reputation/:pid/down', function($pid) {
+dispatch_get('Ajax/reputation/:tid/:pid/down', function($tid, $pid) {
 
     if (Request::valid($_GET['_token'])) {
 
         $rep = new \CODOF\Forum\Reputation();
-        $rep->down($pid);
+        $rep->down($tid, $pid);
     }
 });
 
@@ -184,16 +188,20 @@ $user = CODOF\User\User::get();
 /** ROUTES below are possible only if user is ALLOWED to view forum * */
 dispatch_get('serve/attachment', function() {
 
-
-    $img = new \Controller\serve();
-    $img->attachment();
+    $serve = new \Controller\Serve();
+    $serve->attachment();
 });
 
+dispatch_get('serve/attachment/preview', function() {
+    
+        $serve = new \Controller\Serve();
+        $serve->previewAttachment();
+});
+    
 dispatch_get('serve/smiley', function() {
 
-
-    $img = new \Controller\serve();
-    $img->smiley();
+    $serve = new \Controller\Serve();
+    $serve->smiley();
 });
 
 //-------------AJAX-------------------------------------------------------------
@@ -442,7 +450,7 @@ dispatch_get('Ajax/topics/get_topics', function() {
     if (Request::valid($_GET['token'])) {
 
         $topics = new Controller\Ajax\forum\topics();
-        $list = $topics->get_topics($_GET['from'], isset($_GET['str']));
+        $list = $topics->get_topics($_GET['from'],  $_GET['type'], isset($_GET['str']));
         echo json_encode($list);
     }
 });
@@ -694,6 +702,12 @@ dispatch_get('Ajax/cron/run/:name', function($name) {
     //exit;
 });
 
+Request::post('Ajax/poll/vote/:pollId/:optionId', function($pollId, $optionId) {
+    
+    CODOF\Forum\Poll::vote((int)$pollId, (int)$optionId);
+});
+
+
 //-------------PAGES--------------------------
 
 dispatch_get('/page/:id/:url', function($id, $url) {
@@ -851,7 +865,6 @@ dispatch_get('/moderation/replies', function() {
     }
 });
 
-
 dispatch_get('/topics/:page', function($page) {
 
     $pageNo = (int) $page;
@@ -966,6 +979,13 @@ dispatch_get('/', function() {
     $forum->topics(1);
     CODOF\Smarty\Layout::load($forum->view, $forum->css_files, $forum->js_files);
 });
+
+dispatch_get('/user/login/status', function() {
+
+    echo \CODOF\User\CurrentUser\CurrentUser::loggedIn() ? "yes" : "no";
+});
+
+
 
 dispatch_get('/ckattempt=1', function() {
 

@@ -10,11 +10,11 @@
 #codopm_tabs {
     font-size: 90%;
     margin: 20px 0;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
     padding: 8px;
     border-radius: 2px;
     background: #fff;
-    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+    /*x-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);*/
 }
 
 #codopm_tabs a:active {

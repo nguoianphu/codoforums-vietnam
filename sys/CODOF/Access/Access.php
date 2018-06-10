@@ -25,7 +25,6 @@
  */
 namespace CODOF\Access;
 
-use CODOF\Hook as Hook;
 
 class Access {
 

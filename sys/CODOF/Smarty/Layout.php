@@ -6,6 +6,9 @@
 
 namespace CODOF\Smarty;
 
+use CODOF\Time;
+use CODOF\User\User;
+
 class Layout {
 
     public static function load($tpl, $css_files = array(), $js_files = array()) {
@@ -54,6 +57,8 @@ class Layout {
 
         $smarty->assign('forum_tags_num', \CODOF\Util::get_opt('forum_tags_num'));
         $smarty->assign('forum_tags_len', \CODOF\Util::get_opt('forum_tags_len'));
+
+        $smarty->assign('tpl', $tpl);
 
         $category = new \CODOF\Forum\Category();
         $canCreateTopicInAtleastOneCategory = $category->canCreateTopicInAtleastOne();
@@ -120,6 +125,8 @@ class Layout {
         //current user details
         $smarty->assign('I', $I);
         $smarty->assign('can_moderate_posts', $I->can('moderate posts'));
+        $smarty->assign('roleName', User::getRoleName($I->rid));
+        $smarty->assign('today', Time::get_pretty_time(\time(), true));
 
         if (\CODOF\User\CurrentUser\CurrentUser::loggedIn()) {
             $notifier = new \CODOF\Forum\Notification\Notifier();
