@@ -1,0 +1,81 @@
+/*
+ * @CODOLICENSE
+ */
+
+body {
+    
+    background: @bodyBg;
+}
+
+.codo_powered_by {
+
+    width: 100%;
+    background: #2b2b2b;
+    color: #fff; 
+
+    a {
+
+        color: #fff;
+        text-decoration: underline;
+    }
+
+}
+
+.codo_posts {
+
+    .codo_widget-content {
+
+        background: none;
+    }    
+
+    .codo_topic_separator {
+        
+        display: none;
+    }
+    
+}
+
+.codo_categories {
+    
+    .codo_categories_category {
+        
+        &:hover {
+            
+            opacity: 0.9;
+        }
+    }
+}
+
+.codo_topics {
+    
+    .codo_topics_head {
+        
+        .codo_topics_new_topic {
+            
+            >div {
+                
+                color: #fff;
+            }
+        }
+    }
+    
+    .codo_topics_body {
+        
+        > article {
+            
+            opacity: 0.9;
+            
+            &:hover {
+                
+                opacity: 0.95;
+            }
+            
+            
+            > .codo_topics_topic_img {
+                
+                background: #2b2b2b;
+            }
+        }
+        
+    }
+}

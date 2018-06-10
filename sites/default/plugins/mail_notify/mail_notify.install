@@ -1,0 +1,11 @@
+<?php
+
+/* 
+CREATE TABLE IF NOT EXISTS `codo_post_notify` (
+  `pid` int(11) NOT NULL COMMENT 'post id from codo_posts',
+  `notify` tinyint(4) NOT NULL COMMENT 'integer indicating notification type. 0 means unsubscribed, 1 means subscribed to all posts',
+  `notified` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'boolean indicating whether notification has been sent(1) or not(0)',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ */
+

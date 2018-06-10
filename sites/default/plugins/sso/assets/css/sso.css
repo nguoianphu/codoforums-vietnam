@@ -1,0 +1,54 @@
+.codo_sso {
+    
+    margin-left: 4px;
+}
+
+.codo_sso_login_btn {
+
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    display: inline-block;
+    border-radius: 1px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-color: black;
+    background-size: 16px;
+    padding-right: 30px;
+}
+
+
+.codo_sso_login_btn > span {
+
+    border-left: 1px solid white;
+    height: 100%;
+    display: inline-block;
+    line-height: 30px;
+    padding-left: 12px;    
+}
+
+.codo_sso_login_btn {
+
+    background-color: #2980b9;
+    border-color: #2475ab;
+    padding: 0px 5px;
+}
+
+.codo_sso_login_btn:hover {
+
+    background-color: #3d99d6;
+}
+
+
+.codo_login_loading {
+
+    position: absolute;
+    width: 24px;
+    height: 26px;
+    right: 75px;
+    top: 20px;
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;    
+    display: none;
+}

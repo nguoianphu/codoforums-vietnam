@@ -1,0 +1,334 @@
+
+/*
+ * @CODOLICENSE
+ */
+
+.codo_pagination_at_full_width {
+
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    margin-top: 0 !important;
+    padding-left: 15px;
+}
+
+body {
+    
+    overflow-x: hidden;
+}
+
+.codo_widget {
+
+
+
+    width: 100%;
+    //.box-shadow(0 4px 2px -2px @newTopicBoxShadowColor);
+
+
+    .codo_widget-header {
+
+        #codo_topic_title_pagination {
+
+            float: right;
+        }
+        .codo_head_navigation {
+
+            //padding-top: 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            text-shadow: 0px 0px 3px rgba(0,0,0, .5);
+            font-size: 13px;
+            font-family: @numericFontFamily;
+
+            //float: right;
+
+            a {
+                text-decoration: none;
+                display: inline-block;
+                color: white;
+                width: 44px;
+                text-align: center;
+                background: #227abd;
+                &:hover {
+                    .box-shadow(inset 0px 0px 4px rgba(0,0,0, .5));
+                    background: #1f71af;
+                }
+                .transition(background 0.5s ease);
+                .transition(box-shadow 0.5s ease);
+                height: 100%;
+            }
+
+            .codo_topics_curr_page {
+
+                .box-shadow(inset 0px 0px 8px rgba(0,0,0, .5));
+                color: #f0f0f0;
+
+                &:hover{
+                    background: #227abd;
+                    .box-shadow(inset 0px 0px 8px rgba(0,0,0, .5));
+                }
+            }
+        }
+
+
+    }
+
+    .codo_widget-content {
+        padding: 0;
+        background: transparent;
+    }
+
+    .codo_topics_body {
+
+        width: 100%;
+        //margin-left: 1%;
+
+
+        > .codo_load_more_gif {
+
+            text-align: center;
+            margin-top: 12px;
+        }
+        > article {
+
+            //border: 1px solid @articleBorderColor;
+            position: relative;
+            padding: 0;
+            padding-top: 12px;
+            margin-bottom: 8px;
+            margin-top: 2px;
+            background: @articleBg;
+            .box-shadow(0px 2px 5px rgba(0,0,0,0.25));
+            .transition(1s border linear);
+
+            .codo_posts_post_moderation {
+
+                position: absolute;
+                right: 6px;
+                top: 42px;
+                opacity: 0.8;
+                z-index: 2;
+
+                >div {
+
+                    display: inline-block;
+                    margin-bottom: 4px;
+                    cursor: pointer;
+                }
+
+                i {
+
+                    font-size: 14px;
+                }
+            }
+
+            .codo_badges {
+
+                margin: -4px 64px;
+            }
+
+            .row {
+
+                padding: 0;
+            }
+
+            a {
+
+                text-decoration: none;
+                background: transparent;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            > .codo_topics_topic_content {
+
+                //float: left;
+                //color: #222;
+                margin-left: 62px;
+                margin-right: 46px;
+                margin-bottom: 10px;
+
+                > .codo_topics_topic_avatar {
+
+                    position: absolute;
+                    top: 14px;
+                    left: 15px;
+
+                    img {
+
+                        border-radius: 36px;
+                        width: 36px;
+                        height: 36px;
+                    }
+                }
+
+                > .codo_topics_topic_name {
+
+                    //margin-bottom: 4px;
+                    font-family: @titleFontFamily;
+
+                    > a {
+
+                        color: @articleAuthorColor;
+                        font-weight: bold;
+                    }
+
+                    > span {
+
+                        padding-left: 4px;
+                        font-size: 12px;
+                        color: @articleSecondaryDescColor;
+                    }
+                }
+
+                > .codo_topics_topic_title {
+
+                    font-weight: bold;
+                    line-height: 22px;
+                    //margin-bottom: 6px;
+                    font-family: @titleFontFamily;
+
+                    > a {
+
+                        color: @article_A_Color;
+
+                        &:hover {
+
+                            color: @article_A_HoverColor;
+                        }
+                    }
+                }
+            }
+            > .codo_topics_topic_message {
+
+                position: relative;
+                z-index: 1;
+                background: @articleMessageBg;
+
+                img {
+
+                    max-width: 100%;
+                    height: auto;
+                    margin: 0 auto;
+                }
+
+                pre code {
+
+                    font-size: 0.9em;
+                }
+
+                word-break: break-word;
+                >*:first-child {
+                    margin-top: 0px !important;
+                }
+
+                overflow: hidden;
+                min-height: 40px;
+                max-height: 260px;
+                border-top: 1px solid @articleMessageBorderColor;
+                color: @articleMessageColor;
+                padding: 15px 20px;
+                word-wrap: break-word;
+                margin-bottom: 0;
+                padding-bottom: 5px;
+            }
+
+
+            > .codo_topics_topic_foot {
+
+                padding: 6px;
+                border-top: 1px solid @articleFooterBorderTopColor;
+                color: @articleFooterColor;
+                background: @articleFooterBg;
+                text-shadow:  @articleFooterTextShadow;
+                font-size: 12px;
+
+                > .codo_topics_no_replies {
+
+                    float: left;
+                    color: @articleNoContentColor;
+                    padding-right: 5px;
+                    padding-left: 5px;
+                    width: 100px;
+
+                    > span {
+
+                        font-family: @numericFontFamily;
+                        padding-right: 3px;
+                        color: @articleNoContentSpanColor;
+
+                    }
+
+                    &:hover {
+                        color: @articleNoContentSpanColor;
+                    }
+                }
+
+                > .codo_topics_last_post {
+
+                    color: @articleLastPostColor;
+                    float: right;
+                    padding-right: 5px;
+                }
+
+            }
+
+            > .codo_topics_topic_img {
+
+                position: absolute;
+                top: 0;
+                right: 0;
+                //border-bottom: 1px solid #ededed;//2px solid @articleCategoryImgBorderBottomColor;
+                //border-left: 1px solid #ededed;//2px solid @articleCategoryImgBorderLeftColor;
+                padding: 4px;
+                .border-radius(3px);
+
+                img {
+
+                    width: 36px;
+                    height: 36px;
+                }
+            }
+        }
+
+        > .codo_topics_end {
+
+            display: none;
+            padding: 10px;
+            text-align: center;
+            font-family: monospace;
+            text-shadow: @topicsTextShadow;
+            background: @topicsEndBg;
+            color: @topicsEndColor;
+            margin-top: 10px;
+        }
+
+    }
+
+}
+.codo_tag_list {
+    
+    bottom: -2px;
+}
+
+@media only screen and (max-width : 480px) {
+
+    #codo_topics_no_views {
+        
+        display: none;
+    }
+}
+
+
+/* Screens less than 533px considered mobiles
+   Make them full width for optimum readability */
+@media (max-width: @screen-fw-max) {
+
+    .container, .codo_categories, .codo_topics {
+
+        padding: 0;
+    }
+}

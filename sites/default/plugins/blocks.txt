@@ -1,0 +1,102 @@
+Blocks
+---
+
+
+> This file contains all the blocks defined in the codoforum core theme for easy 
+> reference
+
+
+# global
+
+ - block_head
+ - block_body_start
+ - block_body_end
+ - block_footer
+ - block_breadcrumbs_before
+ - block_breadcrumbs_after
+ - block_search_advanced_before
+ - block_search_advanced_after
+
+# topics.tpl
+
+ - block_catgory_list_before
+ - block_catgory_list_after
+ - block_all_topics_before
+
+# category.tpl
+
+ - block_category_create_topic_before
+ - block_category_create_topic_after
+ - block_category_desc_before
+ - block_category_desc_after
+
+# topic.tpl
+
+ - block_posts_before
+ - block_topic_info_before
+ - block_topic_info_after
+
+# new_topic.tpl
+
+ - block_create_topic_before
+ - block_create_topic_after
+
+# register.tpl
+
+ - block_register_form_before
+ - block_register_form_start
+ - block_register_form_end
+ - block_register_form_after
+
+# login.tpl
+
+ - block_login_form_before
+ - block_login_form_start
+ - block_login_form_end
+ - block_login_form_after
+
+# forgot.tpl
+
+ - block_forgot_form_before
+ - block_forgot_form_start
+ - block_forgot_form_end
+ - block_forgot_form_after
+
+# view.tpl [profile/view]
+
+ - block_profile_view_before
+ - block_view_user_info_before
+ - block_view_user_info_start
+ - block_view_user_info_end
+ - block_view_user_info_after
+ - block_user_recent_posts_before
+ - block_user_recent_posts_start
+ - block_user_recent_posts_after
+ - block_profile_view_after
+
+# edit.tpl [profile/edit]
+
+ - block_profile_edit_before
+ - block_profile_edit_details_before
+ - block_profile_edit_details_start
+ - block_profile_edit_details_end
+ - block_profile_edit_details_after
+ - block_profile_change_pass_start
+ - block_profile_change_pass_end
+
+# access_denied.tpl
+
+ - block_access_denied_before
+ - block_access_denied_start
+ - block_access_denied_end
+ - block_access_denied_after
+
+# not_found.tpl
+
+ - block_not_found_before
+ - block_not_found_start
+ - block_not_found_end
+ - block_not_found_after
+
+
+ 

@@ -1,0 +1,412 @@
+//General Colors
+
+/*------------- START MAIN COLORS -------------*/
+
+//Editing this section is more than enough to completely
+//change the theme , but if you want some specific colors
+//for some elements , you can edit the colors after this section
+
+//body
+
+@bodyBgColor: #000;
+@bodyBg: url('../img/bgx.jpg'); //use url('your_img_path.png'); to add background image instead of color
+
+@highlightBg: orange;
+@highlightColor: #000;
+
+@linkColor: #DD9104;
+@linkHoverColor: #cc8604;
+@linkHoverBg: #fff;
+
+//different shades of borders
+@borderColor: #794f02;
+@borderLightColor: #8a5a02;
+@borderDarkColor: #684402;
+
+@boxshadowColor: #ccc;
+
+@bg: #000;
+
+@inverseBg: @linkColor;
+@color: #fff;//text color
+@inverseColor: #000; //text color on inverted bg color
+
+//different shades of desc color(greyish default)
+@descLightColor: #7f7f7f;
+@descDarkColor: #717171;
+@descDarkerColor: #f7f7f7;
+
+
+//search styles
+@searchHighlight: #ff6;
+
+@descFontFamily: 'Open Sans', Helvetica, Arial, sans-serif; //thin fonts look good
+@titleFontFamily: Helvetica, Arial, sans-serif; //open sans don't look well with bold
+@numericFontFamily: 'Oswald', sans-serif; //Helvetica is not as thick
+
+//badges
+//new topic badge
+@badgeNewBg: #3f8cc3;
+@badgeNewColor: #fff;
+@badgeNewBorderColor: #1471af;
+@badgeNewBoxShadow: 0px 1px 3px #1471af;
+@badgeNewTextShadow: 0 1px 0 #222;
+
+//number of new replies badge
+@badgeNewRepliesBg: #e44c34;
+@badgeNewRepliesColor: #fff;
+@badgeNewRepliesBorderColor: #E23923 #D83722 #C0311E;
+@badgeNewRepliesBorderLeftColor: #D83722;
+
+
+//input 
+@inputBg: #fdfdfd;
+@inputColor: #000;
+@inputBorderColor: @borderColor;
+@inputBoxShadowColor: #f1f1f1;
+@inputFocusOutline: #0088cc;
+
+
+//input on error
+@inputErrorBorderColor: rgb(223, 88, 85);
+@inputErrorBoxShadowColor: #d59392;
+@inputErrorFocusOutline: red;
+
+@inputDisabledBg: #eee; //used in edit profile page
+@inputDisabledColor: grey;
+
+//notification styles
+//error notification
+@notificationErrorBg: #EE3040;
+@notificationErrorColor: rgb(139, 2, 2);
+@notificationError_A_Color: rgb(139, 2, 2);
+
+//warning notification
+@notificationWarningBg: #ffe691;
+@notificationColor: #7d5912;
+@notificationBorderColor: #f6db7b;
+
+//success notification
+@notificationSuccessBg: #99ffb1;
+@notificationSuccessColor: #2d8241;
+@notificationSuccessBorderColor: #7ce294;
+
+//topics.less
+//categories list that appears on left in "All topics" page
+@categoryListContainerBorderColor: @borderColor;
+
+@newTopicButtonHoverColor: #ab7003;
+
+//below styles are for individual category 
+@categoryListBg: #2b2b2b;
+@categoryListBorderBottomColor: @categoryListContainerBorderColor;
+@categoryListTextShadow: none;
+@categoryListHoverBg: #dd9104;
+@categoryListHoverColor: @color;
+@categoryListHoverBorderLeft: 3px solid #dd9104;
+@categoryList_A_Color: #fff;
+@categoryList_A_HoverColor: #000;
+@categoryListContent: #fff;
+
+@categoryListActiveBg: #dd9104;
+@categoryListActiveColor: #fff;
+@categoryListActiveTextShadow: none;
+@categoryListActiveHoverBg: #dd9104;
+@categoryListActiveHoverColor: white;
+@categoryListActiveContentColor: @categoryListActiveColor;
+
+//new topic count that appears in a category 
+@categoryListNewTopicsBg: @bodyBg;
+@categoryListNewTopicsColor: @descDarkerColor;
+@categoryListNewTopicsBoxShadow: inset 1px 1px 2px @descLightColor;
+
+@iconColor: #333; //normal icon color
+@iconInverseColor: #fff; //icon color on inverted bg color
+@iconLightColor: grey; 
+
+/*------------- END MAIN COLORS -------------*/
+
+//the notification that pop up at the bottom right 
+//when something new happens like: "new topic", "new reply" etc
+@inlineNotificationBgColor: rgba(255,255,255,0.9);
+@inlineNotificationColor: @color;
+
+//the notifications that you see when you click the bell icon in the menu
+@bellNotificationBg: @bg;
+@bellNotificationColor: @color;
+@bellNotificationHeaderBg: @linkColor;
+@bellNotificationHeaderColor: @inverseColor;
+
+@bellNotificationBorderColor: @borderColor;
+@bellNotificationBoxShadow: 1px 1px 3px @descDarkerColor;
+
+//forum tags while creating topic
+@tagBgColor: @linkColor;
+@tagColor: @linkHoverBg;
+
+//forum tags while viewing topic
+@tagBgColorTopic: #fafafa;
+@tagColorTopic: #000;
+@tagBgHoverColorTopic: #555;
+@tagHoverColorTopic: #fff;
+
+//Global nav bar @see general.less
+
+@globalNavBg: @bg; 
+@globalNavBoxShadow: 0 5px 30px #dd9104;
+
+@globalNavTitle: #FFF; //site title color
+
+@globalNavLink: @linkColor; //link color
+@globalNavLinkHoverBg: #dd9104; //link backgrround color on hover
+@globalNavLinkHover: #000; //link color on hover
+
+@globalNavIconBg: @linkHoverColor;
+@globalNavIconBar: @linkHoverBg;
+
+//back to top button that appears in the top menubar
+@navBackToTopIconColor: @inverseColor;
+
+//Breadcrumbs (at the top of every page)
+@breadcrumbBg: @bg;
+@breadcrumbColor: @descLightColor;
+@breadcrumbBorderColor: @borderLightColor;
+@breadcrumbBorderTopColor: @borderColor;
+@breadcrumbLiColor: @breadcrumbColor;
+@breadcrumb_A_Color: @linkColor;
+@breadcrumbLinkHoverColor: #DD9104;
+@breadcrumbLinkBgColor: #414141;
+@breadcrumbLinkColor: #aaa;
+
+
+//no topics (0 topics)
+@noTopicsBg: @bg;
+@noTopicsBoxShadowColor: @boxshadowColor;
+
+//switches styles -> the on off switch (you can find it in search)
+@switchBg: @borderLightColor;
+@switchBorderColor: @borderColor;
+
+@switchOnColor: @linkHoverColor;
+@switchToggleBg: @bg;
+@switchToggleBorderColor: @borderColor;
+@switchToggleGradientFrom: @switchBg;
+@switchToggleGradientTo: @switchToggleBg;
+
+//widget styles
+@widgetBg: @topicCreateWidgetBg;
+@widgetHeaderBg: @linkColor; 
+@widgetHeaderColor: @bg;
+@widgetHeaderBorderColor: @linkHoverColor;
+
+@widgetContentBg: #000;
+
+
+//label tag
+@labelColor: #fff;
+
+//block styles -> simple container , used in login, registration, etc forms
+@blockBg: @bg;
+@bockBoxShadow: 1px 1px 5px @boxshadowColor;
+
+//pagination styles
+//@paginationBoxShadow: 0 -3px 3px -3px @boxshadowColor,0 3px 3px -3px @boxshadowColor;
+//@paginationBorderBottomColor: @boxshadowColor;
+//@paginationBorderTopColor:@boxshadowColor;
+@pagination_A_Color: @descDarkColor;
+@pagination_A_BorderColor: @borderDarkColor;
+@pagination_A_Bg: #e9e9e9;
+@pagination_A_TextShadow: 0px 1px 0px #fff;
+@pagination_A_GradientFrom: #f8f8f8;
+@pagination_A_GradientTo: #e9e9e9;
+@pagination_A_HoverBg: #fefefe;
+@paginationActiveBg: @linkColor;
+@paginationActiveColor: @bg;
+@paginationActiveHoverBg: @linkColor;
+
+
+//button styles
+@buttonBg: @borderLightColor;
+@buttonBorderColor: @borderColor;
+
+@buttonDefaultBg: @bg;
+@buttonDefaultColor: @color;
+@buttonDefaultBorderColor: @linkColor;
+
+@buttonPrimaryBg: @linkColor;
+@buttonPrimaryColor: @bg;
+@buttonPrimaryBorderColor: @linkHoverColor;
+
+//topic.less
+@topicPostsContainerBg: transparent;
+
+//topics.less
+
+//new topic button
+@newTopicButtonBg: @linkHoverColor;
+
+@topicsNavbarBg: @linkColor;
+@topicsNavbarBorderColor: @linkHoverColor;
+@topicsNavbarLinkBg: @linkHoverBg;
+
+
+
+
+// variables for categories.less
+@topicCreateWidgetBg: #000;
+
+@brdr: @borderColor;
+
+@categoryDescBg: @bg; //desription above subcats in cat page
+@categoryDescColor: @descDarkColor;
+@categoryDescBorder: @brdr;
+@categoryDescTextShadow:  0 1px 0 @bg;
+
+@catTitleBorderBottom: @brdr;
+@catTitleColor: @color;
+@catTitleBg: @borderLightColor;
+
+@catImgBg: #2b2b2b;
+
+@catDescBorderTop: @brdr;
+
+@catOptionsBorderTop: @brdr;
+
+@catInfoBorderTop: @brdr;
+@catInfoBorderBottom: @brdr;
+
+@subCatTxtColor: #555;
+@subCatTxtBorderBottom: @brdr;
+
+@newTopicBoxShadowColor: @brdr;
+@newTopicFoldBorderColor: #DD9104  #000;
+
+
+
+
+//Article --- appears in topics page category page & post page
+@articleBg: @bg;
+@articleBorderColor: @brdr;
+@articleHoverBorderColor: @linkColor;
+@articleSecondaryDescColor: @descLightColor;
+@articleAuthorColor: @descDarkerColor;
+@article_A_Color: @linkColor;
+@article_A_HoverColor: @linkHoverColor;
+@articleAvatarBorderColor: @borderLightColor;
+@articleAvatarBoxShadow: 0 3px 2px -2px @borderColor;
+@articleAvatarBoxShadowHover: inset 0 0 6px @borderLightColor;
+@articleMessageColor: @descDarkerColor;
+@articleMessageBg: @bg;
+@articleMessageBorderColor: @borderLightColor;
+@articleSignatureColor: @descLightColor;
+@articleFooterBg: #0f0f0f;
+
+@articleFooterColor: @descDarkerColor;
+@articleFooterTextShadow: 0 1px 0 #000;
+@articleFooterBorderTopColor: @brdr;
+@articleNoContentColor: @descDarkColor;
+@articleNoContentSpanColor: @descDarkerColor;
+@articleLastPostColor: @articleNoContentColor;
+@articleCategoryImgBorderBottomColor: @articleAvatarBorderColor;
+@articleCategoryImgBorderLeftColor: @articleAvatarBorderColor;
+
+//the create topic option in category page
+@createTopicCatBg: @bg;
+
+//the styles for no more topics that appears in All topics page
+@topicsEndBg: @linkHoverColor;
+@topicsEndColor: @bg;
+@topicsTextShadow: 0 1px 0 #000;
+
+//the separator that appears after each post in the posts page
+@postSeparatorBorder: 1px dotted @borderLightColor;
+
+//Article END
+
+
+//Edit profile page
+@editProfileBg: @bg;
+@editProfileAvatarBorderColor: @brdr;
+@editProfileAvatarPreviewBorderColor: @brdr;
+
+//View profile page
+@viewProfileAvatarBorderColor: @brdr;
+@viewProfileAvatarBg: @bg;
+@viewProfileUserNameBg: @linkColor;
+@viewProfileUserNameColor: #fff;
+@viewProfileUserNameBorderColor: @linkHoverColor;
+@viewProfileRoleNameColor: @descLightColor;
+
+@viewProfileUserDetailsColor: @descDarkColor;
+
+
+//Advanced search styles
+@searchOutLineFocusColor: @linkColor;
+@searchDropDownArrowColor: #000;
+@searchAdvancedOptionsBg: @bg;
+@searchAdvancedOptionsBoxShadow: 1px 1px 1px @borderColor;
+@searchAdvancedLabelColor: @labelColor;
+@searchAdvancedSelectBg: #fafafa; 
+
+//Statistics counter styles
+@statCountBorderRightColor: @borderColor;
+@statCountColor: @descDarkColor;
+@statCountTextColor: @descDarkerColor;
+
+//Statistics that appear in the posts page
+@postStatBg: @bg;
+@postStatColor: @statCountTextColor;
+
+//Content styles
+@postBlockquoteBg: @borderLightColor;
+@postBlockquoteColor: #999;
+@postBlockquoteBorderLeftColor: @postBlockquoteColor;
+
+//-------------------editor
+
+@markItUpBorder: @brdr;
+
+
+//editor--first row of buttons{
+
+@markItUpHeaderUlBg: #fff;
+@markItUpHeaderUlBoxShadow: 1px 1px 2px @borderColor;
+@markItUpHeaderUlLiBg: #fff;
+@markItUpHeaderUlLiBorderBottom: #fff;
+@markItUpHeaderUlLiHoverBorder: @descDarkerColor;
+
+///}
+
+
+//.markitup .heading
+@markItUpHeadingBg: #fff;
+@markItUpHeadingColor: #000;
+@markItUpHeadingHoverBorder: @brdr;
+@markItUpHeading_A_color: #000;
+@markItUpHeaderHeadingUlBorder: @brdr;
+@markItUpHeaderUlDropMenuBg: #fff;
+@markItUpHeaderUlDropMenuBorder: @brdr;
+
+@markItUpHeaderUlSeparatorBg: @brdr;
+@markItUpHeaderUlUlBg: #f5f5f5;
+@markItUpHeaderUlUlBorder: #3c769d;
+@markItUpHeaderUlUlLiBorderBottom: #3c769d;
+@markItUpHeaderUlUlDropMenuBg: #f5f5f5;
+
+@markItUpHeaderUlUl_A_HoverColor: #fff;
+@markItUpHeaderUlUl_A_HoverBg: @linkColor;
+
+@markitupSmileysBorder: @brdr;
+
+@replyResizeHandleBg: @borderLightColor;
+@replyResizeHandleBorderBottom: @borderDarkColor;
+
+@textareaColor: #000;
+@newReplyPreviewBorder: @borderColor;
+@newReplyPreviewBg: #fff;
+
+@editorPreviewPlaceholderColor: @descDarkColor;
+
+@replyMinChars: @descDarkColor;
+
+
