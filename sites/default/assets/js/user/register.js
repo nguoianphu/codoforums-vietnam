@@ -16,6 +16,7 @@ var codo_register = (function() {
             pass: false
         }
     };
+
     function error_exists(errors) {
 
         for (var key in errors) {
@@ -39,7 +40,8 @@ var codo_register = (function() {
             if (error_exists(register.errors)) {
                 $('#reg_username').focus();
                 return false;
-            } else {
+            }
+            else {
                 $(this).submit();
             }
         });
@@ -48,33 +50,40 @@ var codo_register = (function() {
 
         $("#password").keypress(function(e) {
             $("#letterViewer")
-                    .html(String.fromCharCode(e.which))
-                    .fadeIn(200, function() {
-                        $(this).fadeOut(200);
-                    });
+                .html(String.fromCharCode(e.which))
+                .fadeIn(200, function() {
+                    $(this).fadeOut(200);
+                });
         });
 
         $('#reg_username').blur(function() {
 
             var that = $(this);
             var username = $.trim($('#reg_username').val());
+            var usernameRegex = /^[a-zA-Z0-9_]+$/; // nguoianphu username can have only letters digits and underscores
+             
             if (username.length && username.length < codo_defs.register.username_min) {
-                
+
                 register.errors.name = true;
                 that.next().html(CODOFVAR.trans.username_short).slideDown();
-            } else
-            {
+            }
+            else if (!usernameRegex.test(username)) {
 
-                $.getJSON(codo_defs.url + "Ajax/user/register/username_exists",
-                        {
-                            username: username,
-                            token: codo_defs.token
-                        }, function(response) {
+                register.errors.name = true;
+                that.next().html(CODOFVAR.trans.username_regex).slideDown();
+            }
+            else {
+
+                $.getJSON(codo_defs.url + "Ajax/user/register/username_exists", {
+                    username: username,
+                    token: codo_defs.token
+                }, function(response) {
 
                     if (response.exists) {
                         register.errors.name = true;
                         that.next().html(CODOFVAR.trans.username_exists).slideDown();
-                    } else {
+                    }
+                    else {
                         register.errors.name = false;
                         that.next().slideUp();
                     }
@@ -87,16 +96,16 @@ var codo_register = (function() {
             var that = $(this);
 
 
-            $.getJSON(codo_defs.url + "Ajax/user/register/mail_exists",
-                    {
-                        mail: $.trim($('#reg_mail').val()),
-                        token: codo_defs.token
-                    }, function(response) {
+            $.getJSON(codo_defs.url + "Ajax/user/register/mail_exists", {
+                mail: $.trim($('#reg_mail').val()),
+                token: codo_defs.token
+            }, function(response) {
 
                 if (response.exists) {
                     register.errors.mail = true;
                     that.next().html(CODOFVAR.trans.mail_exists).slideDown();
-                } else {
+                }
+                else {
                     register.errors.mail = false;
                     that.next().slideUp();
                 }
@@ -106,13 +115,14 @@ var codo_register = (function() {
         $('#password').blur(function() {
 
             var
-                    pass = $.trim($(this).val()),
-                    len = codo_defs.register.pass_min;
+                pass = $.trim($(this).val()),
+                len = codo_defs.register.pass_min;
 
             if (pass.length && pass.length < len) {
 
                 $(this).next().html(CODOFVAR.trans.password_short).slideDown();
-            } else {
+            }
+            else {
                 $(this).next().slideUp();
             }
         });
@@ -133,5 +143,3 @@ var codo_register = (function() {
     });
 
 }());
-
-
