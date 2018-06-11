@@ -26,7 +26,7 @@ define('MODE', 'PRODUCTION'); //Can be DEVELOPMENT or PRODUCTION
 
 // nguoianphu
 define('SEF', 1); //Search engine freindly urls , 1=> enable , 0=> disable
-define('LOCALE', 'vi_VN');
+
 define('SYSPATH', ABSPATH . 'sys/');
 define('CONTROLLERS_DIR', SYSPATH . 'Controller/');
 
