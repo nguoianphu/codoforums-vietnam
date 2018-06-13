@@ -226,7 +226,8 @@
                 username_short: '{_t("username cannot be less than ")}' + codo_defs.register.username_min + '{_t(" characters")}',
                 username_exists: '{_t("username already exists")}',
                 password_short: '{_t("passowrd cannot be less than ")}' + codo_defs.register.pass_min + '{_t(" characters")}',
-                mail_exists: '{_t("mail already exists")}'
+                mail_exists: '{_t("mail already exists")}',
+                username_regex: '{_t("username can have only letters digits and underscores")}'
 
             }
         }

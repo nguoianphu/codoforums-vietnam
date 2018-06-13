@@ -3,7 +3,8 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="utf-8">
+		<!-- nguoianphu -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="generator" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -118,20 +119,17 @@
         </script>
 
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-        <link rel="shortcut icon" type="image/x-icon" href="{$smarty.const.DURI}assets/img/general/img/favicon.ico?v=1">
-        <link rel="apple-touch-icon" sizes="57x57" href="http://codoforum.com/img/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="http://codoforum.com/img/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="http://codoforum.com/img/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="http://codoforum.com/img/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="http://codoforum.com/img/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="http://codoforum.com/img/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="http://codoforum.com/img/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="http://codoforum.com/img/apple-touch-icon-152x152.png">
-        <link rel="icon" type="image/png" href="http://codoforum.com/img/favicon-196x196.png" sizes="196x196">
-        <link rel="icon" type="image/png" href="http://codoforum.com/img/favicon-160x160.png" sizes="160x160">
-        <link rel="icon" type="image/png" href="http://codoforum.com/img/favicon-96x96.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="http://codoforum.com/img/favicon-16x16.png" sizes="16x16">
-        <link rel="icon" type="image/png" href="http://codoforum.com/img/favicon-32x32.png" sizes="32x32">
+		<!-- nguoianphu -->
+        <link rel="shortcut icon" type="image/x-icon" href="{$smarty.const.DURI}assets/img/nguoianphu/favicon.ico">
+        <link rel="apple-touch-icon" sizes="57x57" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="{$smarty.const.DURI}assets/img/nguoianphu/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="{$smarty.const.DURI}assets/img/nguoianphu/favicon-48x48.png" sizes="48x48">
 
 
         <!-- Some SEO stuff -->
@@ -328,8 +326,8 @@
 
                         {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
 
-
-                       {* <img src="{$smarty.const.DURI}assets/img/general/brand.png" alt="codoforum logo" class="navbar-header-img">*}
+			<!-- nguoianphu -->
+                        <img src="{$smarty.const.DURI}assets/img/nguoianphu/brand.png" alt="nguoianphu codoforum logo" class="navbar-header-img">
                         {if $tpl eq "forum/topics"}
                          <a style="padding-left: 15px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
                         {else}
