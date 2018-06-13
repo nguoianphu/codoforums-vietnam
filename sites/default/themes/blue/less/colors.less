@@ -41,8 +41,8 @@
 @searchHighlight: #ff6;
 
 // nguoianphu Nice fonts
-@descFontFamily: Verdana,Tahoma,Helvetica,Arial,sans-serif; //thin fonts look good
-@titleFontFamily: Verdana,Tahoma,Helvetica,Arial,sans-serif; //open sans don't look well with bold
+@descFontFamily: Helvetica, Arial, sans-serif; //thin fonts look good
+@titleFontFamily: Helvetica,Arial,sans-serif; //open sans don't look well with bold
 @numericFontFamily: 'Oswald', sans-serif; //Helvetica is not as thick
 
 //badges
@@ -190,7 +190,7 @@
 @switchBg: @borderLightColor;
 @switchBorderColor: @borderColor;
 
-@switchOnColor: green;//@linkHoverColor;
+@switchOnColor: @linkHoverColor;
 @switchToggleBg: @bg;
 @switchToggleBorderColor: @borderColor;
 @switchToggleGradientFrom: @switchBg;
@@ -362,7 +362,9 @@
 
 //Content styles
 @postBlockquoteBg: @borderLightColor;
-@postBlockquoteColor: #999;
+// nguoianphu The color is so weak
+//@postBlockquoteColor: #999;
+@postBlockquoteColor: @descDarkerColor;
 @postBlockquoteBorderLeftColor: @postBlockquoteColor;
 
 //-------------------editor

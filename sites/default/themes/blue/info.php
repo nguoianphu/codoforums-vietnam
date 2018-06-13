@@ -1,9 +1,8 @@
 <?php
 
-$info['name'] = 'Default';
+$info['name'] = 'test';
 $info['description'] = 'The Default Professional blue theme';
 $info['version'] = '1.x';
-$info['parent_theme']='default';
 $info['author'] = "Codologic";
 $info['author_url'] = 'http://codologic.com';
 $info['license'] = 'Core License';
