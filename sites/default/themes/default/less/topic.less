@@ -7,11 +7,60 @@
     display: block;
 }
 */
+.codo-topic-right
+{
+    float:right;
+    padding-right:15px;
+}
+.top-custom-container-profile
+{
+    background: #844aa6; /* Old browsers */
+    background: -moz-linear-gradient(left, #844aa6 0%, #5a7fee 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #844aa6 0%,#5a7fee 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #844aa6 0%,#5a7fee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#844aa6', endColorstr='#5a7fee',GradientType=1 ); /* IE6-9 */
+    height:220px;
+}
 .codo_posts article .codo_posts_user_spec {
 
     display: none;
 }
-
+.codo_topic_blockquote
+{
+    border-left:5px solid #fff;
+    clear:both;
+    padding-left: 10px;
+    margin-left: 20px;
+    color:#ffffff;
+    font-style: italic;
+}
+.codo_topic_top_title
+{
+    margin-left: 20px;
+    color:#ffffff;
+    font-size:18px;
+    margin-top: 20px;
+}
+.codo_statistic_block_topic
+{
+    margin-left: 20px;
+    color:#ffffff;
+    margin-top: 15px;
+    a{
+        background: #ffffff;
+        padding: 8px 15px;
+        color: #3e3e3e;
+        border-radius: 3px;
+        font-weight: 600;
+        text-shadow: none;
+        font-family: Helvetica;
+        font-size: 12px;
+        margin-right: 4px;
+    }
+    a:hover, a:focus {
+        text-decoration: none;
+    }
+}
 .hide_reply_btn {
 
     display: none;
@@ -21,7 +70,7 @@
 
     font-size: 11px;
     position: absolute;
-    right: 10px;
+    right: 40px;
     color: @descLightColor;
 
 } 
@@ -108,6 +157,8 @@ body {
     }
 
     .codo_posts {
+
+        padding-right: 35px;
 
         .codo_spinner {
 
@@ -304,14 +355,16 @@ body {
 
                     //border: 1px solid @articleBorderColor;
                     padding: 0;
-                    padding-top: 12px;
+                    padding-top: 20px;
                     position: relative;
-                    margin-bottom: 6px;
-                    background: @articleBg;
+                    margin-bottom: 0px;
+                    //background: @articleBg;
+                    background-color: #ffffff;
 
                     //.transition(2s background ease);
                     //.border-radius(2px);
-                    .box-shadow(0px 2px 5px rgba(0,0,0,0.25));
+                    //.box-shadow(0px 2px 5px rgba(0,0,0,0.25));
+                    border-bottom:1px solid #efefef;
 
 
                     .codo_spinner {
@@ -334,7 +387,7 @@ body {
 
                         position: absolute;
                         right: -4px;
-                        top: 10px;
+                        top: 20px;
 
                         .codo_manage_button {
 
@@ -355,18 +408,18 @@ body {
 
                     .codo_posts_user_info {
 
-                        margin-left: 62px;
+                        margin-left: 80px;
                         margin-right: 46px;
-                        margin-bottom: 10px;
+                        margin-bottom: 6px;
                         > .codo_posts_post_avatar {
 
                             position: absolute;
-                            top: 14px;
-                            left: 15px;
+                            top: 22px;
+                            left: 24px;
 
                             img {
 
-                                border-radius: 36px;
+                                border-radius: 3px;
                                 width: 36px;
                                 height: 36px;
                             }
@@ -375,13 +428,20 @@ body {
 
                         > .codo_posts_post_desc {
 
-                            color: @articleSecondaryDescColor;
+                            color: @descLightColor;
                             font-family: @descFontFamily;
+                            display: inline-block;
+                            margin-left: 5px;
+
+                            a {
+                                color: @descLightColor;
+                            }
                         }
 
                         > .codo_posts_post_name {
 
                             font-family: @titleFontFamily;
+                            display: inline-block;
 
                             > a {
 
@@ -415,16 +475,17 @@ body {
 
                     > .codo_posts_post_content {
 
-						/* nguoianphu Chrome error */
-                        /* word-break: break-word; */
-                        padding: 20px;
-                        background: @articleMessageBg;
-                        border-top: 1px solid @articleMessageBorderColor;
+
+                        word-break: break-word;
+                        padding: 0px 46px 12px 80px;
+                        //background: @articleMessageBg;
+                        //border-top: 1px solid @articleMessageBorderColor;
 
                         > .codo_posts_post_message {
 
                             overflow: hidden;
                             color: @articleMessageColor;
+                            min-height: 100px;
 
                             >*:first-child {
                                 margin-top: 0px !important;
@@ -452,8 +513,7 @@ body {
                                     font-size: 0.9em;
                                 }
                             }
-							/* nguoianphu Chrome error */
-                            /* word-break: break-word; */
+                            word-break: break-word;
 
                         }
 
@@ -465,8 +525,8 @@ body {
                         > .codo_posts_signature {
 
                             margin-top: 20px;
-                            border-top: 1px solid @brdr;
-                            font-size: 13px;
+                            border-top: 1px solid #eee;
+                            font-size: 12px;
                             padding-top: 5px;
                             color: @articleSignatureColor;
                         }
@@ -477,125 +537,238 @@ body {
                         }
                     }
 
+                    .codo_posts_post_reputation {
 
-                    > .codo_posts_post_foot {
+                        display: inline-block;
 
-                        .clearfix;
-                        padding:  6px;
-                        background: @articleFooterBg;
-                        text-shadow: none;
-                        color: @articleFooterColor;
-                        border-top: 1px solid @articleFooterBorderTopColor;
-                        min-height: 45px;
+                        .tooltip {
 
-                        > .codo_posts_post_reputation {
+                            text-shadow: none !important;
+                        }
 
-                            float: left;
-                            padding-left: 10px;
+                        .codo_reputation_points {
 
-                            .codo_reputation_points {
+                            position: absolute;
+                            bottom: 24px;
+                            text-align: center;
+                            left: 132px;
+                            line-height: 22px;
+                            color: #89b319;
+                            width: 30px;
+                            z-index: 10;
+                            border-radius: 50%;
+                            height: 29px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: bold;
 
-                                position: absolute;
-                                bottom: 8px;
-                                text-align: center;
-                                left: 8px;
-                                line-height: 22px;
+                        }
+
+                        .codo_reputation_negative {
+
+                            color: #c52b2b !important;
+                        }
+
+                        .codo_reputation_points_active {
+
+                            background: #55a4f2;
+                            width: 40px;
+                            height: 40px;
+                            line-height: 31px;
+                            left: 6px;
+                            bottom: 5px;
+
+                        }
+                        .codo_rep_down_btn, .codo_rep_up_btn {
+
+                            font-size: 8px;
+                            z-index: 9;
+                            cursor: pointer;
+                            background: #fff;
+
+                            i {
+
                                 color: #fff;
-                                width: 30px;
-                                z-index: 10;
-                                border-radius: 50%;
-                                height: 29px;
-                                border: 4px solid @articleFooterBg;
-                                background: #999;
-                                cursor: pointer;
-                                font-size: 12px;
-
-                            }                            
-
-                            .codo_reputation_points_active {
-
-                                background: #55a4f2;
-                                width: 40px;
-                                height: 40px;
-                                line-height: 31px;
-                                left: 6px;
-                                bottom: 5px;
-
                             }
-                            .codo_rep_down_btn, .codo_rep_up_btn {
+                        }
+                        .codo_rep_up_btn {
 
-                                font-size: 8px;
-                                z-index: 9;
-                                cursor: pointer;
-                                display: none;
-                                background: #428bca;
-                                &:hover {
-                                    background: #55a4f2;
+                            position: absolute;
+                            bottom: 28px;
+    left: 106px;
+    padding: 6px;
+                            border-radius: 50%;
+                            font-size: 12px;
+                            background: #fff;
+                            line-height: 10px;
 
-                                }
+                            i {
 
+                                position: relative;
+                                top: -1px;
+                                left: -1px;
+                                color: #89b319 !important;
+                            }
+
+                            &:hover {
+
+                                background: #89b319 !important;
                                 i {
 
-                                    color: #fff;
+                                    color: #fff !important
                                 }
-                            }
-                            .codo_rep_up_btn
-                            {
-
-                                position: absolute;
-                                bottom: 35px;
-                                left: -41px;
-                                padding: 7px 12px 15px 13px;
-                                color: #fff;
-                                border-radius: 45% 45% 0 0;
-                            }
-
-                            .codo_rep_down_btn {
-
-                                position: absolute;
-                                bottom: 2px;
-                                left: -41px;
-                                padding: 15px 13px 7px 12px;
-                                color: #fff;
-                                border-radius: 0% 0% 45% 45%;
                             }
                         }
 
-                        > .codo_posts_post_action {
+                        .codo_rep_down_btn {
 
-                            float: right;
-                            padding-right: 10px;
+                            position: absolute;
+                            bottom: 28px;
+                            left: 162px;
+                            padding: 6px;
+                            border-radius: 50%;
+                            font-size: 12px;
+                            background: transparent;
+                            line-height: 10px;
+                            border: 1px solid #c52b2b;
 
-                            .codo_btn_def {
+                            &:hover {
 
-                                .border-radius(3px 0px 0px 3px);
-                                height: 32px;
-                                padding: 5px;
-                            }
-
-                            .codo_btn {
-
-                                .border-radius(0px 3px 3px 0px);
-                            }
-
-                            .codo_btn,.codo_btn_def {
-
-                                float: left;
-
+                                background: #c52b2b !important;
                                 i {
 
-                                    font-size: 24px;
-                                    position: relative;
-                                    top: -2px;
+                                    color: #fff !important
                                 }
                             }
-                            a {
+                        }
 
-                                text-decoration: none;
+                        i {
+
+                            position: relative;
+                            top: 0px;
+                            left: -1px;
+                            color: #c52b2b !important;
+                        }
+                    }
+
+                }
+
+                .poll_container {
+
+                    padding: 30px !important;
+                    color: @articleMessageColor;
+
+                    .poll_title {
+
+                        font-size: 20px;
+                        color: @descDarkColor;
+                        margin-bottom: 25px;
+                    }
+
+                    #codo_vote_loading {
+
+                        margin-left: 10px;
+                        display: none;
+                    }
+                    .poll_result {
+
+
+                        .poll_option {
+
+                            position: relative;
+                            margin-bottom: 15px;
+
+                            .poll_option_label {
+
+                                margin-bottom: 4px;
+                                .poll_option_name {
+
+                                    margin-right: 75px;
+                                }
+
+                                .poll_option_count {
+
+                                    position: absolute;
+                                    top: 5px;
+                                    right: 0;
+                                    font-size: 9px;
+                                    font-weight: bold;
+                                }
+                            }
+
+                            .poll_option_bar {
+
+                                border: 1px solid #eee;
+                                border-radius: 4px;
+
+                                .poll_option_fill {
+
+                                    background: #66b9ec;
+                                    padding: 0px;
+                                    color: #fff;
+                                    width: 45%;
+                                    text-align: center;
+                                    font-size: 10px;
+                                }
+
                             }
                         }
                     }
+
+                    .poll_left_section {
+
+                        display: inline-block;
+                        float: left;
+                        padding: 0 20px;
+
+                        > .glyphicon {
+
+                            font-size: 40px;
+                        }
+                    }
+
+                    .poll_right_section {
+
+                        display: inline-block;
+                        padding: 0 20px;
+
+
+                        .poll_option {
+
+                            padding: 8px;
+                            border: 1px solid #eee;
+                            margin-bottom: 5px;
+                            border-radius: 2px;
+
+                            &:hover {
+
+                                background: #eee;
+                                cursor: pointer;
+                            }
+                        }
+
+                        .poll_option_selected {
+
+                            padding: 8px;
+                            border: 1px solid @buttonPrimaryBg;
+                            margin-bottom: 5px;
+                            border-radius: 2px;
+                            background: @buttonPrimaryBg;
+                            color: #fff;
+                            border-color: #fff;
+                        }
+                    }
+
+                    .poll_footer {
+
+                        clear: both;
+                        margin-top: 25px;
+                    }
+
+
                 }
+
+
 
                 > .codo_topic_separator {
 
@@ -614,6 +787,10 @@ body {
 
         text-shadow: 0 1px 0 @postStatBg;
         color: @postStatColor;
+        margin-top: -150px;
+        padding-right: 0px;
+        border-radius:5px;
+        background-color:@bg;
         //padding: 0;
 
         //.box-shadow(0px 2px 5px rgba(0,0,0,0.25));
@@ -731,7 +908,9 @@ body {
             >.codo_topic_statistics {
 
                 margin-top: 10px;
-                border: 1px solid @borderColor;
+                //border: 1px solid @borderColor;
+                border-radius:5px;
+                background-color:@bg;
             }
 
         }
@@ -745,7 +924,7 @@ body {
         .codo_topic_statistics{
 
             padding: 0 16px !important;  
-            background: @bg;
+            //background: @bg;
             margin: 0;
 
             > .codo_topic_no_views {
@@ -774,6 +953,12 @@ body {
             color: #fff;
             text-shadow: none;
             font-size: 12px;
+        }
+
+        .codo_topic_closed_darkbg {
+
+            background: #fff;
+            color: @linkColor;
         }
 
         .codo_statistic_block {
@@ -852,11 +1037,11 @@ body {
 
         .codo_notification_block {
 
-            border-top: 1px solid @borderColor;
+            //border-top: 1px solid @borderColor;
             padding: 10px;
             text-align: center;
             display: none;
-            background: @bg;
+            //background: @bg;
 
             >.codo_notification_block_type {
 
@@ -901,7 +1086,7 @@ body {
                 width: 190px;
                 height: 20px;
                 .slider-track {
-                    height: 10px;
+                    height: 1px;
                     width: 100%;
                     margin-top: -5px;
                     top: 50%;
@@ -915,6 +1100,13 @@ body {
                 .slider-handle {
                     margin-left: -10px;
                     margin-top: -5px;
+                    margin-top: -10px;
+                    border-radius: 50%;
+                    background: #5a7fee; /* Old browsers */
+                    background: -moz-linear-gradient(left,  #5a7fee 0%, #844aa6 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(left,  #5a7fee 0%,#844aa6 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to right,  #5a7fee 0%,#844aa6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a7fee', endColorstr='#844aa6',GradientType=1 ); /* IE6-9 */
                 }
                 .slider-handle.triangle {
                     border-width: 0 10px 10px 10px;
@@ -1010,7 +1202,7 @@ body {
                 -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
                 -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
                 box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-                opacity: 0.8;
+                //opacity: 0.8;
                 border: 0px solid transparent;
             }
             .slider-handle.round {
@@ -1039,6 +1231,11 @@ body {
     }
 
     #breadcrumb select{border-radius: 0 }
+
+    .poll_left_section {
+
+        displa: none;
+    }
 }
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width : @screen-md-min) {

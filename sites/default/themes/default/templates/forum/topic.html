@@ -71,16 +71,15 @@
     <div class="codo_posts_user_info">
         <div class="codo_posts_post_avatar">
             <a href="{{{const "RURI"}}}user/profile/{{id}}">
-                <!-- nguoianphu add alt attribute into image -->
-				<img draggable="false" src="{{avatar}}" alt="{{name}}" />
+                <img draggable="false" src="{{avatar}}" />
             </a>
         </div>
         <!--<div class="codo_posts_post_title">
 
         </div>-->
-
+		
         <div class="codo_posts_post_name">
-            <a href="{{{const "RURI"}}}user/profile/{{id}}"><span class="role_{{{role}}}">{{{name}}}</span></a>
+            <a href="{{{const "RURI"}}}user/profile/{{id}}"><span class="role_{{{role}}}" style="font-weight:bold;color:#616161;">{{{name}}}</span></a>
         </div>
 
         <div class="codo_posts_post_desc">
@@ -92,7 +91,7 @@
             </span>
             {{/if}}
         </div>
-
+		
         <div class="codo_posts_user_spec">
         </div>
     </div>
@@ -104,6 +103,7 @@
             <div class="codo_posts_signature">{{{signature}}}</div>
         {{/if}}
 
+        
         {{#if post_modified}}
             <div class="codo_last_edit">{{{i18n "edited"}}} {{post_modified}}</div>
         {{/if}}
@@ -115,30 +115,18 @@
             <input type="checkbox" id="codo_posts_select_{{{post_id}}}" class="codo_posts_select_post"/>
         {{/if}}
         
-    </div>  
-
-    <div class="codo_posts_post_foot clearfix">
-
+        {{#if can_rep}}
         <div class="codo_posts_post_reputation" id="codo_posts_rep_{{{post_id}}}">
             <div class="codo_post_min_height">&nbsp;</div>
             <div class="codo_reputation_points codo_tooltip" data-placement="right" title="{{i18n "reputation points"}}">{{reputation}}</div>
-            <div class="codo_btn codo_btn_danger codo_rep_up_btn codo_tooltip" title="{{i18n "vote up"}}"><i class="glyphicon glyphicon-plus"></i></div>
-            <div class="codo_btn codo_btn_danger codo_rep_down_btn codo_tooltip" title="{{i18n "vote down"}}" data-placement="bottom"><i class="glyphicon glyphicon-minus"></i></div>
-        </div>
-
-        {{#if ../is_closed}}
-        {{else}}
-        <div class="codo_posts_post_action">
-
-            <div class="btn-group">
-                <div class="{{#if can_reply}} codo_can_reply{{/if}} codo_btn_def codo_quote_btn"><i class="icon-quote"></i></div>
-                <div class="{{#if can_reply}} codo_can_reply{{/if}} codo_btn_primary codo_btn codo_reply_btn">{{{i18n "reply"}}}</div>
-            </div>
-
+            <div class="codo_btn codo_btn_danger codo_rep_up_btn codo_tooltip" title="{{i18n "vote up"}}"><i class="icon-thumbs-up"></i></div>
+            <div class="codo_btn codo_btn_danger codo_rep_down_btn codo_tooltip" title="{{i18n "vote down"}}" data-placement="bottom"><i class="icon-thumbs-down"></i></div>
         </div>
         {{/if}}
-    </div>
 
+    </div>  
+
+<br/>
 </article>
-<div class="codo_topic_separator"></div>
+<!--<div class="codo_topic_separator"></div>-->
 {{/each}}
