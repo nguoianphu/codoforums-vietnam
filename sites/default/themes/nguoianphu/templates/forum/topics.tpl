@@ -35,7 +35,7 @@
 
                     {"block_all_topics_before"|load_block}
 
-                    {*if $I->loggedIn() and $canCreateTopicInAtleastOneCategory*}
+                    {if $I->loggedIn() and $canCreateTopicInAtleastOneCategory}
 
                     <div class="codo_topics_head hidden-sm hidden-xs">
 
@@ -44,7 +44,7 @@
                                onclick="codo_create_topic()">{_t("Start New Topic")}</a>
                         </div>
                     </div>
-                    {*/if*}
+                    {/if}
                     <div class="codo_topics_body" id="codo_topics_body">
 
                         {if $total_num_topics > 0}
