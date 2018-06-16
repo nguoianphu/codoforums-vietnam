@@ -87,9 +87,7 @@ class Constants {
             define('NRURI', RURI);            
         } else {
             define('RURI', $ruri);
-			// nguoianphu
-            // define('NRURI', $ruri . 'index.php?u=/');
-            define('NRURI', $ruri);
+            define('NRURI', $ruri . 'index.php?u=/');
         }
 
 
