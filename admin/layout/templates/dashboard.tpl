@@ -119,7 +119,7 @@
             <div class="icon">
                 <i class="ion ion-person-add"></i>
             </div>
-            <a href="index.php?page=users" class="small-box-footer">
+            <a href="index.php?page=users/manage" class="small-box-footer">
                 More info <i class="fa fa-arrow-circle-right"></i>
             </a>
         </div>
