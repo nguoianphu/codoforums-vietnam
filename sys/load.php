@@ -17,7 +17,7 @@ define('CODO_SITE', 'default');
 if (@$_SERVER["HTTPS"] == "on") {
     $protocol = "https://";
 } else {
-    $protocol = "https://";
+    $protocol = "http://";
 }
 
 $path = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];

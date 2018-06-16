@@ -6,7 +6,7 @@
 //phpinfo();
 
 // ini_set('xdebug.var_display_max_depth', '100');
-ini_set("display_errors", "on");
+ini_set("display_errors", "off");
 
 //echo phpversion();
 date_default_timezone_set('Asia/Saigon');
@@ -17,6 +17,6 @@ define('IN_CODOF', true);
 
 //contains config.php and path definitions
 require 'sys/load.php';
-// ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 //everything related to routing
 require 'routes.php';
