@@ -198,11 +198,12 @@
 
                     </div>
                 </div>
+                {"block_posts_after"|load_block}
             </div>
 
             <div class="col-md-3">
                 <div class="codo_topic" id="codo_topic_sidebar">
-                    {"block_topic_info_before"|load_block}
+                    
 
                     <div class="codo_topic_statistics codo_sidebar_fixed_els row">
 
