@@ -456,21 +456,16 @@
             <footer class="footer">
                 <div class="container" style="padding:0px;">
                     <div class="row" style="padding: 5px !important">
-                        <div class="col-sm-4">&copy; since 2015 {$site_title}<br> <!-- nguoianphu -->
+                        
+                        <div class="col-sm-4 pull-left" style="text-align: left;word-break: break-word;">
 
-
+                            &copy; since 2015 {$site_title}<br>
                             <small>{_t("Powered by")} <a href="http://codoforum.com" target="_blank">Codoforum</a></small>
+                            
                         </div>
 
-                        <div class="col-sm-4 pull-right" style="text-align: center">
-
-
+                        <div class="col-sm-4 pull-right" style="word-break: break-word;">
                             {"block_footer_right"|load_block}
-
-
-
-                            <span class=''></span>
-
                         </div>
 
                     </div>

@@ -8,7 +8,7 @@
 
 {block name=body}
 	
-	<div class="container-fluid top-custom-container-profile">
+	<div class="container-fluid top-custom-container-profile" style="padding-bottom: 10px">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-1">
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	
-    <div class="container" style="padding-top: 0px">
+    <div class="container" style="padding-top: 20px">
         {"block_profile_view_before"|load_block}
         <div style="display:none" class="codo_notification codo_notification_error" id="codo_resend_mail_failed"></div>
 
@@ -62,7 +62,7 @@
             </div>
         {/if}
 		
-        <div class="row">
+        <div class="row" style="padding-top: 20px">
 			
 			
 
