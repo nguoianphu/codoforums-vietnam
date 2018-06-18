@@ -12,12 +12,19 @@
             <div>
 
                 <div class="codo_icon_header col-lg-12 visible-sm visible-xs container" style="padding-top: 0">
-
+                    
+                    {if $I->loggedIn() and $canCreateTopicInAtleastOneCategory} <!-- nguoianphu -->
                     <div onclick="codo_create_topic()" class="col-xs-6"><i class="icon-new-topic" title="{_t("Create new topic")}"></i>{_t("New topic")}</div>
                     <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-6"><i class="icon-books" title="{_t("Categories")}"></i>{_t("Categories")}</div>
-
+                    
                     <span style="display: none"
                           id="icon-books-click-trans">{_t("Click the icon again to toggle between categories and topics")}</span>
+                    {else}
+                    <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-12"><i class="icon-books" title="{_t("Categories")}"></i>{_t("Categories")}</div>
+                    
+                    <span style="display: none"
+                          id="icon-books-click-trans">{_t("Click the icon again to toggle between categories and topics")}</span>
+                    {/if} <!-- nguoianphu -->
                 </div>
 
                 {"block_catgory_list_before"|load_block}
