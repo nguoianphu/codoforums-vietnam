@@ -1,18 +1,17 @@
 {* @CODOLICENSE *}
 {* Smarty *}
-<!doctype html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="vi" lang="vi">
     <head>
 		<!-- nguoianphu -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="generator" content="">
+        <meta name="generator" content="{"site_description"|get_opt}">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta name="description" content="{"site_description"|get_opt}">
-
-        {if isset($meta_author)}
-        <meta name="author" content="{$meta_author}">
-        {/if}
+        <meta name="description" content="{"site_description"|get_opt} - {$sub_title} - {$og.desc}">
+        {if $tags}<meta name="keywords" content="{foreach from=$tags item=tag}{$tag}, {/foreach}">{/if}
+        {if isset($meta_author)}<meta name="author" content="{"site_description"|get_opt} - {$meta_author}">{/if}
+        
         <title>{block "title"}{$sub_title} | {$site_title}{/block}</title>
         <!--[if lte IE 8]>
          <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js"></script>
