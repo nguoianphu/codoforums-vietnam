@@ -5,12 +5,13 @@
     <head>
 		<!-- nguoianphu -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="generator" content="{"site_description"|get_opt}">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta name="description" content="{"site_description"|get_opt} - {$sub_title} - {$og.desc}">
-        {if $tags}<meta name="keywords" content="{foreach from=$tags item=tag}{$tag}, {/foreach}">{/if}
-        {if isset($meta_author)}<meta name="author" content="{"site_description"|get_opt} - {$meta_author}">{/if}
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="generator" content="{"site_description"|get_opt}"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+        <meta name="description" content="{"site_description"|get_opt} - {$sub_title} - {$og.desc}"/>
+        {if $tags}<meta name="keywords" content="{foreach from=$tags item=tag}{$tag}, {/foreach}"/>{/if}
+        
+        {if isset($meta_author)}<meta name="author" content="{"site_description"|get_opt} - {$meta_author}"/>{/if}
         
         <title>{block "title"}{$sub_title} | {$site_title}{/block}</title>
         <!--[if lte IE 8]>
@@ -171,9 +172,9 @@
 
             <!-- Schema.org markup for Google+ -->
             <meta itemprop="name" content="{$og.title}">
-            {if isset($og.desc)}<meta itemprop="description" content="{$og.desc}">{/if}
+            {if isset($og.desc)}<meta itemprop="description" content="{$og.desc}"/>{/if}
 
-            {if isset($og.image)}<meta itemprop="image" content="{$og.image}">{/if}
+            {if isset($og.image)}<meta itemprop="image" content="{$og.image}"/>{/if}
         {/if}
 
         {if isset($article_published)}<meta property="article:published_time" content="{$article_published}" />{/if}
