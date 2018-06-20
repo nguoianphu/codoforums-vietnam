@@ -384,7 +384,7 @@ class Search
 
     private function getSelectors() {
 
-        return 'p.post_id, p.imessage AS message,p.imessage, p.post_created,p.post_modified,p.reputation,last_post_id, '
+        return 'p.post_id, p.omessage AS message,p.imessage, p.post_created,p.post_modified,p.reputation,last_post_id, '
             . 'u.id, u.username as name, u.avatar, u.signature,r.rid, c.cat_img, c.cat_alias, t.topic_created,'
             . 't.topic_id, t.uid, t.title,t.cat_id, t.no_posts, t.no_views, t.last_post_time, '
             . 't.last_post_uid, t.last_post_name AS last_post_name, t.topic_status';

@@ -158,7 +158,7 @@
 
                                 if (response.msg === "success") {
 
-                                    window.location.href = codo_defs.url + 'user/profile';
+                                    window.location.href = codo_defs.url;
                                 } else {
 
                                     $('#codo_login_error').html(response.msg).show('slow');

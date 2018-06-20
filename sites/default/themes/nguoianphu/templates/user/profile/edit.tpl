@@ -38,7 +38,7 @@ Edit
 			<hr align="left" style="width:65%;"/>
 			<div class="row nav-main-profile">
 				<div class="col-md-1 col-xs-2 nav-box-profile">
-					<a href="index.php?u=user/profile"><span class="nav-text-profile" id="codo_edit_profile">{_t("Overview")}</span></a>
+					<a href="{$smarty.const.RURI}user/profile"><span class="nav-text-profile" id="codo_edit_profile">{_t("Overview")}</span></a>
                                 </div>
 				<div class="col-md-1 col-xs-2 nav-box-profile nav-box-profile-active">
 					<a href="#edit" role="tab" data-toggle="tab"><span class="nav-text-profile" id="codo_edit_profile">{_t("Edit Account")}</span></a>
