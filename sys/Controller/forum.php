@@ -539,7 +539,7 @@ class forum {
 			// get the featured image
 			$image = $posts[0]['message'];
 			// get the src for that image
-			$img_src = 'http://www.nguoianphu.com/sites/default/assets/img/cats/5520bd0f7d055nguoianphu_logo420.png';
+			$img_src = 'https://www.nguoianphu.com/sites/default/assets/img/cats/5520bd0f7d055nguoianphu_logo420.png';
 			$pattern = '/src="([^"]*)"/';
 			preg_match($pattern, $image, $matches);
 			if (!empty($matches[1])){
