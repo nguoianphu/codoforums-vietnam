@@ -97,7 +97,7 @@
         <div class="codo_topics_topic_content">
             <div class="codo_topics_topic_avatar" data-userid="{{id}}">
                 <a href="{{{const "RURI"}}}user/profile/{{id}}">
-                    <img draggable="false" src="{{avatar}}" />
+                    <img draggable="false" src="{{avatar}}" alt="{{name}}" /> <!-- nguoianphu -->
                 </a>
             </div>
             {{#if can_manage_topic}}                
@@ -112,7 +112,7 @@
             {{#if new_replies}}
             <div class="codo_topics_topic_title"><a id="codo_topic_link_{{topic_id}}" href="{{{const "RURI"}}}topic/{{topic_id}}/{{{safe_title}}}/post-{{last_reply_id}}#post-{{last_reply_id}}" style="font-size:16px;">{{{title}}}</a></div>
             {{else}}    
-            <div class="codo_topics_topic_title"><a id="codo_topic_link_{{topic_id}}" href="{{{const "RURI"}}}topic/{{topic_id}}/{{{safe_title}}}" style="font-size:16px;">{{{title}}}</a></div>                                        
+            <div class="codo_topics_topic_title"><a id="codo_topic_link_{{topic_id}}" href="{{{const "RURI"}}}topic/{{topic_id}}/{{{safe_title}}}" style="font-size:16px;"><h3>{{{title}}}</h3></a></div> <!-- nguoianphu -->
             {{/if}}
             {{/if}}    
 

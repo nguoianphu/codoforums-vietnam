@@ -13,7 +13,7 @@
 			<div class="row">
 				<div class="col-md-1">
 					
-                    <img draggable="false" class="img-rounded profile-avatar-img" src="{$user->avatar}" />
+                    <img draggable="false" class="img-rounded profile-avatar-img" src="{$user->avatar}" alt="{$user->username}"/> <!-- nguoianphu -->
 				</div>	
                 <div class="codo_username col-md-6 codo-username-profile">
 					<h4>{$user->username}</h4>

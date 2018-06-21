@@ -326,10 +326,10 @@
 
                         {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
 
-			<!-- nguoianphu -->
+			            <!-- nguoianphu -->
                         <img src="{$smarty.const.DURI}assets/img/nguoianphu/brand.png" alt="nguoianphu codoforum logo" class="navbar-header-img">
                         {if $tpl eq "forum/topics"}
-                         <a style="padding-left: 15px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                         <a style="padding-left: 25px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
                         {else}
                          <a style="padding-left: 28px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
                         {/if}

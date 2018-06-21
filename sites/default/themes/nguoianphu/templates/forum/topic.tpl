@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="codo_topic_blockquote">{$topic_info.cat_name}</div>
-                    <div class="codo_topic_top_title">{$title|unescape}</div>
+                    <div class="codo_topic_top_title"><h1>{$title|unescape}</h1></div> <!-- nguoianphu -->
 
                     {if $tags}
                         <div class="codo_statistic_block_topic">
