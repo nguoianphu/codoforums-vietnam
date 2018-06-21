@@ -165,7 +165,11 @@
             {if isset($og.url)}<meta property="og:url" content="{$og.url}" />{/if}
 
             {if isset($og.image)}
-                <meta property="og:image" content="{$og.image}" />{/if}
+            <meta property="og:image" content="{$og.image}" />
+            {else}
+            <meta property="og:image" content="{$smarty.const.DURI}assets/img/nguoianphu/nguoianphu_logo420.png" />
+            {/if}
+            
             {if isset($og.desc)}<meta property="og:description" content="{$og.desc}" />{/if}
 
             <meta property="og:site_name" content="{$site_title}" />
