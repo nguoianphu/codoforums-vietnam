@@ -42,11 +42,16 @@
         <div class="row">
 
             <div class="codo_icon_header col-lg-12 visible-sm visible-xs">
-
-                <i onclick="codo_create_topic()" class="icon-new-topic" title="{_t("Create new topic")}"></i>
-                <i onclick="CODOF.toggleTopicsAndCategories()" class="icon-books" title="{_t("Categories")}"></i>
+                {if $I->loggedIn() and $canCreateTopicInAtleastOneCategory} <!-- nguoianphu -->
+                <i class="icon-message codo_reply_btn codo_can_reply" title="{_t("Reply to topic")}"></i>
+                <i onclick="CODOF.toggleTopicsAndCategories()" class="icon-books" title="{_t("Statistics")}"></i>
                 <span style="display: none"
-                      id="icon-books-click-trans">{_t("Click the icon again to toggle between categories and topics")}</span>
+                      id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
+                {else}
+                <i onclick="CODOF.toggleTopicsAndCategories()" class="icon-books" title="{_t("Statistics")}"></i>
+                <span style="display: none"
+                      id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
+                {/if} <!-- nguoianphu -->
             </div>
 
         </div>

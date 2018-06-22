@@ -373,10 +373,10 @@
 
                             {if $I->loggedIn()}
 
-                                <li class="dropdown hidden-xs codo_tooltip" data-toggle="tooltip" data-placement="bottom" title="{_t('Notifications')}">
+                                <li class="dropdown hidden-xs codo_tooltip" data-placement="bottom">
                                     <a data-toggle="dropdown" class="codo_nav_icon codo_inline_notifications" id="codo_inline_notifications">
-                                        <!--<i class="icon-bell"></i>-->
-                                        <i class="material-icons">notifications</i>
+                                        <!--<i class="icon-bell"></i>--> <!-- nguoianphu -->
+                                        <i data-toggle="tooltip" title="{_t('Notifications')}" class="material-icons">notifications</i>
                                         {if $unread_notifications}
                                             <span class="codo_inline_notifications_unread_no">{$unread_notifications}</span>
                                         {/if}
