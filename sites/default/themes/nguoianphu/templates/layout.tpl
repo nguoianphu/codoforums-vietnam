@@ -484,9 +484,6 @@
 
     </div>
 
-
-    {"block_body_end"|load_block}
-
     {*Handlebars template for notification list*}
     {literal}
         <script style="display: none" id="codo_inline_notifications_template" type="text/html">
@@ -579,6 +576,10 @@
             window.attachEvent("onload", downloadJSAtOnload);
             else window.onload = downloadJSAtOnload;
         </script>
+        
+    <!-- nguoianphu -->    
+    {"block_body_end"|load_block}
+    
 </body>
 
 </html>
