@@ -11,25 +11,24 @@
     {assign "safe_title" $title|URL_safe}
     {assign "tid" $topic_info.topic_id}
     {assign "cid" $topic_info.cat_id}
+    
     <div class="container" style="padding-top:50px;">
-
         <div class="row">
-
             <div class="codo_icon_header col-lg-12 visible-sm visible-xs">
-                {if $I->loggedIn() and $canCreateTopicInAtleastOneCategory} <!-- nguoianphu -->
-                <i class="icon-message codo_reply_btn codo_can_reply" title="{_t("Reply to topic")}"></i>
-                <i onclick="CODOF.toggleTopicsAndCategories()" class="icon-books" title="{_t("Statistics")}"></i>
+                {if $I->loggedIn()} <!-- nguoianphu START -->
+                <div  class="col-xs-6 codo_reply_btn codo_can_reply"><i class="icon-message" title="{_t("Reply to topic")}"></i>{_t("Reply to topic")}</div>
+                <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-6"><i class="icon-books" title="{_t("Statistics")}"></i>{_t("Statistics")}</div>
                 <span style="display: none"
                       id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
                 {else}
-                <i onclick="CODOF.toggleTopicsAndCategories()" class="icon-books" title="{_t("Statistics")}"></i>
+                <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-12"><i class="icon-books" title="{_t("Statistics")}"></i>{_t("Statistics")}</div>
                 <span style="display: none"
                       id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
-                {/if} <!-- nguoianphu -->
+                {/if} <!-- nguoianphu END -->
             </div>
-
         </div>
     </div>
+    
     <div class="container-fluid top-custom-container-profile">
         <div class="container">
             <div class="row">
@@ -205,6 +204,7 @@
                 </div>
                 {"block_posts_after"|load_block}
             </div>
+            
 
             <div class="col-md-3">
                 <div class="codo_topic" id="codo_topic_sidebar">
@@ -328,6 +328,24 @@
 
                 {include file='forum/editor.tpl'}
             </div>
+            
+            <div class="container" style="padding:0px;"> <!-- nguoianphu START -->
+                <div class="row">
+                    <div class="codo_icon_header col-lg-12 visible-sm visible-xs">
+                        {if $I->loggedIn()}
+                        <div  class="col-xs-6 codo_reply_btn codo_can_reply"><i class="icon-message" title="{_t("Reply to topic")}"></i>{_t("Reply to topic")}</div>
+                        <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-6"><i class="icon-books" title="{_t("Statistics")}"></i>{_t("Statistics")}</div>
+                        <span style="display: none"
+                              id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
+                        {else}
+                        <div onclick="CODOF.toggleTopicsAndCategories()" class="col-xs-12"><i class="icon-books" title="{_t("Statistics")}"></i>{_t("Statistics")}</div>
+                        <span style="display: none"
+                              id="icon-books-click-trans">{_t("Click the icon again to toggle between posts and statistics")}</span>
+                        {/if}
+                    </div>
+
+                </div>
+            </div> <!-- nguoianphu END -->    
 
             <div id="codo_topics_multiselect" class="codo_topics_multiselect">
 

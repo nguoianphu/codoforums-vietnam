@@ -1,4 +1,5 @@
 {* @CODOLICENSE *}
+{* Smarty *}
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -169,6 +170,7 @@
             <meta property="og:image" content="{$smarty.const.DURI}assets/img/nguoianphu/nguoianphu_logo420.png" />
             {/if}
             
+            
             {if isset($og.desc)}<meta property="og:description" content="{$og.desc}" />{/if}
 
             <meta property="og:site_name" content="{$site_title}" />
@@ -328,8 +330,8 @@
                         </button>
 
                         {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
-
-			            <!-- nguoianphu -->
+                        
+                        <!-- nguoianphu -->
                         <img src="{$smarty.const.DURI}assets/img/nguoianphu/brand.png" alt="nguoianphu codoforum logo" class="navbar-header-img">
                         {if $tpl eq "forum/topics"}
                          <a style="padding-left: 25px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
@@ -462,7 +464,7 @@
                         
                         <div class="col-sm-4 pull-left" style="text-align: left;word-break: break-word;">
 
-                            &copy; since 2015 {$site_title}<br>
+                            &copy; since 2015 {$site_title}<br />
                             <small>{_t("Powered by")} <a href="http://codoforum.com" target="_blank">Codoforum</a></small>
                             
                         </div>
@@ -575,10 +577,10 @@
             window.attachEvent("onload", downloadJSAtOnload);
             else window.onload = downloadJSAtOnload;
         </script>
-        
+    
     <!-- nguoianphu -->    
     {"block_body_end"|load_block}
-    
+
 </body>
 
 </html>
