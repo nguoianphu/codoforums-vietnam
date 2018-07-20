@@ -69,6 +69,9 @@ class Mail {
         $mail->Username = \CODOF\Util::get_opt('smtp_username');
         $mail->Password = \CODOF\Util::get_opt('smtp_password');
         $mail->SetFrom(\CODOF\Util::get_opt('admin_email'), \CODOF\Util::get_opt('site_title'));
+        
+        // nguoianphu - BCC to admin for tracking
+        $mail->addBCC(\CODOF\Util::get_opt('admin_email'));
 
         if (!$mail->Send()) {
 
