@@ -183,7 +183,9 @@ class Filter {
     public static function msg_safe($message) {
 
         $message = strip_tags($message);
-        $message = htmlentities($message);
+        // nguoianphu
+        // $message = htmlentities($message);
+        $message = htmlspecialchars($message, ENT_QUOTES, "UTF-8");
         $message = filter_var($message, FILTER_SANITIZE_STRING);
 
         return $message;
