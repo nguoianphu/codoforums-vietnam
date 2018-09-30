@@ -122,18 +122,21 @@ class Format {
 
         //$mesg = str_replace("<", "&lt;", $mesg);
         //$mesg = str_replace(">", "&gt;", $mesg);
-
+        // nguoianphu
+        $mesg = htmlspecialchars($mesg, ENT_QUOTES, "UTF-8");
         // $mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
         return $mesg;
     }
 
     public static function title($mesg) {
 
-        //$mesg = str_replace("<", "&lt;", $mesg);
-        //$mesg = str_replace(">", "&gt;", $mesg);
-        //$mesg = htmlspecialchars($mesg);
+        $mesg = str_replace("<", "&lt;", $mesg);
+        $mesg = str_replace(">", "&gt;", $mesg);
+        // nguoianphu - Replace single and double quotes
+        // $mesg = str_replace("'", "&#039;", $mesg);
+        // $mesg = str_replace("\"", "&quot;", $mesg);
+        $mesg = htmlspecialchars($mesg, ENT_QUOTES, "UTF-8");
         // $mesg = htmlentities($mesg, ENT_NOQUOTES, "UTF-8");
-		// nguoianphu Save it in FULL Unicode and not encode it to Unicode symbols
         $mesg = strip_tags($mesg);
         return $mesg;
     }
