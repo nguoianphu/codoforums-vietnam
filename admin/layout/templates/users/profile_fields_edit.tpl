@@ -1,9 +1,9 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="index.php?page=users/profile_fields"><i class="fa fa-puzzle-piece"></i> Custom profile fields</a></li>
-        <li class="active"><i class="fa fa-pencil"></i> Edit field</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?page=users/profile_fields"><i class="fa fa-puzzle-piece"></i> Custom profile fields</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-pencil"></i> Edit field</li>
         
     </ol>
 

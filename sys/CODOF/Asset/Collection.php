@@ -59,7 +59,7 @@ class Collection{
      * css rel paths will be converted to absolute using $compiledPath
      * @var string 
      */
-    public $prependURL = CURR_THEME;
+    public $prependURL = DEF_THEME_PATH;
     
 //------------------------------------------------------------------------------
     

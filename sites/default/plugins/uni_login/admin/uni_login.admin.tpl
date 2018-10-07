@@ -16,6 +16,13 @@
 </style>
 <div class="col-md-6">
     <div>
+
+        <div class="box box-icon">
+            <fieldset class="box-body">
+                <label>Callback URL:</label> <input class="form-control" disabled value="{$callback_url}"/>
+            </fieldset>
+        </div>
+
         <form action="index.php?page=ploader&plugin=uni_login" role="form" method="post" enctype="multipart/form-data">
 
             <div class="box box-info">
@@ -31,13 +38,13 @@
 
             <div class="box box-info">
                 <fieldset class="box-body">
-
                     <legend>Facebook Login</legend>
                     <label>App ID</label>
-                    <input type="text" class="form-control" name="FB_ID" value="{"FB_ID"|get_opt}" /><br/>
+                    <input type="text" class="form-control" name="FB_ID" value="{$FB_ID}"/><br/>
 
                     <label>App Secret</label>
                     <input type="text" class="form-control" name="FB_SECRET" value="{"FB_SECRET"|get_opt}" /><br/>
+                    <em>Facebook login requires SEF(url rewrite) to be enabled</em>
                 </fieldset>
             </div>
 

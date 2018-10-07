@@ -73,13 +73,9 @@ class A_Block {
 
     function get_all_blocks($theme = null) {
 
-
-
         if ($theme == null) {
-
             $theme = $this->get_current_theme();
         }
-
 
         $tcontent = $this->get_tpl_contents($theme);
         $matches = array();

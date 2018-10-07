@@ -13,7 +13,9 @@ if (!console) {
 }
 
 //backup
-CF = CODOF;
+window.CF = CODOF;
+Popper.Defaults.modifiers.computeStyle.gpuAcceleration = !(window.devicePixelRatio < 1.5 && /Win/.test(navigator.platform));
+
 
 jQuery.fn.visible = function (partial) {
 
@@ -205,8 +207,8 @@ var CODOF = {
                 '<div class="modal-dialog">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
-                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
                 '<h4 class="modal-title">' + title + '</h4>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
                 '</div>' +
                 '<div class="modal-body">' +
                 '<p>' + message + '</p>' +
@@ -525,11 +527,11 @@ var CODOF = {
                     mod.confirm_popover = $that.popover({
                         html: true,
                         placement: 'bottom',
+                        container: $that,
                         content: function () {
                             return $('#codo_delete_topic_confirm_html').html();
                         }
                     }).on('shown.bs.popover', function () {
-
                         //-207px
                         if (document.documentElement.clientWidth < 320) {
 
@@ -541,23 +543,20 @@ var CODOF = {
                         }
                     });
                     $that.parent().on('click', '.codo_modal_delete_topic_cancel', function () {
-
                         mod.confirm_popover.popover('hide');
                         mod.codo_spinner.hide();
                         //CODOF.topics.topic_active = false;
 
                     });
                     $that.parent().on('click', '.codo_posts_topic_delete', function (e) {
-
                         if ($(e.target).hasClass('codo_spam_checkbox')) {
-
                             var checkbox = $('.codo_consider_as_spam input[type=checkbox]');
                             checkbox.prop('checked', !checkbox.prop("checked"));
                         }
                         e.stopPropagation();
                     });
-                    $that.parent().on('click', '.codo_modal_delete_topic_submit', function () {
 
+                    $that.parent().on('click', '.codo_modal_delete_topic_submit', function () {
                         var isSpam = $('.codo_consider_as_spam input[type=checkbox]').prop('checked');
                         mod.delete_topic($that, isSpam);
                     });
@@ -573,8 +572,6 @@ var CODOF = {
             var mod = this;
             $('.codo_posts_topic_delete .codo_spinner').show();
             var id = parseInt($that.attr('id').replace('codo_posts_trash_', ''));
-            mod.codo_spinner = $that.find('.codo_spinner');
-            mod.codo_spinner.show();
             jQuery.post(codo_defs.url + 'Ajax/topic/' + id + '/delete', {
                 token: codo_defs.token,
                 isSpam: isSpam ? 'yes' : 'no'
@@ -582,7 +579,7 @@ var CODOF = {
 
                 if (resp === "success") {
 
-                    mod.codo_spinner.hide();
+                    $('.codo_posts_topic_delete .codo_spinner').hide();
                     $that.parents('article').fadeOut();
                 }
             });

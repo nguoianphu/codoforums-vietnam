@@ -73,6 +73,11 @@ class Single {
         return self::$smarty->getTemplateDir();
     }
 
+    public function addTemplateDir($path) {
+
+        self::$smarty->addTemplateDir($path);
+    }
+
     public function createTemplate($file, $smarty) {
 
         return self::$smarty->createTemplate($file, $smarty);

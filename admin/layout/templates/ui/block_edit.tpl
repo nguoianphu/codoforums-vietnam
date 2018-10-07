@@ -1,9 +1,9 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="index.php?page=ui/blocks"><i class="fa fa-cubes"></i> Blocks</a></li>
-        <li class="active"><i class="fa fa-edit"></i> Edit Block</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?page=ui/blocks"><i class="fa fa-cubes"></i> Blocks</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-edit"></i> Edit Block</li>
 
     </ol>
 
@@ -93,13 +93,13 @@
                     <br><br>
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs" role="tablist" id="myTab">
-                            <li class="active"><a href="#home" role="tab" data-toggle="tab">Pages</a></li>
-                            <li><a href="#profile" role="tab" data-toggle="tab">Roles</a></li>
+                            <li class="active"><a class="nav-link" href="#home" role="tab" data-toggle="tab">Pages</a></li>
+                            <li><a class="nav-link" href="#profile" role="tab" data-toggle="tab">Roles</a></li>
 
                         </ul>
 
                         <div class="tab-content">
-                            <div class="tab-pane active" id="home">
+                            <div class="tab-pane fade show active" id="home">
 
                                 <div class="form-group">
                                     <select class="form-control" onchange="codo_change_disp()" name="block_page_visi_type" id="block_type">
@@ -119,7 +119,7 @@
 
 
                             </div>
-                            <div class="tab-pane" id="profile">
+                            <div class="tab-pane fade" id="profile">
                                 <div class="form-group">
                                     <label>Show block for specific roles</label>
                                 </div>

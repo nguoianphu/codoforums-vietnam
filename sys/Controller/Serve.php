@@ -85,7 +85,7 @@ class Serve {
     private function setBasicheaders($name, $dir) {
 
         $filename = $dir . $name;
-        $mime_type = mime_content_type($filename);
+        $mime_type = $this->getMimeType($filename);
 
         header("Content-type: $mime_type");
         header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime("+6 months")), true);
@@ -93,6 +93,23 @@ class Serve {
         header("Cache-Control: public");
 
         return $filename;
+    }
+
+    /**
+     * Gets the content type of the file
+     * @param $file
+     * @return mixed|string
+     */
+    private function getMimeType($file) {
+
+        if (function_exists('finfo_file')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $type = finfo_file($finfo, $file);
+            finfo_close($finfo);
+            return $type;
+        }
+
+        return mime_content_type($file);
     }
 
     /**

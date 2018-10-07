@@ -36,6 +36,11 @@ class Layout {
         //after all modification its time for smarty to display the mod data
         $smarty = Single::get_instance();
 
+        if(strpos($tpl, ":") !== FALSE) {
+            list($pluginName, $tpl) = explode(":", $tpl);
+            $smarty->addTemplateDir(PLUGIN_DIR . $pluginName . '/');
+        }
+
         $site_title = \CODOF\Util::get_opt('site_title');
         $sub_title = \CODOF\Store::get('sub_title');
 
@@ -58,6 +63,7 @@ class Layout {
         $smarty->assign('forum_tags_num', \CODOF\Util::get_opt('forum_tags_num'));
         $smarty->assign('forum_tags_len', \CODOF\Util::get_opt('forum_tags_len'));
 
+        $smarty->assign('translations', \CODOF\Store::get('translations', array()));
         $smarty->assign('tpl', $tpl);
 
         $category = new \CODOF\Forum\Category();

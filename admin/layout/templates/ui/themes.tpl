@@ -1,13 +1,14 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-         <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-         <li><i class="fa fa-laptop"></i> UI Elements</li>
-         <li><i class="fa fa-image"></i> Themes</li>
+         <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+         <li class="breadcrumb-item"><i class="fa fa-laptop"></i> UI Elements</li>
+         <li class="breadcrumb-item"><i class="fa fa-image"></i> Themes</li>
     </ol>
     
 </section>
 
+<div class="row">
 {section name=thm loop=$themes}
 <div class="col-md-4">
     <div class="box box-solid box-primary">
@@ -37,3 +38,4 @@
     </div>
 </div>
 {/section}
+</div>

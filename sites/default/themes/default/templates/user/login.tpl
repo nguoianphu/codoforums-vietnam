@@ -36,6 +36,10 @@
             overflow-x: hidden;
         }
 
+        .CODOFORUM {
+
+            padding-bottom: 293px;
+        }
 
     </style>
 

@@ -8,27 +8,27 @@
         {{#if is_topic}}
             {{#if can_manage_topic}}
             <div class="dropdown codo_manage_topic">
-                <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
+                <div class="codo_manage_button" data-toggle="dropdown"  id="codo_manage_options_menu">
                     <i class="icon-more-vert"></i>
                 </div>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="codo_manage_options_menu">
                     {{#if can_edit_topic}}
-                    <li id="codo_posts_edit_{{{topic_id}}}" class="codo_posts_edit_post codo_post_this_is_topic"
-                        role="presentation"><a role="menuitem" tabindex="-1">
+                    <li id="codo_posts_edit_{{{topic_id}}}" class="dropdown-item codo_posts_edit_post codo_post_this_is_topic"
+                        role="presentation">
                             <i class="icon-edit"></i> {{{i18n "Edit"}}}
-                        </a></li>
+                    </li>
                     {{/if}}
                     {{#if can_delete_topic}}
-                    <li id="codo_posts_trash_{{{topic_id}}}" class="codo_posts_trash_post codo_post_this_is_topic"
-                        role="presentation"><a role="menuitem" tabindex="-1">
+                    <li id="codo_posts_trash_{{{topic_id}}}" class="dropdown-item codo_posts_trash_post codo_post_this_is_topic"
+                        role="presentation">
                             <i class="icon-trash"></i> {{{i18n "Delete"}}}
-                        </a></li>
+                    </li>
                     {{/if}}
                     {{#if can_see_history}}
-                    <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
-                        role="presentation"><a role="menuitem" tabindex="-1">
-                            <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
-                        </a></li>
+                    <li id="codo_posts_history_{{{post_id}}}" class="dropdown-item codo_posts_history"
+                        role="presentation">
+                            <i class="fa fa-history"></i> {{{i18n "History"}}}
+                    </li>
                     {{/if}}
 
                 </ul>
@@ -39,27 +39,27 @@
 
             {{#if can_manage_post}}
             <div class="dropdown codo_manage_topic">
-                <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
+                <div class="codo_manage_button" data-toggle="dropdown"  id="codo_manage_options_menu">
                     <i class="icon-more-vert"></i>
                 </div>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="codo_manage_options_menu">
                     {{#if can_edit_post}}
-                    <li id="codo_posts_edit_{{{post_id}}}" class="codo_posts_edit_post codo_post_this_is_post"
-                        role="presentation"><a role="menuitem" tabindex="-1">
+                    <li id="codo_posts_edit_{{{post_id}}}" class="dropdown-item codo_posts_edit_post codo_post_this_is_post"
+                        role="presentation">
                             <i class="icon-edit"></i> {{{i18n "Edit"}}}
-                        </a></li>
+                    </li>
                     {{/if}}
                     {{#if can_delete_post}}
-                    <li id="codo_posts_trash_{{{post_id}}}" class="codo_posts_trash_post codo_post_this_is_post"
-                        role="presentation"><a role="menuitem" tabindex="-1">
+                    <li id="codo_posts_trash_{{{post_id}}}" class="dropdown-item codo_posts_trash_post codo_post_this_is_post"
+                        role="presentation">
                             <i class="icon-trash"></i> {{{i18n "Delete"}}}
-                        </a></li>
+                    </li>
                     {{/if}}
                     {{#if can_see_history}}
-                    <li id="codo_posts_history_{{{post_id}}}" class="codo_posts_history"
-                        role="presentation"><a role="menuitem" tabindex="-1">
-                            <i class="glyphicon glyphicon-time"></i> {{{i18n "History"}}}
-                        </a></li>
+                    <li id="codo_posts_history_{{{post_id}}}" class="dropdown-item codo_posts_history"
+                        role="presentation">
+                            <i class="fa fa-clock-o"></i> {{{i18n "History"}}}
+                    </li>
                     {{/if}}
 
                 </ul>
@@ -69,7 +69,7 @@
     </div>
 
     <div class="codo_posts_user_info">
-        <div class="codo_posts_post_avatar">
+        <div class="codo_posts_post_avatar" data-userid="{{id}}">
             <a href="{{{const "RURI"}}}user/profile/{{id}}">
                 <img draggable="false" src="{{avatar}}" />
             </a>
@@ -109,24 +109,25 @@
         {{/if}}
         
         {{#if can_move_topic}}
-            <input type="checkbox" id="codo_posts_select_{{{post_id}}}" class="codo_posts_select_post"/>
+            <input type="checkbox" name="group1" id="codo_posts_select_{{{post_id}}}" class="chk-box codo_posts_select_post"/>
+            <label class="codo_select_post_checkbox_label" for="codo_posts_select_{{{post_id}}}"></label>
         {{/if}}
         {{#if can_move_post}}
-            <input type="checkbox" id="codo_posts_select_{{{post_id}}}" class="codo_posts_select_post"/>
+            <input type="checkbox" name="group1" id="codo_posts_select_{{{post_id}}}" class="chk-box codo_posts_select_post"/>
+            <label class="codo_select_post_checkbox_label" for="codo_posts_select_{{{post_id}}}"></label>
         {{/if}}
+    
         
         {{#if can_rep}}
         <div class="codo_posts_post_reputation" id="codo_posts_rep_{{{post_id}}}">
-            <div class="codo_post_min_height">&nbsp;</div>
-            <div class="codo_reputation_points codo_tooltip" data-placement="right" title="{{i18n "reputation points"}}">{{reputation}}</div>
             <div class="codo_btn codo_btn_danger codo_rep_up_btn codo_tooltip" title="{{i18n "vote up"}}"><i class="icon-thumbs-up"></i></div>
+            <div class="codo_reputation_points codo_tooltip {{#if is_neg_rep}}codo_reputation_negative{{/if}}" data-placement="right" title="{{i18n "reputation points"}}">{{reputation}}</div>
             <div class="codo_btn codo_btn_danger codo_rep_down_btn codo_tooltip" title="{{i18n "vote down"}}" data-placement="bottom"><i class="icon-thumbs-down"></i></div>
         </div>
         {{/if}}
 
     </div>  
 
-<br/>
 </article>
 <!--<div class="codo_topic_separator"></div>-->
 {{/each}}

@@ -5,7 +5,7 @@
         <div class="codo_post_statistics" style="position:absolute;top: 20px;">
 
             {{#if new_topic}}
-            <a title="{{{i18n "new topic"}}}" href="{{{const "RURI"}}}topic/{{topic_id}}/{{safe_title}}">
+            <a title="{{{i18n "new topic"}}}" href="{{{const "RURI"}}}topic/{{topic_id}}/{{{safe_title}}}">
                 <div class='codo_new_topic_badge'>{{{i18n "New"}}}</div>
             </a>    
             {{/if}}
@@ -37,21 +37,21 @@
 
                 {{#if can_manage_topic}}
                 <div class="dropdown codo_manage_topic">
-                    <div class="codo_manage_button dropdown-toggle" data-toggle="dropdown"  id="codo_manage_options_menu">
+                    <div class="codo_manage_button" data-toggle="dropdown"  id="codo_manage_options_menu">
                         <i class="icon-more-horiz"></i>
                     </div>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="codo_manage_options_menu">
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="codo_manage_options_menu">
                         {{#if can_edit_topic}}
-                        <li id="codo_posts_edit_{{{topic_id}}}" class="codo_posts_edit_post codo_post_this_is_topic"
-                            role="presentation"><a role="menuitem" tabindex="-1">
+                        <li id="codo_posts_edit_{{{topic_id}}}" class="dropdown-item codo_posts_edit_post codo_post_this_is_topic"
+                            role="presentation">
                                 <i class="icon-edit"></i> {{{i18n "Edit"}}}
-                            </a></li>
+                            </li>
                         {{/if}}
                         {{#if can_delete_topic}}
-                        <li id="codo_posts_trash_{{{topic_id}}}" class="codo_posts_trash_post codo_post_this_is_topic"
-                            role="presentation"><a role="menuitem" tabindex="-1">
+                        <li id="codo_posts_trash_{{{topic_id}}}" class="dropdown-item codo_posts_trash_post codo_post_this_is_topic"
+                            role="presentation">
                                 <i class="icon-trash"></i> {{{i18n "Delete"}}}
-                            </a></li>
+                            </li>
                         {{/if}}
                     </ul>
                 </div>
@@ -70,7 +70,7 @@
             </div>
 
 
-            <div class="codo_topics_topic_avatar">
+            <div class="codo_topics_topic_avatar" data-userid="{{id}}">
                 <a href="{{{const "RURI"}}}user/profile/{{{id}}}">
                     <img draggable="false" src="{{avatar}}" />
                 </a>
@@ -78,13 +78,13 @@
 
             {{#if in_search}}
 
-            <div class="codo_topics_topic_title"><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{safe_title}}/post-{{{post_id}}}#post-{{{post_id}}}">{{{title}}}</a></div>
+            <div class="codo_topics_topic_title"><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{{safe_title}}}/post-{{{post_id}}}#post-{{{post_id}}}">{{{title}}}</a></div>
             {{else}}
 
             {{#if new_replies}}
-            <div class="codo_topics_topic_title"><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{safe_title}}/post-{{{first_new_reply}}}#post-{{{first_new_reply}}}" style="font-size:16px;">{{{title}}}</a></div>
+            <div class="codo_topics_topic_title"><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{{safe_title}}}/post-{{{first_new_reply}}}#post-{{{first_new_reply}}}" style="font-size:16px;">{{{title}}}</a></div>
             {{else}}
-            <div class="codo_topics_topic_title"><a href="{{const "RURI"}}topic/{{{topic_id}}}/{{safe_title}}" style="font-size:16px;">{{{title}}}</a></div>
+            <div class="codo_topics_topic_title"><a href="{{const "RURI"}}topic/{{{topic_id}}}/{{{safe_title}}}" style="font-size:16px;">{{{title}}}</a></div>
             {{/if}}
             {{/if}}
 
@@ -101,7 +101,7 @@
 
                 {{#if overflow}}
 
-                <a href="{{{const "RURI"}}}topic/{{topic_id}}/{{safe_title}}" class="codo_readmore">{{i18n "read more"}}</a>
+                <a href="{{{const "RURI"}}}topic/{{topic_id}}/{{{safe_title}}}" class="codo_readmore">{{i18n "read more"}}</a>
                 {{/if}}
             </div>
             <div class="col-md-10 col-xs-12 codo_readmore_container">
@@ -134,11 +134,11 @@
             {{#if last_post_time}}
             <div class="codo_topics_last_post">
                 {{{i18n "recent by"}}} <a class="codo_topics_last_post_name" href="{{{const "RURI"}}}user/profile/{{last_post_uid}}">{{last_post_name}}</a>
-                &nbsp;&middot;&nbsp; <span class='codo_topics_last_post_time'><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{safe_title}}/post-{{{last_post_id}}}#post-{{{last_post_id}}}">{{last_post_time}}</a></span>
+                &nbsp;&middot;&nbsp; <span class='codo_topics_last_post_time'><a href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{{safe_title}}}/post-{{{last_post_id}}}#post-{{{last_post_id}}}">{{last_post_time}}</a></span>
             </div>
             {{/if}}
             {{#if new_replies}}
-            <a title="{{{i18n "new replies"}}}"  href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{safe_title}}/post-{{{last_reply_id}}}#post-{{{last_reply_id}}}"><div class='codo_unread_replies'>{{{new_replies}}}</div></a>
+            <a title="{{{i18n "new replies"}}}"  href="{{{const "RURI"}}}topic/{{{topic_id}}}/{{{safe_title}}}/post-{{{last_reply_id}}}#post-{{{last_reply_id}}}"><div class='codo_unread_replies'>{{{new_replies}}}</div></a>
             {{/if}}
 
         </div>

@@ -42,13 +42,13 @@ class Smarty_Internal_Compile_Private_Function_Plugin extends Smarty_Internal_Co
      * @param  string                               $function  PHP function name
      *
      * @return string compiled code
+     * @throws \SmartyCompilerException
+     * @throws \SmartyException
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter, $tag, $function)
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-        //Does tag create output
-        $compiler->has_output = isset($_attr[ 'assign' ]) ? false : true;
 
         unset($_attr[ 'nocache' ]);
         // convert attributes into parameter array string
@@ -60,10 +60,15 @@ class Smarty_Internal_Compile_Private_Function_Plugin extends Smarty_Internal_Co
                 $_paramsArray[] = "'$_key'=>$_value";
             }
         }
-        $_params = 'array(' . implode(",", $_paramsArray) . ')';
+        $_params = 'array(' . implode(',', $_paramsArray) . ')';
         // compile code
-        $output = "<?php echo {$function}({$_params},\$_smarty_tpl);?>\n";
-
+        $output = "{$function}({$_params},\$_smarty_tpl)";
+        if (!empty($parameter[ 'modifierlist' ])) {
+            $output = $compiler->compileTag('private_modifier', array(),
+                                            array('modifierlist' => $parameter[ 'modifierlist' ],
+                                                  'value' => $output));
+        }
+        $output = "<?php echo {$output};?>\n";
         return $output;
     }
 }

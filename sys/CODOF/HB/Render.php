@@ -48,7 +48,7 @@ class Render {
                 break;
             case 'forum/topic' :
                 $i18ns[] = 'reply';
-
+                break;
             case 'moderation/queue':
                 $i18ns[] = 'Approve';
                 $i18ns[] = 'Delete';
@@ -99,16 +99,16 @@ class Render {
 
         if (!file_exists($cachedPath)) {
 
-            $contents = \LightnCandy::compile($raw, array(
-                        'flags' => \LightnCandy::FLAG_ERROR_LOG | \LightnCandy::FLAG_STANDALONE | \LightnCandy::FLAG_HANDLEBARS,
+            $contents = \LightnCandy\LightnCandy::compile($raw, array(
+                        'flags' => \LightnCandy\LightnCandy::FLAG_ERROR_LOG | \LightnCandy\LightnCandy::FLAG_STANDALONEPHP | \LightnCandy\LightnCandy::FLAG_HANDLEBARS,
                         "helpers" => array(
                             "const" => function($args) {
                                 //single argument call
-                                return constant($args[0]);
+                                return constant($args);
                             },
                             "i18n" => function($args) {
 
-                                return _t($args[0]);
+                                return _t($args);
                             },
                             "hide" => function($args) {
                                 return "";
@@ -116,7 +116,7 @@ class Render {
                         )
             ));
 
-            file_put_contents($cachedPath, $contents);
+            file_put_contents($cachedPath, "<?php \n".$contents);
         }
 
         $renderer = include $cachedPath;

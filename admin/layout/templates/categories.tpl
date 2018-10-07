@@ -1,8 +1,8 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active"><i class="fa fa-table"></i> Categories</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-table"></i> Categories</li>
     </ol>
 
 </section>
@@ -85,8 +85,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">Delete category <b id="del_cat_name"></b> ?</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
 

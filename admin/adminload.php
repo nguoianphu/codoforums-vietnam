@@ -39,7 +39,7 @@ if (file_exists(DATA_PATH . 'config.php')) {
     //IoC::setIoCContainer($container);
     //$container->loadServiceProvider();
 
-    if (!$installed) {
+    if (!$CF_installed) {
         $r_path = str_replace("index.php", "", $path);
         header('Location: ' . $r_path . 'install');
     }

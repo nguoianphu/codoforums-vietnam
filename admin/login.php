@@ -66,7 +66,7 @@
 <!-- Main Container Ends -->
  
 <!-- Forgot Password Model Box -->
-<div id="forgot" class="modal hide fade in" style="display: none; ">
+<div id="forgot" class="modal hide fade show" style="display: none; ">
 <div class="modal-header">
 <a class="close" data-dismiss="modal">×</a>
 <h3>Forgot Password</h3>
@@ -87,7 +87,7 @@
 </div>
  
 <!-- Contact Us Model Box -->
-<div id="contact" class="modal hide fade in" style="display: none; ">
+<div id="contact" class="modal hide fade show" style="display: none; ">
 <div class="modal-header">
 <a class="close" data-dismiss="modal">×</a>
 <h3>Contact Us</h3>

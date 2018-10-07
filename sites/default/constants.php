@@ -22,7 +22,7 @@ defined('IN_CODOF') or die();
 
 define('CODO_DEBUG', 1);
 define('DISPLAY_ERRORS', 'ON');
-define('MODE', 'PRODUCTION'); //Can be DEVELOPMENT or PRODUCTION
+define('MODE', 'DEVELOPMENT'); //Can be DEVELOPMENT or PRODUCTION
 
 // nguoianphu
 define('SEF', 1); //Search engine freindly urls , 1=> enable , 0=> disable

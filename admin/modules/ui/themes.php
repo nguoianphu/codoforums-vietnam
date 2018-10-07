@@ -31,7 +31,7 @@ if ($handle = opendir(THEME_DIR)) {
     $curr_theme=  CODOF\Util::get_opt('theme');
     while (false !== ($entry = readdir($handle))) {
 
-        if ($entry != "." && $entry != ".." && $entry != "index.html" && $entry != "default") {
+        if ($entry != "." && $entry != ".." && $entry != "index.html" && $entry != "default" && $entry != ".DS_Store") {
 
             $entry = str_replace(".php", "", $entry);
             

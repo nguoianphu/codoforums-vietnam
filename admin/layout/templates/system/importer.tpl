@@ -31,15 +31,16 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-         <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-         <li class=""><i class="fa fa-desktop"></i> System</li> 
-         <li class="active"><i class="fa fa-exclamation-circle"></i> Importer</li>
+         <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+         <li class="breadcrumb-item"><i class="fa fa-desktop"></i> System</li> 
+         <li class="breadcrumb-item active"><i class="fa fa-exclamation-circle"></i> Importer</li>
     </ol>
     
 </section>
 
+<div class="row">
 
-<div class="row col-md-12">
+  <div class="col-md-12">
 
     <div class="warn">Note: All your forum categories, topics, posts and users will be overwritten!</div>
 
@@ -47,45 +48,45 @@
 
         <fieldset>
             <legend>Import details</legend>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">database name</label>
                 <div class="col-sm-8">
                     <input value="" type="text" class="form-control" id="db_name" placeholder="Enter database name" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">database username</label>
                 <div class="col-sm-8">
                     <input value="" type="text" class="form-control" id="db_user" placeholder="Enter username" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">database password</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="db_pass" placeholder="Enter password">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">database host</label>
                 <div class="col-sm-8">
                     <input value="localhost" type="text" class="form-control" id="db_host" placeholder="Enter database host" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">table prefix</label>
                 <div class="col-sm-8">
                     <input value="" type="text" class="form-control" id="tbl_prefix" value="" placeholder="Enter table prefix">
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">max rows per request</label>
                 <div class="col-sm-8">
                     <input value="500" type="text" class="form-control" id="max_rows" placeholder="Enter table name" required>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">importer</label>
                 <div class="col-sm-8">
                     <select id="import_from" class="form-control" required>
@@ -101,7 +102,7 @@
 
             <p>Enter the email address of the admin user that will be imported from the above database
             </p>
-            <div class="form-group">
+            <div class="form-group row">
                 <label  class="col-sm-2 control-label" for="name">E-mail address</label>
                 <div class="col-sm-8">
                     <input  type="text" class="form-control" id="admin_mail" placeholder="Enter admin e-mail address" required>
@@ -117,7 +118,7 @@
     </form>
 
     <div style="display: none" class="error" id="codo_import_status"></div>
-
+   </div>
 </div>
 
 <script type="text/javascript">

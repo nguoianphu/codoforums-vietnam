@@ -18,7 +18,7 @@
                     data-permission='yes'
                     {if {"enable_reputation"|get_opt} eq 'yes'} checked="checked" {/if}
                     type="checkbox"  data-toggle="toggle"
-                    data-on="yes" data-off="no" data-size="mini"
+                    data-on="yes" data-off="no" data-size="small"
                     data-onstyle="success" data-offstyle="danger">
             </div>
 

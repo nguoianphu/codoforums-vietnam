@@ -17,6 +17,7 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100%;
   background: #f9f9f9;
+  font-size: 14px;
 }
 a {
   color: #3c8dbc;
@@ -447,6 +448,10 @@ Gradient Background colors
 .connectedSortable {
   min-height: 100px;
 }
+
+.card{
+  margin-bottom: 20px;
+  }
 /*---------------------------------------------------
     LESS Elements 0.9
   ---------------------------------------------------
@@ -497,6 +502,7 @@ body > .header .navbar .sidebar-toggle .icon-bar + .icon-bar {
 }
 body > .header .navbar .nav > li.user > a {
   font-weight: bold;
+  padding: 13px 10px;
 }
 body > .header .navbar .nav > li.user > a > .fa,
 body > .header .navbar .nav > li.user > a > .glyphicon,
@@ -623,6 +629,17 @@ body > .header .logo .icon {
   body.fixed .sidebar-offcanvas {
     margin-top: 100px!important;
   }
+}
+
+.navbar-nav > .user-menu > .dropdown-menu{
+  position: absolute;
+    top: 96%;
+    right: 0;
+    left: auto;
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    border-left: 1px solid #dddddd;
+    background: #ffffff;
 }
 /*
     Component: Sidebar
@@ -1141,6 +1158,13 @@ body > .header .logo .icon {
 }
 .form-group.has-success label {
   color: #00a65a;
+}
+form label{
+  font-weight: 600;
+}
+.form-group .col-form-label{
+    text-align: right;
+    font-weight: 600;
 }
 .form-group.has-success .form-control {
   border-color: #00a65a !important;

@@ -33,6 +33,8 @@ jQuery('document').ready(function ($) {
         $('.codo_categories').toggle();
         $('#codo_topics_load_more').toggle();
         $('#codo_mobile_top_search').toggle();
+        $('#codo_sm_categories_text').toggle();
+        $('#codo_sm_topics_text').toggle();
         CODOF.util.simpleNotify($('#icon-books-click-trans').text());
     };
 
@@ -551,14 +553,18 @@ jQuery('document').ready(function ($) {
 
             CODOF.hide_msg_switch = 'on';
             localStorage.setItem('hide_msg_switch', 'on');
-            $('#codo_topics_body').find('.codo_topics_topic_message').addClass('hide');
+            let codo_topics_body = $('#codo_topics_body');
+            codo_topics_body.find('.codo_topics_topic_message').addClass('hide');
+            codo_topics_body.find('.codo_readmore_container').addClass('hide');
             $('article').addClass('article_msg_hidden');
         },
         switch_off: function () {
 
             CODOF.hide_msg_switch = 'off';
             localStorage.setItem('hide_msg_switch', 'off');
-            $('#codo_topics_body').find('.codo_topics_topic_message').removeClass('hide');
+            let codo_topics_body = $('#codo_topics_body');
+            codo_topics_body.find('.codo_topics_topic_message').removeClass('hide');
+            codo_topics_body.find('.codo_readmore_container').removeClass('hide');
             $('article').removeClass('article_msg_hidden');
         }
     });
@@ -601,7 +607,7 @@ jQuery('document').ready(function ($) {
                     .find('.codo_sidebar_fixed_els').show();
 
                 if (CODOF.cache.sideBarMenu.el.is(':visible'))
-                    CODOF.cache.sideBarMenu.el.css('width', (CODOF.cache.sideBarMenu.el.parent().innerWidth() - 60) + 'px');
+                    CODOF.cache.sideBarMenu.el.css('width', (CODOF.cache.sideBarMenu.el.parent().innerWidth() - 20) + 'px');
                 CODOF.cache.sideBarMenu.pos = 'fixed';
             }
         } else {
@@ -651,30 +657,6 @@ jQuery('document').ready(function ($) {
         return false; //prevent link 
     });
 
-    /*CODOF.getTagged = function(el) {
-     
-     
-     var tag = el.innerHTML;
-     
-     CODOF.topics.from = 0; //reset page no.
-     CODOF.topics.insert();
-     $('#codo_topics_body').html('');
-     CODOF.topics.body.append("<div class='codo_load_more_gif'></div>");
-     CODOF.img_shown = true;
-     CODOF.topics.ended = false;
-     
-     CODOF.hook.add('before_req_fetch_topics', function() {
-     
-     CODOF.req.url = 'Ajax/tags/' + tag;
-     });
-     
-     CODOF.topics.fetch();
-     
-     return false;
-     };
-     
-     
-     */
 
     CODOF.globalSearch = function (val, sort_on) {
 
@@ -718,7 +700,7 @@ jQuery('document').ready(function ($) {
 
     $('#codo_category_select li').on('click', function () {
 
-        window.location = codo_defs.url + "category/" + $(this).find('a').data('alias');
+        window.location = codo_defs.url + "category/" + $(this).data('alias');
     });
 
     $('#codo_mark_all_read').click(function () {

@@ -21,87 +21,70 @@ Edit
 {block name=body}
 
 
-	<div class="container-fluid top-custom-container-profile">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-1">
-					
+    <div class="container-fluid top-custom-container-profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">
+                    
                     <img draggable="false" class="img-rounded profile-avatar-img" src="{$user->avatar}" />
-				</div>	
-                <div class="codo_username col-md-6 codo-username-profile">
-					<h4>{$user->username}</h4>
-					<p>
-					{_t("Post all your questions and problems related to codoforum here.")}
-					</p>
-				</div> 
-			</div>
-			<hr align="left" style="width:65%;"/>
-			<div class="row nav-main-profile">
-				<div class="col-md-1 nav-box-profile">
-					<a href="index.php?u=user/profile"><span class="nav-text-profile" id="codo_edit_profile">{_t("Overview")}</span></a>
-                                </div>
-				<div class="col-md-1 nav-box-profile nav-box-profile-active">
-					<a href="#edit" role="tab" data-toggle="tab"><span class="nav-text-profile" id="codo_edit_profile">{_t("Edit Account")}</span></a>
-				</div>
-				<div class="col-md-1 nav-box-profile">
-					<a href="#preferences" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Preference")}</span></a>
-				</div>
-				<div class="col-md-1 nav-box-profile">
-					<a href="#subscriptions" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Subscription")}</span></a>
-				</div>
-				<div class="col-md-1 nav-box-profile">
-					<a href="#notifications" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Notification")}</span></a>
-				</div>
-			</div>
-		</div>
-	</div>
-    <div class="container codo_profile_container" style="padding-top:0px">
-	
-	
+                </div>  
+                <div class="codo_username col-md-6 col-sm-12 codo-username-profile">
+                    <h4>{$user->username}</h4>
+                    <p>
+                    {_t("Post all your questions and problems related to codoforum here.")}
+                    </p>
+                </div> 
+            </div>
+            <hr align="left" style="width:65%;"/>
+            <div class="row nav-main-profile">
+                <div class="col-md-2 col-2 nav-box-profile">
+                    <a href="index.php?u=user/profile"><span class="nav-text-profile" id="codo_edit_profile">{_t("Overview")}</span></a>
+                </div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <div class="col-md-1 col-2 nav-box-profile nav-box-profile-active">
+                            <a href="#edit" role="tab" data-toggle="tab"><span class="nav-text-profile" id="codo_edit_profile">{_t("Edit Account")}</span></a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="col-md-1 col-2 nav-box-profile">
+                        <a href="#preferences" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Preference")}</span></a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="col-md-1 col-2 nav-box-profile">
+                        <a href="#subscriptions" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Subscription")}</span></a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                       <div class="col-md-1 col-2 nav-box-profile">
+                        <a href="#notifications" role="tab" data-toggle="tab"><span class="nav-text-profile">{_t("Notification")}</span></a>
+                    </div> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
+    <div class="container codo_profile_container" style="padding-top:0px">
+    
         <div id="profile_edit_status" class="codo_notification" style="display: none"></div>
 
-        <!--<div class="row">-->
 
-            <!-- Nav tabs -->
-            <!--<ul class="nav nav-tabs col-md-12" role="tablist">
-                <li class="active">
-                    <a href="#edit" role="tab" data-toggle="tab">
-                        <i class="glyphicon glyphicon-edit"></i> <span class="hidden-label"> {_t("Edit")}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#preferences" role="tab" data-toggle="tab">
-                        <i class="glyphicon glyphicon-wrench"></i> <span class="hidden-label"> {_t("Preferences")}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#subscriptions" role="tab" data-toggle="tab">
-                        <i class="glyphicon glyphicon-certificate"></i> <span class="hidden-label"> {_t("My subscriptions")}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#notifications" role="tab" data-toggle="tab">
-                        <i class="glyphicon glyphicon-bullhorn"></i> <span class="hidden-label"> {_t("All notifications")}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>-->
         <div class="row">
-		
-            <!-- Tab panes -->
-            <!--<div class="tab-content col-md-12 col-xs-12">-->
-            <div class="tab-content">
-
+        
                 {"block_profile_edit_before"|load_block}
-									
-                <div class="col-md-8 col-sm-12 tab-pane fade in active" id="edit">
-				
+                            
+             <div class="col-md-8 col-sm-12">
+               <div class="tab-content">
+
+                <div class="tab-pane fade active show" id="edit">
+                
 
                     {"block_profile_edit_details_before"|load_block}
 
                     <div class="codo_edit_profile">
-					
+                    
                         {"block_profile_edit_details_start"|load_block}
 
                         {if isset($file_upload_error)}
@@ -112,57 +95,49 @@ Edit
                         {if isset($user_profile_edit) AND $user_profile_edit}
                             <div class="codo_notification codo_notification_success">{_t("user profile edits saved successfully")}</div>
                         {/if}
-						
-						
-						<form action="{$smarty.const.RURI}user/profile/{$user->id}/edit" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
-						<span class="mdi mdi-checkbox-multiple-marked"></span>
-						<div class="codo_edit_profile_title">
-							<div class="col-md-6"><span>Edit Profile</span></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<div class="col-sm-offset-2 col-sm-10">
-										<button type="submit" class="codo_btn codo_btn_primary">{_t("Save Changes")}</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="row">
-						
-						  <div class="col-xs-12 col-sm-6 col-md-8">
-							
-							
-							
-							
-                            <div class="form-group form-group-profile-inner-div">
-							
-                                <label for="username" class="control-label profile-edit-label">{_t("username")}</label>
-								<!--col-sm-8 -->
-                                <div>
-                                    <input type="text" name="username" class="codo_input codo_input_disabled" id="username"  value="{$user->username}" disabled="">
+                        
+                        
+                        <form action="{$smarty.const.RURI}user/profile/{$user->id}/edit" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+                        <span class="mdi mdi-checkbox-multiple-marked"></span>
+                        <div class="codo_edit_profile_title">
+                            <div class=""><span>Edit Profile</span></div>
+                            <div style="float: right" class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="codo_btn codo_btn_primary">{_t("Save Changes")}</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group form-group-profile-inner-div">
+                        </div>
+                        
+                        <div class="">
+                        
+                          <div class="col-12 col-sm-6 col-md-8">
+                            
+                            
+                            
+                            
+                            <div class="form-group">
+                            
+                                <label for="username" class="control-label profile-edit-label">{_t("username")}</label>
+                                    <input type="text" name="username" class="codo_input codo_input_disabled" id="username"  value="{$user->username}" disabled="">
+                            </div>
+                            <div class="form-group">
                                 <label for="display_name" class="control-label profile-edit-label">{_t("display name")}</label>
-                                <div>
-                                    <input type="text" name="name" class="codo_input" id="codo_display_name" placeholder="" value="{$user->name}">
-                                </div>
+                                <input type="text" name="name" class="codo_input" id="codo_display_name" placeholder="" value="{$user->name}">
                             </div>
 
                             
 
-                            <div class="form-group form-group-profile-inner-div">
+                            <div class="form-group">
                                 <label for="display_name" class="control-label profile-edit-label-normal">{_t("signature")}</label>
-                                <div>
-                                    <textarea name="signature" maxlength="{$signature_char_lim}" id="codo_signature_textarea" class="codo_input">{$user->signature}</textarea>
-                                </div>
+                                <textarea name="signature" maxlength="{$signature_char_lim}" id="codo_signature_textarea" class="codo_input">{$user->signature}</textarea>
                                 <span id="codo_countdown_signature_characters">{$signature_char_lim}</span>
-                            </div>
 
                             {foreach from=$custom_fields item=field}
 
 
-                                <div class="form-group form-group-profile-inner-div" id="custom_field_{$field.id}">
+                                <div class="form-group" id="custom_field_{$field.id}">
 
                                     {if $field.title}
                                         <label class="control-label" for="{$field.title}" >{$field.title}</label>
@@ -214,7 +189,6 @@ Edit
                                                 <textarea {if $field.is_mandatory}required=""{/if} name="input_{$field.id}">{$field.def_val}</textarea>
                                             {/if}
                                         {/if}                                    
-                                    </div>
 
                                 </div>
                             {/foreach}
@@ -230,11 +204,11 @@ Edit
 
                             <input type="hidden" name="token" value="{$CSRF_token}" />
                         
-							
-						  </div>
-						  <div class="col-xs-6 col-md-4">
-							
-							<div class="form-group" style="margin-left:0px;">
+                            
+                          </div>
+                          <div class="col-6 col-md-4">
+                            
+                            <div class="form-group" style="margin-left:0px;">
                                 <label for="display_name" class="control-label profile-edit-label-normal">{_t("Avatar")}</label>
                                 <div class="codo_avatar">
 
@@ -243,54 +217,52 @@ Edit
                                     <div style="display: none" id="codo_new_avatar_selected_name"></div>
                                     <img class="codo_right_arrow" id="codo_right_arrow" src="{$smarty.const.CURR_THEME}img/arrow-right.jpg" />
                                     <img class="codo_avatar_preview" src="" id="codo_avatar_preview"/>
-                                    <div class="codo_btn codo_btn_def col-xs-12 col-sm-6 col-md-8">{_t("Change")}</div>
-                                    <div style="text-align: right;padding-top:5px;" class="col-xs-6 col-md-4"><span class="small text-muted">100x100</span></div>
+                                    <div class="codo_btn codo_btn_def col-12 col-sm-6 col-md-8">{_t("Change")}</div>
+                                    <div style="text-align: right;padding-top:5px;" class="col-6 col-md-4"><span class="small text-muted">100x100</span></div>
                                 </div>
                             </div>
-							</form>
-						
-						  </div>
-						</div>
-						
+                            </form>
+                        
+                          </div>
+                        
                         
 
                         {"block_profile_edit_details_end"|load_block}
 
-                    </div>
                     {"block_profile_edit_details_after"|load_block}
 
-					<div class="codo_edit_profile">
-					
+                    <div class="codo_edit_profile">
+                    
                         {"block_profile_change_pass_start"|load_block}
                         <form class="form-horizontal" role="form">
-						<div class="codo_edit_profile_title">
-							<div class="col-md-6"><span>Change Password</span></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<div class="col-sm-offset-2 col-sm-10">
-										<button id="change_pass" type="submit" class="codo_btn codo_btn_primary">{_t("Change password")}</button>
-										<span id="codo_pass_no_match_txt" class="codo_pass_no_match_txt">{_t("passwords do not match!")}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<br/>
-						
+                        <div class="codo_edit_profile_title">
+                            <div class=""><span>Change Password</span></div>
+                            <div style="float: right"  class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button id="change_pass" type="submit" class="codo_btn codo_btn_primary">{_t("Change password")}</button>
+                                        <span id="codo_pass_no_match_txt" class="codo_pass_no_match_txt">{_t("passwords do not match!")}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        
                             <div class="form-group">
                                 <div class="col-sm-12">
-									<label for="curr_pass" class="control-label profile-edit-label">{_t("Current password")}</label>
+                                    <label for="curr_pass" class="control-label profile-edit-label">{_t("Current password")}</label>
                                     <input type="password" name="curr_pass" class="codo_input" id="curr_pass"  placeholder="{_t("Current password")}" required="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-									<label for="new_pass" class="control-label profile-edit-label">{_t("New password")}</label>
+                                    <label for="new_pass" class="control-label profile-edit-label">{_t("New password")}</label>
                                     <input type="password" name="new_pass" class="codo_input" id="new_pass"  placeholder="{_t("New password")}" required="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-									<label for="new_pass" class="control-label profile-edit-label">{_t("Confirm password")}</label>
+                                    <label for="new_pass" class="control-label profile-edit-label">{_t("Confirm password")}</label>
                                     <input type="password" name="confirm_new_pass" class="codo_input" id="confirm_pass"  placeholder="{_t("Confirm password")}" required="">
                                 </div>
                             </div>
@@ -303,25 +275,29 @@ Edit
                         </form>
                         {"block_profile_change_pass_end"|load_block}
                     </div>
-					
+                    
                 </div>
+            </div>
+</div>
+</form>
+</div>
 
-				
+                
             <div class="tab-pane fade" id="preferences">
 
 
-                <div class="codo_edit_profile col-md-8 col-sm-12">
-				
-					<div class="codo_edit_profile_title">
-						<div class="col-md-6"><span>General</span></div>
-					</div>
-					<br/>
-					
-					<div class="codo-preferences-container">
+                <div class="codo_edit_profile">
+                
+                    <div class="codo_edit_profile_title">
+                        <div class=""><span>General</span></div>
+                    </div>
+                    <br/>
                     <form class="form-horizontal" id="codo_form_user_preferences">
                         <fieldset> 
+                    <div class="codo-preferences-container">
+                   
                             <!--<legend>{_t("General")}</legend>-->
-							
+                            
                             <div class="form-group" style="margin-left:0px;margin-right:0px;">
                                 <label for="frequency" class="profile-edit-label">{_t("Notification frequency")}</label>
                                 <div class="">
@@ -337,14 +313,14 @@ Edit
                             <label class="control-label col-sm-4 profile-edit-label">{_t("Send emails when i am online")}</label>
                             <div class="col-sm-6">
                             <div id="codo_send_emails_when_online" class="codo_switch {match_switch key='send_emails_when_online' value='yes'}" style="margin-top: 6px">
-							
+                            
                             <div class="codo_switch_toggle"></div>
                             <span class="codo_switch_on">{_t('Yes')}</span>
                             <span class="codo_switch_off">{_t('No')}</span>
                             </div>
                             </div>
                             </div>*}
-                            <div class="form-group">
+                            <div class="row form-group">
                                 <label class="col-sm-4 profile-edit-label">{_t("Show real-time notifications")}</label>
                                 <div class="col-sm-6">
                                     <!--<div id="real_time_notifications" class="codo_switch {match_switch key='real_time_notifications' value='yes'}" style="margin-top: 6px">
@@ -352,28 +328,28 @@ Edit
                                         <span class="codo_switch_on">{_t('Yes')}</span>
                                         <span class="codo_switch_off">{_t('No')}</span>
                                     </div>-->
-									
-									<div class="codo-radio-btn">
-										<ul>
-										  <li>
-											<input type="radio" id="f-option" name="real_time_notifications">
-											<label for="f-option">Yes</label>
-											
-											<div class="check"></div>
-										  </li>
-										  
-										  <li>
-											<input type="radio" id="s-option" name="real_time_notifications">
-											<label for="s-option">No</label>
-											
-											<div class="check"><div class="inside"></div></div>
-										  </li>
-										</ul>
-									</div>
-									
+                                    
+                                    <div class="codo-radio-btn">
+                                        <ul>
+                                          <li>
+                                            <input type="radio" id="f-option" name="real_time_notifications">
+                                            <label for="f-option">Yes</label>
+                                            
+                                            <div class="check"></div>
+                                          </li>
+                                          
+                                          <li>
+                                            <input type="radio" id="s-option" name="real_time_notifications">
+                                            <label for="s-option">No</label>
+                                            
+                                            <div class="check"><div class="inside"></div></div>
+                                          </li>
+                                        </ul>
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row form-group">
                                 <label class="col-sm-4 profile-edit-label">{_t("Show desktop notifications")}</label>
                                 <div class="col-sm-6">
                                     <!--<div id="desktop_notifications" class="codo_switch {match_switch key='desktop_notifications' value='yes'}" style="margin-top: 6px">
@@ -381,36 +357,36 @@ Edit
                                         <span class="codo_switch_on">{_t('Yes')}</span>
                                         <span class="codo_switch_off">{_t('No')}</span>
                                     </div>-->
-									<div class="codo-radio-btn">
-										<ul>
-										  <li>
-											<input type="radio" id="f-option2" name="desktop_notifications">
-											<label for="f-option2">Yes</label>
-											
-											<div class="check"></div>
-										  </li>
-										  
-										  <li>
-											<input type="radio" id="s-option2" name="desktop_notifications">
-											<label for="s-option2">No</label>
-											
-											<div class="check"><div class="inside"></div></div>
-										  </li>
-										</ul>
-									</div>
+                                    <div class="codo-radio-btn">
+                                        <ul>
+                                          <li>
+                                            <input type="radio" id="f-option2" name="desktop_notifications">
+                                            <label for="f-option2">Yes</label>
+                                            
+                                            <div class="check"></div>
+                                          </li>
+                                          
+                                          <li>
+                                            <input type="radio" id="s-option2" name="desktop_notifications">
+                                            <label for="s-option2">No</label>
+                                            
+                                            <div class="check"><div class="inside"></div></div>
+                                          </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-					</div>
-							
-							<div class="codo_edit_profile_title">
-							<div class="col-md-6"><span>Notification level</span></div>
-							</div>
-						
-					<div class="codo-preferences-container">	
+                    </div>
+                            
+                    <div class="codo_edit_profile_title">
+                    <div class=""><span>Notification level</span></div>
+                    </div>
+                        
+                    <div class="codo-preferences-container">    
                             <!--<legend>{_t("Notification level")}</legend>-->
                             <div class="form-group">
                                 <label class="control-label profile-edit-label-normal">{_t("When I create a topic")}</label>
-                                <div class="col-xs-12" style="height:120px;">
+                                <div class="col-12" style="height:120px;">
                                     {assign id '1'}
                                     {assign my_subscription_type 'notification_type_on_create_topic'|get_preference}
                                     {include file='forum/notification_level.tpl'}
@@ -418,7 +394,7 @@ Edit
                             </div>
                             <div class="form-group">
                                 <label class="control-label profile-edit-label-normal">{_t("When I reply a topic")}</label>
-                                <div class="col-xs-12" style="height:120px;">
+                                <div class="col-12" style="height:120px;">
 
                                     {assign id '2'}                                    
                                     {assign my_subscription_type 'notification_type_on_reply_topic'|get_preference}                                    
@@ -435,17 +411,16 @@ Edit
                             </div>                                
                         </fieldset>
                     </form>
-					</div>
+                    </div>
                 </div>
-            </div>
 
             <div class="tab-pane fade" id="subscriptions">
 
-                <div class="codo_edit_profile col-md-8 col-sm-12">
+                <div class="codo_edit_profile">
                     <fieldset>
-						<div class="codo_edit_profile_title">
-							<div class="col-md-6"><span>Categories</span></div>
-						</div>
+                        <div class="codo_edit_profile_title">
+                            <div class=""><span>Categories</span></div>
+                        </div>
                         <!--<legend>{_t("Categories")}</legend>-->
                         {assign is_category 'yes'}
                         {foreach from=$categories item=cat}
@@ -460,7 +435,7 @@ Edit
                                         {$cat.cat_name}
                                     </a>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     {assign my_subscription_type $cat.type}
                                     {include file='forum/notification_level.tpl'}
                                 </div>
@@ -468,9 +443,9 @@ Edit
                         {/foreach}
                         <!--<div class='col-md-12' style='height: 3em'></div>
                         <legend>{_t("Topics")}</legend>-->
-						<div class="codo_edit_profile_title" style="clear:both;">
-							<div class="col-md-6"><span>Topics</span></div>
-						</div>
+                        <div class="codo_edit_profile_title" style="clear:both;">
+                            <div class=""><span>Topics</span></div>
+                        </div>
                         {assign is_category 'no'}
 
                         {foreach from=$topics item=topic}
@@ -503,86 +478,59 @@ Edit
                     </fieldset>
                 </div>
             </div>
-            <div class="tab-pane fade col-md-8 col-sm-12" id="notifications">
+            <div class="tab-pane fade" id="notifications">
 
                 <div class='codo_edit_profile'>
                     <div id='codo_all_notifications'>
 
                     </div>
                 </div>
-            </div>				
-				
-				
-								<!--admin profile-->
+            </div>      
+
+    
+           </div>     
+        </div>          
+                                <!--admin profile-->
             <div class="col-md-4 profile-user-statistics-right">
 
                 <div class="codo_profile profile-user-statistics-right-inner" id="">
 
-                    <!--<div class="codo_user">
-
-                        <div class="codo_user_header">
-
-                            <span>{_t("Profile")}</span>
-                            {if $can_edit}
-
-                                <i id="codo_edit_profile" class="icon-edit"></i>
-                            {/if}
-
-                        </div>
-
-                        <div class="codo_user_body">
-                            <div>
-                                <img draggable="false" src="{$user->avatar}" />
-                                <div class="codo_username">{$user->username}</div>
-
-                            </div>
-                        </div>
-                    </div>-->
-
                     <div class="codo_user_statistics">
-
-
-                        <div class="row codo_info_block">
-                            <!--<div class="codo_blue_dot">
-
+                        <div class="row mb-2">
+                            <div class="col-md-6 codo_profile_left" style="margin-top: 2px">
+                                <i class="icon icon-eye2" style="font-size: 22px;color:#00b147;"></i>
                             </div>
-                            <div class="codo_user_info_label">
-							
-                                {_t("views")}
-                            </div>-->
-							<div class="col-md-6 codo_profile_left" style="margin-top: 2px">
-							<i class="icon icon-eye2" style="font-size: 22px;color:#00b147;"></i>
-							</div>
                             <div class="col-md-6 codo_user_info_num codo_profile_right">
                                 {$user->profile_views|abbrev_no}
                             </div>
                         </div>
-                        <div class="row codo_info_block">
+
+                        <div class="row mb-2">
                             <!--<div class="codo_red_dot">
 
                             </div>
                             <div class="codo_user_info_label">
-							
+                            
                                 {_t("posts")}
                             </div>-->
-							<div class="col-md-6 codo_profile_left" style="margin-top: 2px">
-							<i class="icon icon-message" style="font-size: 22px;color:#0097f6;"></i>
-							</div>
+                            <div class="col-md-6 codo_profile_left" style="margin-top: 2px">
+                            <i class="icon icon-message" style="font-size: 22px;color:#0097f6;"></i>
+                            </div>
                             <div class="col-md-6 codo_user_info_num codo_profile_right">
                                 {$user->no_posts|abbrev_no}
                             </div>
                         </div>
-                        <div class="row codo_info_block">
+                        <div class="row mb-2">
                             <!--<div class="codo_green_dot">
 
                             </div>
                             <div class="codo_user_info_label">
-							
+                            
                                 {_t("reputation")}
                             </div>-->
-							<div class="col-md-6 codo_profile_left" style="margin-top: 2px">
-							<i class="glyphicon glyphicon-star" style="font-size: 22px;color:#5a7fee;"></i>
-							</div>
+                            <div class="col-md-6 codo_profile_left" style="margin-top: 2px">
+                            <i class="fa fa-star" style="font-size: 22px;color:#5a7fee;"></i>
+                            </div>
                             <div class="codo_user_info_num col-md-6 codo_profile_right">
                                 {$user->reputation}
                             </div>
@@ -596,46 +544,10 @@ Edit
                         <div style="color:#9f9f9f;">
                             {_t("Last login :")} <span style="float:right;color:#3e3e3e;font-weight:bold">{if $user->last_access eq 0}{_t('never')}{else}{$user->last_access|get_pretty_time}{/if}</span>
                         </div>
-                        {foreach from=$custom_fields item=field}
-                        
-                            {$field.output}
-                        {/foreach}
+
                     </div>
 
-                </div>
-            </div>
-			
-			<!--end admin profile-->
-
-                <!--<div class="col-md-4 col-sm-12">
-                    <div class="codo_edit_profile">
-                        {"block_profile_change_pass_start"|load_block}
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input type="password" name="curr_pass" class="codo_input" id="curr_pass"  placeholder="{_t("Current password")}" required="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input type="password" name="new_pass" class="codo_input" id="new_pass"  placeholder="{_t("New password")}" required="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input type="password" name="confirm_new_pass" class="codo_input" id="confirm_pass"  placeholder="{_t("Confirm password")}" required="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <button id="change_pass" type="submit" class="codo_btn codo_btn_primary">{_t("Change password")}</button>
-                                    <span id="codo_pass_no_match_txt" class="codo_pass_no_match_txt">{_t("passwords do not match!")}</span>
-                                </div>
-                            </div>
-                        </form>
-                        {"block_profile_change_pass_end"|load_block}
-                    </div>
-                </div>-->
+                </div>          
 
             </div>
 

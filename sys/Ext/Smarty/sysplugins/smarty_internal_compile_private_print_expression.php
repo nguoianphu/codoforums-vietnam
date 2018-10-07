@@ -46,18 +46,18 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
+        $output = $parameter[ 'value' ];
+        // tag modifier
+        if (!empty($parameter[ 'modifierlist' ])) {
+            $output = $compiler->compileTag('private_modifier', array(),
+                                            array('modifierlist' => $parameter[ 'modifierlist' ],
+                                                  'value' => $output));
+        }
         if (isset($_attr[ 'assign' ])) {
             // assign output to variable
-            $output = "<?php \$_smarty_tpl->assign({$_attr['assign']},{$parameter['value']});?>";
+            return "<?php \$_smarty_tpl->assign({$_attr['assign']},{$output});?>";
         } else {
             // display value
-            $output = $parameter[ 'value' ];
-            // tag modifier
-            if (!empty($parameter[ 'modifierlist' ])) {
-                $output = $compiler->compileTag('private_modifier', array(),
-                                                array('modifierlist' => $parameter[ 'modifierlist' ],
-                                                      'value' => $output));
-            }
             if (!$_attr[ 'nofilter' ]) {
                 // default modifier
                 if (!empty($compiler->smarty->default_modifiers)) {
@@ -67,7 +67,7 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
                             preg_match_all('/(\'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'|"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"|:|[^:]+)/',
                                            $single_default_modifier, $mod_array);
                             for ($i = 0, $count = count($mod_array[ 0 ]); $i < $count; $i ++) {
-                                if ($mod_array[ 0 ][ $i ] != ':') {
+                                if ($mod_array[ 0 ][ $i ] !== ':') {
                                     $modifierlist[ $key ][] = $mod_array[ 0 ][ $i ];
                                 }
                             }
@@ -100,18 +100,18 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
                 if (isset($compiler->smarty->autoload_filters[ Smarty::FILTER_VARIABLE ])) {
                     foreach ((array) $compiler->template->smarty->autoload_filters[ Smarty::FILTER_VARIABLE ] as $name)
                     {
-                        $result = $this->compile_output_filter($compiler, $name, $output);
+                        $result = $this->compile_variable_filter($compiler, $name, $output);
                         if ($result !== false) {
                             $output = $result;
                         } else {
                             // not found, throw exception
-                            throw new SmartyException("Unable to load filter '{$name}'");
+                            throw new SmartyException("Unable to load variable filter '{$name}'");
                         }
                     }
                 }
                 foreach ($compiler->variable_filters as $filter) {
-                    if (count($filter) == 1 &&
-                        ($result = $this->compile_output_filter($compiler, $filter[ 0 ], $output)) !== false
+                    if (count($filter) === 1 &&
+                        ($result = $this->compile_variable_filter($compiler, $filter[ 0 ], $output)) !== false
                     ) {
                         $output = $result;
                     } else {
@@ -120,9 +120,7 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
                     }
                 }
             }
-
-            $compiler->has_output = true;
-            $output = "<?php echo {$output};?>";
+            $output = "<?php echo {$output};?>\n";
         }
 
         return $output;
@@ -134,28 +132,16 @@ class Smarty_Internal_Compile_Private_Print_Expression extends Smarty_Internal_C
      * @param string                                $output   embedded output
      *
      * @return string
+     * @throws \SmartyException
      */
-    private function compile_output_filter(Smarty_Internal_TemplateCompilerBase $compiler, $name, $output)
+    private function compile_variable_filter(Smarty_Internal_TemplateCompilerBase $compiler, $name, $output)
     {
-        $plugin_name = "smarty_variablefilter_{$name}";
-        $path = $compiler->smarty->loadPlugin($plugin_name, false);
-        if ($path) {
-            if ($compiler->template->caching) {
-                $compiler->parent_compiler->template->compiled->required_plugins[ 'nocache' ][ $name ][ Smarty::FILTER_VARIABLE ][ 'file' ] =
-                    $path;
-                $compiler->parent_compiler->template->compiled->required_plugins[ 'nocache' ][ $name ][ Smarty::FILTER_VARIABLE ][ 'function' ] =
-                    $plugin_name;
-            } else {
-                $compiler->parent_compiler->template->compiled->required_plugins[ 'compiled' ][ $name ][ Smarty::FILTER_VARIABLE ][ 'file' ] =
-                    $path;
-                $compiler->parent_compiler->template->compiled->required_plugins[ 'compiled' ][ $name ][ Smarty::FILTER_VARIABLE ][ 'function' ] =
-                    $plugin_name;
-            }
-        } else {
+       $function= $compiler->getPlugin($name, 'variablefilter');
+       if ($function) {
+            return "{$function}({$output},\$_smarty_tpl)";
+       } else {
             // not found
             return false;
-        }
-
-        return "{$plugin_name}({$output},\$_smarty_tpl)";
+       }
     }
 }
