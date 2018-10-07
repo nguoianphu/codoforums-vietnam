@@ -1,6 +1,7 @@
 {* @CODOLICENSE *}
 {* Smarty *}
-<!doctype html>
+<!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -9,7 +10,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="description" content="{"site_description"|get_opt}">
 
-        <meta name="author" content="BABA">
+        {if isset($meta_author)}
+        <meta name="author" content="{$meta_author}">
+        {/if}
         <title>{block "title"}{$sub_title} | {$site_title}{/block}</title>
         <!--[if lte IE 8]>
          <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js"></script>
@@ -18,7 +21,7 @@
         {"block_head"|load_block}
 
         <!--
-                <script type="text/javascript" language="javascipt" src="http://localhost/codoforum/freichat/client/main.php"></script> 
+                <script type="text/javascript" language="javascipt" src="http://localhost/codoforum/freichat/client/main.php"></script>
                 <link rel="stylesheet" href="http://localhost/codoforum/freichat/client/jquery/freichat_themes/freichatcss.php" type="text/css">
         -->
         <script type="text/javascript">
@@ -40,7 +43,23 @@
                 forum_tags_len: {$forum_tags_len},
                 unread_notifications: '{$unread_notifications}',
                 trans: {
+
+                    {foreach from=$translations item=translation key=key}
+                    "{$key}": "{$translation}",
+                    {/foreach}
                     embed_no_preview: "{_t('preview not available inside editor')}",
+                    editor: {
+                        bold: "{_t('Bold')}",
+                        italic: "{_t('Italic')}",
+                        bulleted_list: "{_t('Bulleted List')}",
+                        numeric_list: "{_t('Numeric List')}",
+                        picture: "{_t('Picture')}",
+                        link: "{_t('Link')}",
+                        quotes: "{_t('Quotes')}",
+                        preview: "{_t('Preview')}",
+                        download_file: "{_t('Click to download file')}",
+                        clickToViewFull: "{_t('Click to view full size image')}"
+                    },
                     notify: {
                         mention: "{_t("New mention")}",
                         mention_action: "{_t("mentioned you in")}",
@@ -151,7 +170,8 @@
             <meta property="og:type" content="{$og.type}" />
             {if isset($og.url)}<meta property="og:url" content="{$og.url}" />{/if}
 
-            {if isset($og.image)}<meta property="og:image" content="{$og.image}" />{/if}             
+            {if isset($og.image)}
+                <meta property="og:image" content="{$og.image}" />{/if}
             {if isset($og.desc)}<meta property="og:description" content="{$og.desc}" />{/if}
 
             <meta property="og:site_name" content="{$site_title}" />
@@ -170,7 +190,7 @@
         <!-- SEO stuff ends -->
 
 
-        {$page.head.css}        
+        {$page.head.css}
         {$page.head.js}
 
         <style type="text/css">
@@ -181,6 +201,13 @@
 
             }
 
+            .navbar-toggler {
+                padding: 3px 7px;
+            }
+
+            .mm-list > li > a{
+                color: #dcdcdc !important;
+            }
 
             .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
 
@@ -231,14 +258,11 @@
         {"block_body_start"|load_block}
 
 
-
         <div class="CODOFORUM">
 
 
             <nav id="mmenu" style="display: none">
                 <ul>
-
-
 
                     {if $I->loggedIn()}
 
@@ -248,7 +272,7 @@
                         </li>
                         <li title="{_t('Notifications')}" class="codo_inline_notifications_show_all">
 
-                            <a class="glyphicon glyphicon-bell">
+                            <a><i class="glyphicon glyphicon-bell"></i>
                                 <span>{_t('Notifications')}</span>
                                 {if $unread_notifications}
                                     <span class="codo_inline_notifications_unread_no codo_inline_notifications_unread_no_mobile">{$unread_notifications}</span>
@@ -260,22 +284,30 @@
 
                         {if $canCreateTopicInAtleastOneCategory}
                             <li class="" onclick="codo_create_topic()">
-
-
-                                <a class="glyphicon glyphicon-pencil" >  <span>{_t('New topic')}</span></a>
-
+                                <a><i class="fa fa-pencil"></i><span>{_t('New topic')}</span></a>
                             </li>
                         {/if}
 
+                        {if $tpl eq "forum/topic" and $can_reply}
+                            <li class="" onclick="CODOF.replyTopic(true)">
+                                <a><i class="fa fa-edit"></i><span>{_t('New reply')}</span></a>
+                            </li>
+                        {/if}
+
+
                         <li class="">
 
-                            <span  class="glyphicon glyphicon-user" > {_t('Profile')}</span>
+                            <span><i class="fa fa-user"></i>{_t('Profile')}</span>
                             <ul>
 
 
-                                <li><a class="glyphicon glyphicon-user" href="{$profile_url}">  <span>{_t("View Profile")}</span></a></li>
-                                <li><a class="glyphicon glyphicon-pencil" href="{$profile_url}/{$I->id}/edit">  <span>{_t("Edit")}</span></a></li>
-                                <li><a class="glyphicon glyphicon-log-out" href="{$logout_url}">  <span>{_t("Logout")}</span></a></li>
+                                <li><a href="{$profile_url}"><i class="fa fa-user"></i>
+                                        <span>{_t("View Profile")}</span></a></li>
+                                <li><a href="{$profile_url}/{$I->id}/edit"><i class="fa fa-pencil"></i>
+                                        <span>{_t("Edit")}</span></a></li>
+                                <li><a href="{$logout_url}"><i
+                                                class="fa fa-logout"></i><span>{_t("Logout")}</span></a>
+                                </li>
 
                             </ul>
                         </li>
@@ -293,54 +325,49 @@
 
                 </ul>
             </nav>
-            <nav id="nav" class="navbar navbar-clean navbar-fixed-top" role="navigation">
+
+
+            <nav id="nav" class="navbar navbar-expand-lg navbar-clean navbar-light fixed-top bg-white" role="navigation">
                 <div class="container-fluid" style="width:85%;">
-                    <!-- Brand and toggle get grouped for better mobile display -->
+
                     <div class="navbar-header">
 
-                        <button type="button" class="navbar-toggle pull-left"  onclick='$("#mmenu").trigger("open.mm");' >
-                            <span class="sr-only">{_t("Toggle navigation")}</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+                        {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
+                        <button type="button" class="navbar-toggler" onclick='$("#mmenu").trigger("open.mm");'>
+                            <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        {*<a class="navbar-brand " href="{$smarty.const.RURI}{$site_url}"></a>*}
-
-
-                       {* <img src="{$smarty.const.DURI}assets/img/general/brand.png" alt="codoforum logo" class="navbar-header-img">*}
+                        {* <img src="{$smarty.const.DURI}assets/img/general/brand.png" alt="codoforum logo" class="navbar-header-img">*}
                         {if $tpl eq "forum/topics"}
-                         <a style="width: 200px;padding-left: 15px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                            <a style="padding-left: 15px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
                         {else}
-                         <a style="width: 200px;padding-left: 28px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
+                            <a style="padding-left: 28px" href="{$smarty.const.RURI}{$site_url}" class="navbar-brand codo_forum_title" >{$site_title}</a>
                         {/if}
-                       
+
+                    </div>
+
 
                         {*if $canCreateTopicInAtleastOneCategory}
-                        <li class="codo_topics_new_topic visible-xs-block col-xs-2 pull-right">
-                        <a class="codo_nav_icon" href="#" onclick="codo_create_topic()">
-                        <i class="icon-new-topic"></i>
-                        </a>
+                        <li class="codo_topics_new_topic visible-xs-block col-xs-2 float-right">
+                            <a class="codo_nav_icon" href="#" onclick="codo_create_topic()">
+                                <i class="icon-new-topic"></i>
+                            </a>
                         </li>
                         {/if*}
 
-                    </div>
 
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="codo_navbar_content">
 
-
-
-
-                        <ul class="nav navbar-nav navbar-right">
-                            {if isset($can_search) and $can_search}    
-                                <li class="dropdown hidden-xs global_search">
-                                   <input class="codo_global_search_input" type="text" placeholder="{_t('Search')}" />
+                        <ul class="nav navbar-nav ml-auto">
+                            {if isset($can_search) and $can_search}
+                                <li class="dropdown d-none d-sm-block global_search">
+                                   <input class="codo_global_search_input codo_global_search_head_input" type="text" placeholder="{_t('Search')}" />
                                 </li>
-                                <li class="dropdown hidden-xs global_search">
-                                    <a href="#" id="codo_global_search">                                        
-                                        <i class="glyphicon glyphicon-search" title="Advanced search" ></i>
+                                <li class="dropdown d-none d-sm-block global_search">
+                                    <a href="#" id="codo_global_search">
+                                        <i class="fa fa-search" title="Advanced search" ></i>
                                     </a>
                                 </li>
                             {/if}
@@ -349,16 +376,16 @@
                             {"block_main_menu"|load_block}
 
                             {if $I->loggedIn()}
-
-                                <li class="dropdown hidden-xs codo_tooltip" data-toggle="tooltip" data-placement="bottom" title="{_t('Notifications')}">
-                                    <a data-toggle="dropdown" class="codo_nav_icon codo_inline_notifications" id="codo_inline_notifications">
+                                <li class="nav-item dropdown d-none d-sm-block codo_tooltip" data-toggle="tooltip"
+                                    data-placement="bottom" title="{_t('Notifications')}">
+                                    <a data-toggle="dropdown" class="nav-link dropdown-toggle codo_nav_icon codo_inline_notifications" id="codo_inline_notifications">
                                         <!--<i class="icon-bell"></i>-->
                                         <i class="material-icons">notifications</i>
                                         {if $unread_notifications}
                                             <span class="codo_inline_notifications_unread_no">{$unread_notifications}</span>
                                         {/if}
                                     </a>
-                                    <ul class="dropdown-menu codo_inline_notifications_list" id="codo_inline_notifications_list" role="menu" aria-labelledby="dLabel">
+                                    <div class="dropdown-menu dropdown-menu-right codo_inline_notifications_list" id="codo_inline_notifications_list" role="menu" aria-labelledby="dLabel">
 
                                         <div class="codo_inline_notification_header">
                                             <div class="codo_load_more_bar_black_gif" ></div>
@@ -366,7 +393,7 @@
 
                                                 <span>{_t("Notifications")}</span>
                                                 <div>
-                                                    {* <span id="codo_inline_notifications_mark_read" class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="bottom" title="{_t('mark as read')}"></span>*}
+                                                    {* <span id="codo_inline_notifications_mark_read" class="fa fa-eye" data-toggle="tooltip" data-placement="bottom" title="{_t('mark as read')}"></span>*}
                                                     <span id="codo_inline_notifications_preferences" class="glyphicon glyphicon-tasks"  data-toggle="tooltip" data-placement="bottom" title="{_t('preferences')}"></span>
                                                 </div>
                                             </div>
@@ -378,37 +405,39 @@
                                         <div class="codo_inline_notification_footer codo_inline_notifications_show_all">
                                             <span>{_t("show all")}</span><i class="glyphicon glyphicon-time"></i>
                                         </div>
-                                    </ul>
+                                    </div>
                                 </li>
 
-                                <li class="codo_xs_li visible-xs-block">
+                                <li class="codo_xs_li d-block d-sm-none">
                                     <a href="{$profile_url}/{$I->id}/edit#notifications">
                                         <i class="icon-bell"></i>
-                                        <span class="visible-xs-inline"> {_t("Notifications")}</span>
+                                        <span class="d-block d-sm-none"> {_t("Notifications")}</span>
                                     </a>
                                 </li>
 
-                                <li class="codo_menu_user dropdown">
+                                <li class="nav-item codo_menu_user dropdown">
 
-                                    <a class="codo_menu_user_img" data-toggle="dropdown"><img  src="{$I->avatar}" />
+                                    <a class="nav-link codo_menu_user_img" data-toggle="dropdown"><img  src="{$I->avatar}" />
                                         <span class="codo_user_name_span">{$I->name}</span>
                                     </a>
-                                    <ul class="dropdown-menu codo_menu_user_container" role="menu" aria-labelledby="dLabel">
+                                    <div class="dropdown-menu codo_menu_user_container" role="menu" aria-labelledby="dLabel">
 
+                                       <a class="dropdown-item" href="{$profile_url}"><i class="glyphicon glyphicon-user"></i>
+                                                <span>{_t("View Profile")}</span></a>
+                                        <a class="dropdown-item" href="{$profile_url}/{$I->id}/edit"><i class="glyphicon glyphicon-pencil"></i>
+                                                <span>{_t("Edit")}</span></a>
+                                        <a class="dropdown-item" href="{$logout_url}"><i
+                                                        class="glyphicon glyphicon-log-out"></i><span>{_t("Logout")}</span></a>
 
-                                        <li><a class="glyphicon glyphicon-user" href="{$profile_url}">  <span>{_t("Profile")}</span></a></li>
-                                        <li><a class="glyphicon glyphicon-pencil" href="{$profile_url}/{$I->id}/edit">  <span>{_t("Edit")}</span></a></li>
-                                        <li><a class="glyphicon glyphicon-log-out" href="{$logout_url}">  <span>{_t("Logout")}</span></a></li>
-
-                                    </ul>
+                                    </div>
                                 </li>
 
                                 {*<li><a href="{$logout_url}">{_t("Logout")}</a></li>*}
 
                             {else}
 
-                                <li class="active"><a href="{$register_url}">{_t("Register")}</a></li>
-                                <li><a id="codo_login_link" href="{$login_url}">{_t("Login")}</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{$register_url}">{_t("Register")}</a></li>
+                                <li class="nav-item"><a class="nav-link" id="codo_login_link" href="{$login_url}">{_t("Login")}</a></li>
                                 {/if}
 
                             <li class="codo_back_to_top"><a class="codo_back_to_top_arrow"><i class="icon-arrow-top"></i></a></li>
@@ -416,8 +445,6 @@
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>
-
-
 
 
             <div class='codo_modal_bg'></div>
@@ -433,13 +460,13 @@
             <footer class="footer">
                 <div class="container" style="padding:0px;">
                     <div class="row" style="padding: 5px !important">
-                        <div class="col-sm-4">&copy; 2017 {$site_title}<br>
+                        <div class="col-sm-4">&copy; {'Y'|date} {$site_title}<br>
 
 
                             <small>{_t("Powered by")} <a href="http://codoforum.com" target="_blank">Codoforum</a></small>
                         </div>
 
-                        <div class="col-sm-4 pull-right" style="text-align: center">
+                        <div class="col-sm-4 ml-auto" style="text-align: center">
 
 
                             {"block_footer_right"|load_block}
@@ -452,7 +479,7 @@
 
                     </div>
                 </div>
-            </footer>        
+            </footer>
 
 
             <div style="display: none" id="codo_js_php_defs"></div>
@@ -475,9 +502,9 @@
                 <div class="codo_inline_notification_el_img">
 
                     {{#isRemote actor.avatar}}
-                    <img src="{{../actor.avatar}}" />                    
+                    <img src="{{../actor.avatar}}"/>
                     {{else}}
-                    <img src="{{../../duri}}assets/img/profiles/icons/{{../actor.avatar}}" />                    
+                    <img src="{{../../duri}}assets/img/profiles/icons/{{../actor.avatar}}"/>
                     {{/isRemote}}
                 </div>
                 <div class="codo_inline_notification_el_body">
@@ -506,57 +533,60 @@
         </div>
     </div>
 
-    <div id="codo_is_xs" class="hidden-xs"></div>    
+    <div id = "codo_is_xs" class="d-none d-sm-block"></div>
     <div id="codo_is_sm" class="hidden-sm"></div>
 
     <script type="text/javascript">
-                                        /** Lets optimize to the MAX **/
-                                        function downloadJSAtOnload() {
+        /** Lets optimize to the MAX **/
+        function downloadJSAtOnload() {
 
-                                        var files = JSON.parse('{$page.defer}');
-                                                var len = files.length;
-                                                var i = 0;
-                                                var element = document.createElement("script");
-                                                element.src = files[i];
-                                                element.async = false;
-                                                document.body.appendChild(element);
-                                                if (element.readyState) {  //IE
-                                        element.onreadystatechange = function() {
-                                        if (element.readyState === "loaded" || element.readyState === "complete") {
-                                        element.onreadystatechange = null;
-                                                on_codo_loaded();
-                                                codo_load_js();
-                                        }
-                                        };
-                                        } else {  //Others
-                                        element.onload = function() {
-                                        on_codo_loaded();
-                                                CODOF.hook.call('on_cf_loaded');
-                                                codo_load_js();
-                                        };
-                                        }
+            var files = JSON.parse('{$page.defer}');
+            var len = files.length;
+            var i = 0;
+            var element = document.createElement("script");
+            element.src = files[i];
+            element.async = false;
+            document.body.appendChild(element);
+            if (element.readyState) {  //IE
+                element.onreadystatechange = function () {
+                    if (element.readyState === "loaded" || element.readyState === "complete") {
+                        element.onreadystatechange = null;
+                        on_codo_loaded();
+                        codo_load_js();
+                    }
+                };
+            } else {  //Others
+                element.onload = function () {
+                    on_codo_loaded();
+                    CODOF.hook.call('on_cf_loaded');
+                    codo_load_js();
+                };
+            }
 
-                                        function codo_load_js() {
-                                        var element;
-                                                for (var i = 1; i < len; i++) {
-                                        element = document.createElement("script");
-                                                element.src = files[i];
-                                                element.async = false;
-                                                document.body.appendChild(element);
-                                                if (i === len - 1) {
-                                        element.onload = function() {
-                                        CODOF.hook.call('on_scripts_loaded');
-                                        }
-                                        }
-                                        }
-                                        }
-                                        }
-                                        if (window.addEventListener)
-                                                window.addEventListener("load", downloadJSAtOnload, false);
-                                                else if (window.attachEvent)
-                                                window.attachEvent("onload", downloadJSAtOnload);
-                                                else window.onload = downloadJSAtOnload;
-    </script>    
+            function codo_load_js() {
+                var element;
+                for (var i = 1; i < len; i++) {
+                    element = document.createElement("script");
+                    element.src = files[i];
+                    element.async = false;
+                    document.body.appendChild(element);
+                    if (i === len - 1) {
+                        element.onload = function () {
+                            CODOF.hook.call('on_scripts_loaded');
+                        }
+                    }
+                }
+            }
+        };
+
+    if (window.addEventListener)
+            window.addEventListener("load", downloadJSAtOnload, false);
+    else if (window.attachEvent)
+            window.attachEvent("onload", downloadJSAtOnload);
+    else window.onload = downloadJSAtOnload;
+        </script>
 </body>
+
+
 
 </html>

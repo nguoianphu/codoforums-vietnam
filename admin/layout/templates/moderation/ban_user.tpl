@@ -1,9 +1,9 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class=""><i class="fa"></i> Moderation</li>            
-        <li class="active"><i class="fa fa-ban"></i> Ban user</li>    </ol>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><i class="fa"></i> Moderation</li>            
+        <li class="breadcrumb-item active"><i class="fa fa-ban"></i> Ban user</li>    </ol>
 </section>
 
 <style type="text/css">
@@ -45,8 +45,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">Ban user</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <form action="{$self}?page=moderation/ban_user" method="POST">
                     <div class="modal-body">

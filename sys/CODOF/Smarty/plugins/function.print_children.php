@@ -34,7 +34,7 @@ function smarty_function_print_children($params) {
 
             if ($el == 'li') {
 
-                echo '<' . $el . ' role="presentation"><a id="' . $child->cat_id . '" data-alias="' . $child->cat_alias . '" role="menuitem" tabindex="-1">' . $params['indent'] . $child->cat_name . '</a></' . $el . '>';
+                echo '<' . $el . ' id="'.$child->cat_id.'" class="dropdown-item" role="presentation" data-alias="' . $child->cat_alias . '" >' . $params['indent'] . $child->cat_name . '</' . $el . '>';
             } else if ($el == 'option') {
 
                 echo '<' . $el . ' value="'.$child->cat_id.'">'. $params['indent'] . $child->cat_name.'</' . $el . '>';

@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <title>CODOFORUM | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <!-- bootstrap 3.0.2 -->
+        <!-- bootstrap 4.0.0 -->
         <link href="{$A_RURI}css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- font Awesome -->
         <link href="{$A_RURI}css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -65,26 +65,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <div class="navbar-right">
+                <div class="ml-auto">
                     <ul class="nav navbar-nav">
 
 
                         <!-- User Account: style can be found in dropdown.less -->
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="glyphicon glyphicon-user"></i>
+                        <li class="nav-item dropdown user user-menu">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i>
                                 <span>{if isset($A_username) }
 
                                     {$A_username}
                                     {else}
                                         Hello
-                                        {/if} <i class="caret"></i></span>
-                                    </a>
+                                        {/if} <i class="caret"></i>
+                                    </span>
+                                </a>
                                     {if isset($logged_in) && $logged_in eq "yes" }
-                                        <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <!-- User image -->
                                             <li class="user-header bg-light-blue">
-                                                <img src="{$A_avatar}" class="img-circle" alt="User Image" />
+                                                <img src="{$A_avatar}" class="rounded-circle" alt="User Image" />
                                                 <p>
                                                     {$A_username} - Administrator
                                                     <small>Member since {$A_created}</small>
@@ -268,7 +269,7 @@
                     </aside><!-- /.right-side -->
                 </div><!-- ./wrapper -->
 
-
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
                 <!-- Bootstrap -->
                 <script src="{$A_RURI}js/bootstrap.min.js" type="text/javascript"></script>
                 <!-- AdminLTE App -->

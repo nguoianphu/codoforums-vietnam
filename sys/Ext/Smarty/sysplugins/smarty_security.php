@@ -320,7 +320,7 @@ class Smarty_Security
             // fall back
             return $this->isTrustedStaticClass($class_name, $compiler);
         }
-        if ($params[ 2 ] == 'method') {
+        if ($params[ 2 ] === 'method') {
             $allowed = $this->trusted_static_methods;
             $name = substr($params[ 0 ], 0, strpos($params[ 0 ], '('));
         } else {
@@ -470,7 +470,7 @@ class Smarty_Security
             return true;
         }
         if (!empty($this->trusted_constants)) {
-            if (!in_array($const, $this->trusted_constants)) {
+            if (!in_array(strtolower($const), $this->trusted_constants)) {
                 $compiler->trigger_template_error("Security: access to constant '{$const}' not permitted");
                 return false;
             }
@@ -512,60 +512,38 @@ class Smarty_Security
     public function isTrustedResourceDir($filepath, $isConfig = null)
     {
         if ($this->_include_path_status !== $this->smarty->use_include_path) {
-            foreach ($this->_include_dir as $directory) {
-                unset($this->_resource_dir[ $directory ]);
-            }
-            if ($this->smarty->use_include_path) {
-                $this->_include_dir = array();
-                $_dirs = $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty);
-                foreach ($_dirs as $directory) {
-                    $this->_include_dir[] = $directory;
-                    $this->_resource_dir[ $directory ] = true;
-                }
+            $_dir = $this->smarty->use_include_path ? $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty) : array();
+            if ($this->_include_dir !== $_dir) {
+                $this->_updateResourceDir($this->_include_dir, $_dir);
+                $this->_include_dir = $_dir;
             }
             $this->_include_path_status = $this->smarty->use_include_path;
         }
-        if ($isConfig !== true &&
-            (!isset($this->smarty->_cache[ 'template_dir_new' ]) || $this->smarty->_cache[ 'template_dir_new' ])
-        ) {
+
             $_dir = $this->smarty->getTemplateDir();
             if ($this->_template_dir !== $_dir) {
-                foreach ($this->_template_dir as $directory) {
-                    unset($this->_resource_dir[ $directory ]);
-                }
-                foreach ($_dir as $directory) {
-                    $this->_resource_dir[ $directory ] = true;
-                }
+                $this->_updateResourceDir($this->_template_dir, $_dir);
                 $this->_template_dir = $_dir;
             }
-            $this->smarty->_cache[ 'template_dir_new' ] = false;
-        }
-        if ($isConfig !== false &&
-            (!isset($this->smarty->_cache[ 'config_dir_new' ]) || $this->smarty->_cache[ 'config_dir_new' ])
-        ) {
+
             $_dir = $this->smarty->getConfigDir();
             if ($this->_config_dir !== $_dir) {
-                foreach ($this->_config_dir as $directory) {
-                    unset($this->_resource_dir[ $directory ]);
-                }
-                foreach ($_dir as $directory) {
-                    $this->_resource_dir[ $directory ] = true;
-                }
+                $this->_updateResourceDir($this->_config_dir, $_dir);
                 $this->_config_dir = $_dir;
             }
-            $this->smarty->_cache[ 'config_dir_new' ] = false;
-        }
-        if ($this->_secure_dir !== (array) $this->secure_dir) {
-            foreach ($this->_secure_dir as $directory) {
-                unset($this->_resource_dir[ $directory ]);
+
+        if ($this->_secure_dir !== $this->secure_dir) {
+            $this->secure_dir = (array)$this->secure_dir;
+            foreach($this->secure_dir as $k => $d) {
+                $this->secure_dir[$k] = $this->smarty->_realpath($d. DIRECTORY_SEPARATOR,true);
             }
-            foreach ((array) $this->secure_dir as $directory) {
-                $directory = $this->smarty->_realpath($directory . DS, true);
-                $this->_resource_dir[ $directory ] = true;
-            }
-            $this->_secure_dir = (array) $this->secure_dir;
+            $this->_updateResourceDir($this->_secure_dir, $this->secure_dir);
+            $this->_secure_dir = $this->secure_dir;
         }
-        $this->_resource_dir = $this->_checkDir($filepath, $this->_resource_dir);
+        $addPath =  $this->_checkDir($filepath, $this->_resource_dir);
+        if ($addPath !== false) {
+           $this->_resource_dir = array_merge($this->_resource_dir, $addPath);
+        }
         return true;
     }
 
@@ -616,16 +594,101 @@ class Smarty_Security
 
             $this->_trusted_dir = $this->trusted_dir;
             foreach ((array) $this->trusted_dir as $directory) {
-                $directory = $this->smarty->_realpath($directory . DS, true);
+                $directory = $this->smarty->_realpath($directory . '/', true);
                 $this->_php_resource_dir[ $directory ] = true;
             }
         }
-
-        $this->_php_resource_dir =
-            $this->_checkDir($this->smarty->_realpath($filepath, true), $this->_php_resource_dir);
-        return true;
+        $addPath =  $this->_checkDir($filepath, $this->_php_resource_dir);
+        if ($addPath !== false) {
+           $this->_php_resource_dir = array_merge($this->_php_resource_dir, $addPath);
+        }
+         return true;
     }
 
+    /**
+     * Remove old directories and its sub folders, add new directories
+     *
+     * @param array $oldDir
+     * @param array $newDir
+     */
+    private function _updateResourceDir($oldDir, $newDir) {
+        foreach ($oldDir as $directory) {
+ //           $directory = $this->smarty->_realpath($directory, true);
+            $length = strlen($directory);
+            foreach ($this->_resource_dir as $dir) {
+                if (substr($dir, 0,$length) === $directory) {
+                    unset($this->_resource_dir[ $dir ]);
+                }
+            }
+        }
+        foreach ($newDir as $directory) {
+ //           $directory = $this->smarty->_realpath($directory, true);
+            $this->_resource_dir[ $directory ] = true;
+        }
+    }
+    /**
+     * Check if file is inside a valid directory
+     *
+     * @param string $filepath
+     * @param array  $dirs valid directories
+     *
+     * @return array|bool
+     * @throws \SmartyException
+     */
+    private function _checkDir($filepath, $dirs)
+    {
+        $directory = dirname($this->smarty->_realpath($filepath, true)) . DIRECTORY_SEPARATOR;
+        $_directory = array();
+        if (!preg_match('#[\\\\/][.][.][\\\\/]#',$directory)) {
+            while (true) {
+             // test if the directory is trusted
+            if (isset($dirs[ $directory ])) {
+               return $_directory;
+            }
+            // abort if we've reached root
+            if (!preg_match('#[\\\\/][^\\\\/]+[\\\\/]$#', $directory)) {
+                // give up
+                break;
+            }
+            // remember the directory to add it to _resource_dir in case we're successful
+            $_directory[ $directory ] = true;
+           // bubble up one level
+            $directory = preg_replace('#[\\\\/][^\\\\/]+[\\\\/]$#', DIRECTORY_SEPARATOR, $directory);
+            }
+        }
+        // give up
+        throw new SmartyException(sprintf('Smarty Security: not trusted file path \'%s\' ',$filepath));
+    }
+
+    /**
+     * Loads security class and enables security
+     *
+     * @param \Smarty                 $smarty
+     * @param  string|Smarty_Security $security_class if a string is used, it must be class-name
+     *
+     * @return \Smarty current Smarty instance for chaining
+     * @throws \SmartyException when an invalid class name is provided
+     */
+    public static function enableSecurity(Smarty $smarty, $security_class)
+    {
+        if ($security_class instanceof Smarty_Security) {
+            $smarty->security_policy = $security_class;
+            return $smarty;
+        } elseif (is_object($security_class)) {
+            throw new SmartyException("Class '" . get_class($security_class) . "' must extend Smarty_Security.");
+        }
+        if ($security_class === null) {
+            $security_class = $smarty->security_class;
+        }
+        if (!class_exists($security_class)) {
+            throw new SmartyException("Security class '$security_class' is not defined");
+        } elseif ($security_class !== 'Smarty_Security' && !is_subclass_of($security_class, 'Smarty_Security')) {
+            throw new SmartyException("Class '$security_class' must extend Smarty_Security.");
+        } else {
+            $smarty->security_policy = new $security_class($smarty);
+        }
+        return $smarty;
+    }
     /**
      * Start template processing
      *
@@ -643,9 +706,8 @@ class Smarty_Security
     /**
      * Exit template processing
      *
-     * @internal param $template
      */
-    public function exitTemplate()
+    public function endTemplate()
     {
         if ($this->max_template_nesting > 0) {
             $this->_current_template_nesting --;
@@ -653,67 +715,13 @@ class Smarty_Security
     }
 
     /**
-     * Check if file is inside a valid directory
+     * Register callback functions call at start/end of template rendering
      *
-     * @param string $filepath
-     * @param array  $dirs valid directories
-     *
-     * @return array
-     * @throws \SmartyException
+     * @param \Smarty_Internal_Template $template
      */
-    private function _checkDir($filepath, $dirs)
+    public function registerCallBacks(Smarty_Internal_Template $template)
     {
-        $directory = dirname($filepath) . DS;
-        $_directory = array();
-        while (true) {
-            // remember the directory to add it to _resource_dir in case we're successful
-            $_directory[ $directory ] = true;
-            // test if the directory is trusted
-            if (isset($dirs[ $directory ])) {
-                // merge sub directories of current $directory into _resource_dir to speed up subsequent lookup
-                $dirs = array_merge($dirs, $_directory);
-
-                return $dirs;
-            }
-            // abort if we've reached root
-            if (!preg_match('#[\\\/][^\\\/]+[\\\/]$#', $directory)) {
-                break;
-            }
-            // bubble up one level
-            $directory = preg_replace('#[\\\/][^\\\/]+[\\\/]$#', DS, $directory);
-        }
-
-        // give up
-        throw new SmartyException("directory '{$filepath}' not allowed by security setting");
-    }
-
-    /**
-     * Loads security class and enables security
-     *
-     * @param \Smarty                 $smarty
-     * @param  string|Smarty_Security $security_class if a string is used, it must be class-name
-     *
-     * @return \Smarty current Smarty instance for chaining
-     * @throws \SmartyException when an invalid class name is provided
-     */
-    public static function enableSecurity(Smarty $smarty, $security_class)
-    {
-        if ($security_class instanceof Smarty_Security) {
-            $smarty->security_policy = $security_class;
-            return;
-        } elseif (is_object($security_class)) {
-            throw new SmartyException("Class '" . get_class($security_class) . "' must extend Smarty_Security.");
-        }
-        if ($security_class == null) {
-            $security_class = $smarty->security_class;
-        }
-        if (!class_exists($security_class)) {
-            throw new SmartyException("Security class '$security_class' is not defined");
-        } elseif ($security_class !== 'Smarty_Security' && !is_subclass_of($security_class, 'Smarty_Security')) {
-            throw new SmartyException("Class '$security_class' must extend Smarty_Security.");
-        } else {
-            $smarty->security_policy = new $security_class($smarty);
-        }
-        return;
+        $template->startRenderCallbacks[] = array($this, 'startTemplate');
+        $template->endRenderCallbacks[] = array($this, 'endTemplate');
     }
 }

@@ -15,11 +15,8 @@
 }
 .top-custom-container-profile
 {
-	background: #844aa6; /* Old browsers */
-	background: -moz-linear-gradient(left, #844aa6 0%, #5a7fee 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(left, #844aa6 0%,#5a7fee 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to right, #844aa6 0%,#5a7fee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#844aa6', endColorstr='#5a7fee',GradientType=1 ); /* IE6-9 */
+	background: @endGradient; /* Old browsers */
+	background: linear-gradient(to right, @endGradient 0%,@startGradient 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	height:220px;
 }
 .profile-avatar-img{
@@ -33,14 +30,14 @@
 }
 .nav-text-profile
 {
-	color:#ffffff;
-	font-weight:bold;
+	color:#fff;
+	//font-weight:bold;
 }
 .nav-box-profile
 {
-	width:10%;
+	//width:10%;
 	//background:transparent;
-    text-align: center;
+    //text-align: center;
     padding-top: 18px;
 	margin-top: -21px;
 	
@@ -393,6 +390,10 @@ body {
 
     position: relative;
     //border-top: 1px dotted @borderLightColor;
+    position: relative;
+    margin-top: 20px;
+    border-top: 1px dotted @borderLightColor;
+    padding-top: 10px;
 
     > .codo_topics_topic_message {
 
@@ -545,6 +546,7 @@ body {
                 font-weight: bold;
                 line-height: 22px;
                 font-family: @titleFontFamily;
+                margin-top: 10px;
 
                 > a {
 
@@ -656,6 +658,12 @@ body {
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 991px) {
+    
+    .profile-user-statistics-right {
+        
+        margin-top: 0;
+        width: inherit;
+    }
 
     .codo_categories {
 

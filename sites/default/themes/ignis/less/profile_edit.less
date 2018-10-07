@@ -1,0 +1,24 @@
+/*
+@CODOLICENSE
+*/
+
+.codo-radio-btn
+{
+  ul li:hover .check {
+    border: 2px solid #5a7fee;
+  }
+
+  input[type=radio]:checked ~ .check {
+    border: 2px solid #5a7fee;
+  }
+
+  input[type=radio]:checked ~ .check::before{
+    background: #5a7fee;
+  }
+}
+
+.top-custom-container-profile
+{
+  background: @startGradient; /* Old browsers */
+  background: linear-gradient(to right, @startGradient 0%,@endGradient 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}

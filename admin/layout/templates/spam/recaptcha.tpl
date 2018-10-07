@@ -1,8 +1,8 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active"><i class="fa fa-puzzle-piece"></i> ReCaptcha</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active breadcrumb-item"><i class="fa fa-puzzle-piece"></i> ReCaptcha</li>
     </ol>
 
 </section>
@@ -24,7 +24,7 @@
                     data-permission='yes'
                     {if {"captcha"|get_opt} eq 'enabled'} checked="checked" {/if}
                     type="checkbox"  data-toggle="toggle"
-                    data-on="yes" data-off="no" data-size="mini"
+                    data-on="yes" data-off="no" data-size="small"
                     data-onstyle="success" data-offstyle="danger">
             </div>
             

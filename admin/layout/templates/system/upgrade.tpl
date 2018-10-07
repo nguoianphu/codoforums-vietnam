@@ -39,22 +39,23 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class=""><i class="fa fa-desktop"></i> System</li> 
-        <li class="active"><i class="fa fa-level-up"></i> Upgrade</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><i class="fa fa-desktop"></i> System</li> 
+        <li class="breadcrumb-item active"><i class="fa fa-level-up"></i> Upgrade</li>
     </ol>
 
 </section>
 
+<div class="row">
+    <div class="col-md-12">
 
-<div class="row col-md-12">
-
-    <div class="warn">Note: Backup your database and files before you start the upgrade process!</div>
+        <div class="warn">Note: Backup your database and files before you start the upgrade process!</div>
 
 
-    <div><button class="btn btn-primary" onclick="begin_upgrade()">Start Upgrade Process</button></div>
-    <div style="" class="info" id="codo_import_status"></div>
+        <div><button class="btn btn-primary" onclick="begin_upgrade()">Start Upgrade Process</button></div>
+        <div style="" class="info" id="codo_import_status"></div>
 
+    </div>
 </div>
 
 <div class="row col-md-12" style="margin:15px;display: none" id="ftp">

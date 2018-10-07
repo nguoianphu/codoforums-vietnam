@@ -23,7 +23,7 @@
                 <div class='col-md-2' style='padding:0'> 
                     <a class='btn btn-primary btn-block' style='color:#fff' href="?page=pages/pages&action=addnewpage"><i class="fa fa-plus"></i> Add Page</a>
                 </div>
-                <br><br>
+                <br>
                 <hr>
                 <table id="blocktable" class="table table-bordered table-striped">
                     <thead>

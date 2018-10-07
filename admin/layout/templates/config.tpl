@@ -1,8 +1,8 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active"><i class="fa fa-wrench"></i> Global Settings</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-wrench"></i> Global Settings</li>
     </ol>
 
 </section>
@@ -78,7 +78,7 @@
                    class="simple form-control" name="reg_req_admin" 
                    {if {"reg_req_admin"|get_opt} eq "yes"} checked="checked" {/if}
                    type="checkbox"  data-toggle="toggle"
-                   data-size="mini"
+                   data-size="small"
                    data-on="yes" data-off="no"
                    data-onstyle="success" data-offstyle="danger">
             <br/><hr/>

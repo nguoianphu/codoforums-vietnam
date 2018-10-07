@@ -1,0 +1,25 @@
+/*
+@CODOLICENSE
+*/
+
+.top-custom-container-profile {
+  background: @startGradient; /* Old browsers */
+  background: linear-gradient(to right, @startGradient 0%, @endGradient 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.codo_posts {
+  > .codo_widget {
+    > .codo_widget-content {
+      > article {
+        .codo_posts_user_info {
+          > .codo_posts_post_desc {
+            color: @descDarkColor !important;
+            a {
+              color: @descDarkColor !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

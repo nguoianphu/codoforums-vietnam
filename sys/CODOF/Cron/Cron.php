@@ -154,6 +154,7 @@ class Cron extends Jobs {
      *
      * @param type $name
      * @param type $timestamp
+     * @return
      */
     public function set($name, $interval, $start = 0) {
 

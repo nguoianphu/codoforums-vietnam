@@ -1,9 +1,9 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><i class="fa fa-laptop"></i> UI Elements</li>
-        <li><i class="fa fa-cubes"></i> Blocks</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><i class="fa fa-laptop"></i> UI Elements</li>
+        <li class="breadcrumb-item"><i class="fa fa-cubes"></i> Blocks</li>
     </ol>
 
 </section>
@@ -81,30 +81,20 @@
                 <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
-    </div>    
+    </div>
 
 
-</div> 
+</div>
 
-<script>
-
-
+<script type="text/javascript">
     function delete_block(id) {
-
-
         var flag = confirm("Are you sure you want to delete this block?");
-
-        if (flag == true) {
-
+        if (flag === true) {
             console.log("block " + id + " delete req sent");
             window.location = "index.php?page=ui/blocks&id="+id+"&action=delete&CSRF_token={$token}";
-
         } else {
             console.log("req cancelled");
         }
-
-
-
     }
 
 </script>

@@ -337,7 +337,7 @@ class upgrader {
             }
 
             session_write_close();
-            ob_end_flush();
+            if (ob_get_contents()) ob_end_flush();
             exit();
         }
     }

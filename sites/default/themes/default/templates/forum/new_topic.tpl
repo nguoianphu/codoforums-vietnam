@@ -7,23 +7,27 @@
 {extends file='layout.tpl'}
 
 {block name=body}
-    <div id="breadcrumb" class="col-md-12">
-
-        <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
-            {"block_breadcrumbs_before"|load_block}
-            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i></div></a>
-            <!--<div>_t("New topic")}</div>-->
-            {"block_breadcrumbs_after"|load_block}
-        </div>
-    </div>
 
     <div class="container">
 
         <div class="row">
+            <div  class="col-12">
+                <div id="breadcrumb">
 
+                    <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
+                        {"block_breadcrumbs_before"|load_block}
+                        <a href="{$smarty.const.RURI}{$site_url}"><div><i class="fa fa-home"></i></div></a>
+                        {if $selected_cat}
+                            <a href="index.php?u=/category/{$selected_cat->cat_alias}">{$selected_cat->cat_name}</a>
+                        {/if}
+                        <!--<div>_t("New topic")}</div>-->
+                        {"block_breadcrumbs_after"|load_block}
+                    </div>
+                </div>
+            </div>
 
             {"block_create_topic_before"|load_block}
-
+            <div class="col-12">    
             <div class="codo_widget">
 
                 <div class="codo_widget-header">
@@ -57,7 +61,7 @@
     
                                 {foreach from=$cats item=cat}
     
-                                <li role="presentation"><a id="{$cat->cat_id}" data-alias="{$cat->cat_alias}">{$cat->cat_name}</a></li>
+                                <li class="dropdown-item" role="presentation"><a id="{$cat->cat_id}" data-alias="{$cat->cat_alias}">{$cat->cat_name}</a></li>
                                 {/foreach}
     
     
@@ -80,7 +84,7 @@
 
                                         {foreach from=$cats item=cat}
 
-                                            <li role="presentation"><a id="{$cat->cat_id}" data-alias="{$cat->cat_alias}">{$cat->cat_name}</a></li>
+                                            <li class="dropdown-item" role="presentation" id="{$cat->cat_id}" data-alias="{$cat->cat_alias}">{$cat->cat_name}</li>
 
                                             {print_children cat=$cat}
                                         {/foreach}
@@ -161,7 +165,7 @@
                             <label for="title">{_t('Set the topic status as')}</label>
 
                             <div>
-                                <div id="is_topic_open" class="codo_switch codo_switch_on">
+                                <div id="is_topic_open" class="codo_switch toggle_switch_container codo_switch_on">
                                     <div class="codo_switch_toggle"></div>
                                     <span class="codo_switch_on">{_t('Open')}</span>
                                     <span class="codo_switch_off">{_t('Close')}</span>
@@ -174,7 +178,7 @@
                             <label for="title">{_t('Should the topic be auto-closed ?')}</label>
 
                             <div>
-                                <div id="topic_auto_close" class="codo_switch codo_switch_off">
+                                <div id="topic_auto_close" class="codo_switch toggle_switch_container codo_switch_off">
                                     <div class="codo_switch_toggle"></div>
                                     <span class="codo_switch_on">{_t('Yes')}</span>
                                     <span class="codo_switch_off">{_t('No')}</span>
@@ -196,7 +200,7 @@
 
                             <label for="title">{_t('Add a poll to this topic ?')}</label>
                             <div>
-                                <div id="add_poll_switch" class="codo_switch codo_switch_off">
+                                <div id="add_poll_switch" class="codo_switch toggle_switch_container codo_switch_off">
                                     <div class="codo_switch_toggle"></div>
                                     <span class="codo_switch_on">{_t('Yes')}</span>
                                     <span class="codo_switch_off">{_t('No')}</span>
@@ -217,15 +221,15 @@
                                     <div class="codo_poll_input">
                                         <input id="poll_question" type="text" class="codo_input" placeholder="{_t('Poll option')}">
                                         <div class="codo_poll_options">
-                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="glyphicon glyphicon-plus"></i></div>                                        
-                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="glyphicon glyphicon-remove"></i></div>
+                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="fa fa-plus"></i></div>
+                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="fa fa-minus"></i></div>
                                         </div>
                                     </div>
                                     <div class="codo_poll_input">
                                         <input id="poll_question" type="text" class="codo_input" placeholder="{_t('Poll option')}">
                                         <div class="codo_poll_options">
-                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="glyphicon glyphicon-plus"></i></div>                                        
-                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="glyphicon glyphicon-remove"></i></div>
+                                            <div title="{_t("add poll option")}" class="codo_poll_option codo_poll_add_option"><i class="fa fa-plus"></i></div>
+                                            <div title="{_t("remove poll option")}" class="codo_poll_option codo_poll_remove_option"><i class="fa fa-minus"></i></div>
                                         </div>
                                     </div>
 
@@ -234,7 +238,7 @@
                                     <div class="form-group col-md-6 col-sm-12">
                                         <label for="title">{_t('Can user recast his vote ?')}</label>
 
-                                        <div id="can_recast_vote" class="codo_switch codo_switch_on">
+                                        <div id="can_recast_vote" class="codo_switch toggle_switch_container codo_switch_on">
                                             <div class="codo_switch_toggle"></div>
                                             <span class="codo_switch_on">{_t('Yes')}</span>
                                             <span class="codo_switch_off">{_t('No')}</span>
@@ -242,7 +246,7 @@
                                     </div>
                                     <div class="form-group col-md-6 col-sm-12">
                                         <label for="title">{_t('Show poll result without voting ?')}</label>
-                                        <div id="show_result_without_vote" class="codo_switch codo_switch_on">
+                                        <div id="show_result_without_vote" class="codo_switch toggle_switch_container codo_switch_on">
                                             <div class="codo_switch_toggle"></div>
                                             <span class="codo_switch_on">{_t('Yes')}</span>
                                             <span class="codo_switch_off">{_t('No')}</span>
@@ -254,7 +258,7 @@
                                     <label for="title">{_t('Should the poll be auto-closed ?')}</label>
 
                                     <div>
-                                        <div id="poll_auto_close" class="codo_switch codo_switch_off">
+                                        <div id="poll_auto_close" class="codo_switch toggle_switch_container codo_switch_off">
                                             <div class="codo_switch_toggle"></div>
                                             <span class="codo_switch_on">{_t('Yes')}</span>
                                             <span class="codo_switch_off">{_t('No')}</span>
@@ -291,6 +295,7 @@
                 </div>
 
             </div>
+        </div>
             {"block_create_topic_after"|load_block}
             <div id = "alert_placeholder"></div>
         </div>
@@ -316,6 +321,7 @@
             }
 
         };
+
         function add_poll_option(event, value) {
 
             value = value || "";
@@ -347,6 +353,26 @@
 
         function on_codo_loaded() {
 
+            CODOF.selectCat = function(cat_id) {
+
+                $('#codo_category_select li').each(function () {
+
+                    if (parseInt($(this).attr('id')) === cat_id) {
+
+                        $('#codo_category_select > button > span:first-child').text($.trim($(this).text()));
+                        $('#codo_topic_cat').val($(this).attr('id'));
+                        $('#dropdownMenu1').val($(this).attr('id'));
+                        $('#codo_topic_cat_alias').val($(this).data('alias'));
+                        //$('#codo_category_select li  a').off();
+                        $('.codo_new_reply_action_post .codo_action_button_txt').html('{_t("Save")}');
+                        //$('#codo_category_select button').css('background','#eee');
+
+                        CODOFVAR.cid = cat_id;
+                    }
+                });
+            };
+
+
         {if $can_make_sticky}
 
             $('#alter_topic_status').show();
@@ -363,6 +389,11 @@
         {if $can_add_poll}
             $("#add_poll_switch_container").show();
         {/if}
+
+        {if $selected_cat}
+            CODOF.selectCat(parseInt({$selected_cat->cat_id}));
+        {/if}
+
 
             CODOFVAR.pollData = '{$poll_data}';
 
@@ -449,7 +480,7 @@
             CODOF.editor_preview_btn = $('#codo_post_preview_btn');
             CODOF.editor_reply_post_btn = $('.codo_new_reply_action_post');
             $('#codo_new_reply_textarea').putCursorAtEnd();
-            $('#codo_category_select li  a').on('click', function () {
+            $('#codo_category_select li').on('click', function () {
                 var cid = $(this).attr('id');
                 $('#codo_category_select > button > span:first-child').text($.trim($(this).text()));
                 $('#codo_topic_cat').val(cid);
@@ -481,25 +512,8 @@
             });
             var str = $('#codo_non_mentionable').html();
             $('#codo_non_mentionable').html(str.replace('%MENTIONS%', '<span id="codo_nonmentionable_users"></span>'));
-            CODOF.selectCat = function (cat_id) {
 
-                $('#codo_category_select li  a').each(function () {
 
-                    if (parseInt($(this).attr('id')) === cat_id) {
-
-                        $('#codo_category_select > button > span:first-child').text($.trim($(this).text()));
-                        $('#codo_topic_cat').val($(this).attr('id'));
-                        $('#dropdownMenu1').val($(this).attr('id'));
-                        $('#codo_topic_cat_alias').val($(this).data('alias'));
-                        //$('#codo_category_select li  a').off();
-                        $('.codo_new_reply_action_post .codo_action_button_txt').html('{_t("Save")}');
-                        //$('#codo_category_select button').css('background','#eee');
-
-                        CODOFVAR.cid = cat_id;
-                    }
-                });
-            }
-            ;
             CODOF.mentions.extractAndAddToManned($("#codo_new_reply_textarea").val());
             //should be called ONLY after tagsinput() init
             CODOF.restoreFromDraft = function () {

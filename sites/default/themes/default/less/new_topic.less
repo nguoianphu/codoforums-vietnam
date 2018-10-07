@@ -27,6 +27,22 @@ label {
     #breadcrumb {
 
         padding: 0;
+
+
+
+        a {
+
+            color: @descLightColor;
+
+            &:after {
+                color: @descLightColor;
+            }
+
+
+            &:first-of-type {
+                padding-left: 0px;
+            }
+        }
     }
 
     .codo_move_sep {
@@ -123,6 +139,7 @@ label {
 
             background-color: @tagBgColor;
             color: @tagColor;
+            padding: 0px 5px;
         }
 
 

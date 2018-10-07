@@ -9,7 +9,11 @@
 //body
 
 @bodyBgColor: #f5f5f5;
-@bodyBg: #bababa; //use url('your_img_path.png'); to add background image instead of color
+@bodyBg: @bodyBgColor; //url('your_img_path.png');// to add background image instead of color
+
+
+@startGradient: #5a7fee;
+@endGradient: #844aa6;
 
 @highlightBg: #54a3e0;
 @highlightColor: #fff;
@@ -134,7 +138,7 @@
 //the notifications that you see when you click the bell icon in the menu
 @bellNotificationBg: @bg;
 @bellNotificationColor: @color;
-@bellNotificationHeaderBg: @linkColor;
+@bellNotificationHeaderBg: @startGradient;
 @bellNotificationHeaderColor: @inverseColor;
 
 @bellNotificationBorderColor: @borderColor;
@@ -197,7 +201,7 @@
 
 //widget styles
 @widgetBg: @topicCreateWidgetBg;
-@widgetHeaderBg: #31719e; 
+@widgetHeaderBg: #31719e;
 @widgetHeaderColor: @bg;
 @widgetHeaderBorderColor: @linkHoverColor;
 

@@ -6,6 +6,8 @@
 
 namespace Controller;
 
+use CODOF\Hook;
+
 class user {
 
     public $view = false;
@@ -39,9 +41,12 @@ class user {
 
     public function logout() {
 
+        Hook::call('before_logout');
         $user = \CODOF\User\User::get();
         $user->logout();
+        Hook::call('after_logout');
 
+        //Move below code inside sso plugin in a hook
         if (\CODOF\Plugin::is_active('sso')) {
 
             header('Location: ' . \CODOF\Util::get_opt('sso_logout_user_path'));

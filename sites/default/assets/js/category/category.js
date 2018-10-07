@@ -26,13 +26,13 @@ jQuery('document').ready(function ($) {
      * It will  toggle the visibility of topics and
      * categories
      */
-    CODOF.toggleTopicsAndCategories = function () {
+    /*CODOF.toggleTopicsAndCategories = function () {
 
         $('.codo_topics').toggle();
         $('.codo_categories').toggle();
         $('#codo_topics_load_more').toggle();
         CODOF.util.simpleNotify($('#icon-books-click-trans').text());
-    };
+    };*/
 
 
     CODOF.editor_form = $('#codo_new_topic_form');
@@ -732,7 +732,7 @@ jQuery('document').ready(function ($) {
 
     $('#codo_category_select li').on('click', function () {
 
-        window.location = codo_defs.url + "category/" + $(this).find('a').data('alias');
+        window.location = codo_defs.url + "category/" + $(this).data('alias');
     });
 
     $('#mark_all_read').click(function () {

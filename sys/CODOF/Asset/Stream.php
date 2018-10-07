@@ -5,6 +5,7 @@
  */
 
 namespace CODOF\Asset;
+use \CODOF\Util;
 
 /**
  * 
@@ -26,6 +27,8 @@ namespace CODOF\Asset;
  * 
  * Everything in Stream will be part of html output
  */
+
+
 class Stream {
 
     /**
@@ -212,7 +215,13 @@ class Stream {
 
                     if (!file_exists($file['data'])) {
 
-                        $file['data'] = $this->asset_dir . $this->js_dir . '/' . $file['data'];
+                        //It's a less/css files, so check if it is present in default theme
+                        //if(strpos($file['data'], 'default/themes/') !== false) {
+
+                          //  $file['data'] = str_replace(Util::get_opt('theme'), "default", $file['data']);
+                        //} else {
+                            $file['data'] = $this->asset_dir . $this->js_dir . '/' . $file['data'];
+                        //}
                     }
                 }
 
@@ -243,7 +252,6 @@ class Stream {
                 }
 
                 if (!file_exists($url) || $this->recache) {
-
                     $compiledContent = $this->compile($content, $type);
                     file_put_contents($url, $compiledContent);
                 }

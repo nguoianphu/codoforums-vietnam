@@ -470,6 +470,7 @@ jQuery('document').ready(function ($) {
                 CODOF.confirm_popover = $that.popover({
                     html: true,
                     placement: 'bottom',
+                    container: $that,
                     content: function () {
                         return $('#codo_delete_topic_confirm_html').html();
                     }
@@ -507,8 +508,7 @@ jQuery('document').ready(function ($) {
                 $that.parent().on('click', '.codo_modal_delete_topic_submit', function () {
 
                     var isSpam = $('.codo_consider_as_spam input[type=checkbox]').prop('checked');
-
-                    CODOF.topic_creator.delete_topic($that, isSpam);
+                    CODOF.topic_creator.delete_topic(isSpam);
                 });
 
             }
@@ -565,13 +565,13 @@ jQuery('document').ready(function ($) {
     });
 
 
-    CODOF.topic_creator.delete_topic = function ($that, isSpam) {
+    CODOF.topic_creator.delete_topic = function (isSpam) {
 
         $('.codo_posts_topic_delete .codo_spinner').show();
 
         var id = CODOFVAR.tid;
 
-        CODOF.codo_spinner = $that.find('.codo_spinner');
+        CODOF.codo_spinner = $('.popover .codo_posts_topic_delete .codo_spinner');
         CODOF.codo_spinner.show();
 
         jQuery.post(codo_defs.url + 'Ajax/topic/' + id + '/delete', {
@@ -1232,8 +1232,8 @@ jQuery('document').ready(function ($) {
 
     $('.poll_option').on('click', function () {
 
-        $('.poll_option_selected').removeClass('poll_option_selected').addClass('poll_option');
-        $(this).removeClass('poll_option').addClass('poll_option_selected');
+        $('.poll_option_selected').removeClass('poll_option_selected');
+        $(this).addClass('poll_option_selected');
         $('#codo_poll_vote_btn').addClass('codo_btn_blue');
     });
 

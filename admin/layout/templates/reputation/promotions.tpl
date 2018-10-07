@@ -1,8 +1,8 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active"><i class="fa fa-level-up"></i> Promotions</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item active"><i class="fa fa-level-up"></i> Promotions</li>
     </ol>
 
 </section>
@@ -22,13 +22,13 @@
 
 </style>
 
-<div class='well well-sm'>
-    <p>The user will be promoted or demoted according to the rules mentioned here.
-        <br/>
+<div class="col-md-12">
+    <div class='card card-body bg-white'>
+        The user will be promoted or demoted according to the rules mentioned here.
+            <br/>
+            If a new rule is added, it will only take affect when a user's reputation or post count changes
 
-        If a new rule is added, it will only take affect when a user's reputation or post count changes
-    </p>
-
+    </div>
 </div>
 <div class="col-md-6">
     <div  class="box box-info">
@@ -40,7 +40,9 @@
             <br/>
             <div class="input-group">
                 <input name="reputation" placeholder='Enter required reputation points here' type="number" class="form-control" required>
-                <span class="input-group-addon" id="basic-addon2">reputation</span>
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">reputation</span>
+                </div>
             </div>
             <br/>
             <select name="type" class='form-control' >
@@ -50,7 +52,9 @@
             <br/>
             <div class="input-group">
                 <input name="posts" placeholder='Enter required no. of posts here' type="text" class="form-control" required>
-                <span class="input-group-addon" id="basic-addon2">posts</span>
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">posts</span>
+                </div>
             </div>
             <br/>
             <label>promote/demote to</label>
@@ -148,8 +152,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">Editing rule</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <form action="?page=reputation/promotions&action=edit" method="POST">
                     <div class="modal-body">

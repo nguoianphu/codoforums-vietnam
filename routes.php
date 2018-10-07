@@ -968,8 +968,8 @@ dispatch_get('/tags/:tag/:page', function($tag, $page = 1) {
 
 dispatch_get('/', function() {
 
-    global $installed;
-    if (!$installed) {
+    global $CF_installed;
+    if (!$CF_installed) {
 
         $url = str_replace("index.php?u=/", "", RURI);
         header("Location: " . $url . "install/index.php");

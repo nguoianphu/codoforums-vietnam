@@ -40,9 +40,9 @@
 <section class="content-header" id="breadcrumb_forthistemplate_hack">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb" style="float:left; left:10px;">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="index.php?page=categories"><i class="fa fa-users"></i> Categories</a></li>
-        <li class='active'><i class='fa fa-edit'></i> {$info.cat_name}</li>
+        <li class="breadcrumb-item"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?page=categories"><i class="fa fa-users"></i> Categories</a></li>
+        <li class='breadcrumb-item active'><i class='fa fa-edit'></i> {$info.cat_name}</li>
     </ol>
 
 </section>
@@ -94,7 +94,7 @@
                                 data-permission='{$permission.permission}'                                   
                                 {if $permission.granted eq '1'} checked="checked" {/if}
                                 type="checkbox"  data-toggle="toggle"
-                                data-size="mini"
+                                data-size="small"
                                 data-on="GRANTED" data-off="DENIED"
                                 data-onstyle="success" data-offstyle="danger">
                         </div>

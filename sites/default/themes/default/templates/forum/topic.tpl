@@ -11,27 +11,42 @@
     {assign "safe_title" $title|URL_safe}
     {assign "tid" $topic_info.topic_id}
     {assign "cid" $topic_info.cat_id}
+    <div class="container" style="padding-top:50px;">
 
+        <div class="row">
+
+            <div class="codo_icon_header col-lg-12 d-none d-sm-block d-md-none d-block d-sm-none">
+
+                <button id="codo_create_topic_btn" type="submit" class="btn btn-default btn-light codo_reply_btn"
+                        style="width:100%">{_t("Reply")}</button>
+            </div>
+
+        </div>
+    </div>
     <div class="container-fluid top-custom-container-profile">
-        <div class="container" style="padding-top:50px;">
+        <div class="container">
             <div class="row">
+
                 <div class="col-md-9" style="padding-left: 0">
                     <div id="breadcrumb" class="col-md-12">
 
 
                         {"block_breadcrumbs_before"|load_block}
 
-                        <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
-                            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i></div></a>
+                        <div class="codo_breadcrumb_list btn-breadcrumb d-none d-sm-block">
+                            <a href="{$smarty.const.RURI}{$site_url}"><div><i class="fa fa-home"></i></div></a>
 
                             {foreach from=$parents item=crumb}
-                                <a title="{$crumb.name}" data-placement="bottom" data-toggle="tooltip" href="{$smarty.const.RURI}category/{$crumb.alias}"><div>{$crumb.name}</div></a>                    
-                                    {/foreach}
+                                <a title="{$crumb.name}" data-placement="bottom" data-toggle="tooltip"
+                                   href="{$smarty.const.RURI}category/{$crumb.alias}">
+                                    <div>{$crumb.name}</div>
+                                </a>
+                            {/foreach}
                             &nbsp;
                         </div>
 
 
-                        <select id="codo_breadcrumb_select" class="form-control hidden-sm hidden-md hidden-lg">
+                        <select id="codo_breadcrumb_select" class="form-control d-block d-sm-none">
                             <option selected="selected" value="">{_t("Where am I ?")}</option>
                             {assign space "&nbsp;&nbsp;&nbsp;"}
                             {assign indent "{$space}"}
@@ -47,8 +62,8 @@
                         {"block_breadcrumbs_after"|load_block}                
                     </div>
 
-                    <div class="codo_topic_blockquote">{_t("Codoforum Related Descussions")}</div>
-                    <div class="codo_topic_top_title">{_t("On my form using CODOLOGIC forum.")}</div>
+                    <div class="codo_topic_blockquote">{$topic_info.cat_name}</div>
+                    <div class="codo_topic_top_title">{$title|unescape}</div>
 
                     {if $tags}
                         <div class="codo_statistic_block_topic">
@@ -68,7 +83,7 @@
 
     {"block_breadcrumbs_before"|load_block}
 
-    <div class="codo_breadcrumb_list btn-breadcrumb hidden-xs">
+    <div class="codo_breadcrumb_list btn-breadcrumb d-none d-sm-block">
         <a href="{$smarty.const.RURI}{$site_url}"><div><i class="glyphicon glyphicon-home"></i></div></a>
 
     {foreach from=$parents item=crumb}
@@ -78,7 +93,7 @@
 </div>
 
 
-<select id="codo_breadcrumb_select" class="form-control hidden-sm hidden-md hidden-lg">
+<select id="codo_breadcrumb_select" class="form-control d-block d-sm-none">
 <option selected="selected" value="">{_t("Where am I ?")}</option>
     {assign space "&nbsp;&nbsp;&nbsp;"}
     {assign indent "{$space}"}
@@ -93,7 +108,6 @@
 </select>    
     {"block_breadcrumbs_after"|load_block}                
 </div>-->
-
     <div class="container" style="padding:0px;">
         {if $topic_is_spam}
             <div class="codo_spam_alert alert alert-warning"><b>{_t('NOTE: ')}</b>{_t('This topic is marked as spam and is hidden from public view.')}</div>
@@ -153,7 +167,7 @@
                                     <div class="poll_left_section">
                                         <i class="poll_icon glyphicon glyphicon-question-sign"></i>
                                     </div>
-                                    <div class="poll_right_section col-md-10 col-xs-12">
+                                    <div class="poll_right_section col-md-10 col-12">
                                         <div class="poll_title"><b>{_t("Poll: ")}</b>{$poll['title']}</div>
 
                                         <div class="poll_options">
@@ -193,23 +207,23 @@
 
                     <div class="codo_topic_statistics codo_sidebar_fixed_els row">
 
-                        <div class="codo_cat_num col-xs-4">
-                            <i class="icon icon-eye2" style="color:#00b147;font-size:20px;padding-top: 2px;"></i>
-                            <div class="codo_topic_views codo-topic-right" data-number="{$topic_info.no_views}">
+                        <div class="codo_cat_num col-3">
+                            <i class="icon icon-eye2" style="color:#00b147;font-size:20px;padding-top: 2px; margin-right: 10px;"></i>
+                            <div class="codo_topic_views" data-number="{$topic_info.no_views}">
                                 {$topic_info.no_views|abbrev_no}
                             </div>
 
                         </div>
-                        <div class="codo_cat_num col-xs-4">
-                            <i class="icon icon-message" style="color:#0097f6;font-size:20px;padding-top: 2px;"></i>
-                            <div class="codo-topic-right">
+                        <div class="codo_cat_num col-4" style="margin-left: 8px;">
+                            <i class="icon icon-message" style="color:#0097f6;font-size:20px;padding-top: 2px; margin-right: 10px;"></i>
+                            <div>
                                 {$topic_info.no_replies|abbrev_no}
                             </div>
 
                         </div>
-                        <div class="codo_cat_num col-xs-4">
-                            <i class="glyphicon glyphicon-stats" style="font-size:20px;color:#5a7fee;"></i>
-                            <div class="codo-topic-right">
+                        <div class="codo_cat_num col-4">
+                            <i class="fa fa-signal" style="font-size:20px;color:#5a7fee;margin-right: 10px;"></i>
+                            <div>
                                 {$no_followers|abbrev_no}
                             </div>
 
@@ -263,8 +277,9 @@
                         </div>	
 
                         {if $can_reply}
-                            <div style="clear:both;width:100%;">
-                                <button id="codo_reply_btn" type="submit" class="codo_btn codo_reply_btn codo_can_reply codo_btn_primary" style="width:100%;padding: 14px;">{_t('Reply')}</button>
+                            <div style="clear:both;width:100%;" class="codo_reply_div codo_sidebar_fixed_els">
+                                <button type="submit" class="codo_btn codo_reply_btn codo_can_reply codo_btn_primary"
+                                        style="width:100%;padding: 14px;">{_t('Reply')}</button>
                             </div>
                         {/if}
 
@@ -330,8 +345,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header-info">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Selected posts")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
 
@@ -353,8 +368,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header-primary">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Confirm move posts")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
 
@@ -398,8 +413,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header-warning">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Insufficient permissions")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
                             {_t("You do not have permission to move posts to this category.")}
@@ -417,8 +432,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header-warning">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Select a different topic")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
                             {_t("You cannot move posts to the same topic.")}
@@ -437,8 +452,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header-warning">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Confirm selection")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
 
@@ -461,8 +476,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">{_t("Edit history")}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </div>
                         <div class="modal-body">
 
