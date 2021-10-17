@@ -34,7 +34,7 @@ http://www.YOUR_FORUM.com/admin/index.php?page=system/upgrade
 ##### Download the latest version Codoforums here
 https://bitbucket.org/evnix/codoforum_downloads/downloads
 
-Overide the original source code with the new code.
+Overwrite the original source code with the new code.
 
 ##### Upgrading the database
 http://www.YOUR_FORUM.com/admin/index.php?page=manual_upgrade
